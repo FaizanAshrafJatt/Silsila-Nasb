@@ -149,59 +149,52 @@
   }
 
   /* Tree structure */
-  .tree {
-    --hgap: 18px;
-    --vgap: 28px;
-    display: flex;
-    justify-content: center;
-    padding-top: 10px;
-  }
+  /* ── Vertical indented tree (all screen sizes) ── */
+  .tree { display: block; padding: 4px 0 0 0; }
 
   .tree ul {
-    position: relative;
-    padding-top: var(--vgap);
-    display: flex;
-    justify-content: center;
+    display: block;
+    padding: 0 0 0 22px;
     list-style: none;
+    position: relative;
   }
+  .tree ul::before { display: none; }
+
+  .tree > ul { padding-left: 0; }
+  .tree > ul > li { border-left: none !important; padding-left: 0 !important; }
+  .tree > ul > li::before, .tree > ul > li::after { display: none !important; }
 
   .tree li {
+    display: block;
     position: relative;
-    padding: var(--vgap) var(--hgap) 0;
+    padding: 4px 0 4px 18px;
     list-style: none;
-    text-align: center;
-  }
-
-  /* connector lines */
-  .tree li::before, .tree li::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    height: var(--vgap);
-    border-top: 1.5px solid var(--line);
-    width: 50%;
-  }
-  .tree li::before { right: 50%; border-right: 1.5px solid var(--line); }
-  .tree li::after  { left: 50%; }
-
-  .tree li:only-child::before, .tree li:only-child::after { display: none; }
-  .tree li:only-child { padding-top: var(--vgap); }
-  .tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
-  .tree li:last-child::before {
-    border-right: 1.5px solid var(--line);
-    border-radius: 0 6px 0 0;
-  }
-  .tree li:first-child::after {
-    border-radius: 6px 0 0 0;
-  }
-
-  .tree ul ul::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 50%;
-    height: var(--vgap);
+    text-align: left;
     border-left: 1.5px solid var(--line);
   }
+
+  /* horizontal branch connector */
+  .tree li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 18px;
+    width: 16px; height: 0;
+    border-top: 1.5px solid var(--line);
+  }
+  .tree li::after { display: none; }
+
+  .tree li:only-child::before { display: block; }
+
+  .tree li:last-child { border-left-color: transparent; }
+  .tree li:last-child::after {
+    display: block;
+    content: '';
+    position: absolute;
+    left: -0.75px; top: 0; height: 18px;
+    border-left: 1.5px solid var(--line);
+    width: 0;
+  }
+
 
   /* Person card */
   .person {
@@ -302,7 +295,7 @@
     background: rgba(255, 248, 224, 0.4);
     border-radius: 6px;
     border: 1px solid var(--gold-light);
-    overflow-x: auto;
+    overflow: visible;
   }
 
   .branch-title {
@@ -359,7 +352,7 @@
     header { padding: 20px 10px 30px; margin-bottom: 30px; }
   }
 
-  /* ── Mobile: vertical stacking ── */
+  /* ── Mobile: vertical indented tree ── */
   @media (max-width: 600px) {
     html, body { padding: 12px 6px 50px; }
     header { padding: 16px 8px 24px; margin-bottom: 20px; }
@@ -367,44 +360,103 @@
     .urdu-title { font-size: 20px; }
     .subtitle { font-size: 14px; }
     .legend { gap: 12px; font-size: 12px; }
-    .branch-section { margin: 20px 0; padding: 14px 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    .branch-title { font-size: 14px; letter-spacing: 0.08em; margin-bottom: 16px; padding-bottom: 8px; }
-    .branch-title .ur { font-size: 18px; }
     .note { font-size: 12px; padding: 8px 12px; }
-
-    .tree {
-      --hgap: 4px;
-      --vgap: 18px;
-      justify-content: flex-start;
-      padding-left: 4px;
-    }
-    .tree ul { flex-wrap: wrap; justify-content: center; }
-    .person {
-      min-width: 75px;
-      padding: 6px 8px;
-    }
-    .person .name-ur { font-size: 14px; line-height: 1.4; }
-    .person .name-en { font-size: 10px; }
-    .person .gen {
-      width: 18px; height: 18px;
-      font-size: 9px;
-      top: -7px; right: -7px;
-    }
-    .person.root { padding: 10px 14px; }
-    .person.root .name-ur { font-size: 20px; }
-    .person.root .name-en { font-size: 12px; }
-
     footer { margin-top: 30px; font-size: 12px; }
+
+    .branch-section {
+      margin: 16px 0; padding: 12px 8px;
+      overflow-x: visible; overflow-y: visible;
+    }
+    .branch-title { font-size: 14px; letter-spacing: 0.08em; margin-bottom: 12px; padding-bottom: 8px; }
+    .branch-title .ur { font-size: 18px; }
+
+    /* Switch tree from horizontal flex to vertical indented */
+    .tree { display: block; padding: 0; }
+    .tree ul {
+      display: block;
+      padding: 0 0 0 16px;
+      list-style: none;
+    }
+    .tree ul::before { display: none; }
+
+    .tree > ul { padding-left: 0; }
+    .tree > ul > li { border-left: none !important; padding-left: 0 !important; }
+    .tree > ul > li::before, .tree > ul > li::after { display: none !important; }
+
+    .tree li {
+      display: block;
+      padding: 3px 0 3px 14px;
+      text-align: left;
+      border-left: 1.5px solid var(--line);
+      position: relative;
+      width: auto;
+    }
+
+    .tree li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 16px;
+      width: 12px; height: 0;
+      border-top: 1.5px solid var(--line);
+      border-right: none !important;
+      border-radius: 0 !important;
+      right: auto;
+    }
+    .tree li::after { display: none; }
+
+    .tree li:only-child { padding-top: 3px; }
+    .tree li:only-child::before { display: block; }
+
+    .tree li:first-child::before {
+      border-top: 1.5px solid var(--line);
+      border-right: none !important;
+      border-radius: 0 !important;
+    }
+    .tree li:first-child::after { display: none; }
+
+    .tree li:last-child { border-left-color: transparent; }
+    .tree li:last-child::before {
+      border-top: 1.5px solid var(--line);
+      border-right: none !important;
+      border-radius: 0 !important;
+    }
+    .tree li:last-child::after {
+      display: block;
+      content: '';
+      position: absolute;
+      left: -0.75px; top: 0; height: 16px;
+      border-left: 1.5px solid var(--line);
+      border-top: none;
+      width: 0;
+      border-radius: 0 !important;
+    }
+
+    /* Person cards - compact for mobile */
+    .person {
+      display: inline-block;
+      min-width: auto;
+      padding: 4px 8px;
+    }
+    .person .name-ur { font-size: 13px; line-height: 1.4; }
+    .person .name-en { font-size: 10px; }
+    .person .gen { width: 18px; height: 18px; font-size: 9px; top: -7px; right: -7px; }
+    .person.root { padding: 8px 12px; }
+    .person.root .name-ur { font-size: 18px; }
+    .person.root .name-en { font-size: 11px; }
+    .person.terminal { padding: 6px 10px; }
+    .person.terminal .name-ur { font-size: 15px; }
   }
 
   /* ── Very small phones ── */
   @media (max-width: 400px) {
-    .tree { --hgap: 2px; --vgap: 14px; }
-    .person { min-width: 60px; padding: 5px 6px; }
+    .tree ul { padding-left: 12px; }
+    .tree li { padding-left: 10px; }
+    .tree li::before { width: 8px; }
+    .person { padding: 3px 6px; }
     .person .name-ur { font-size: 12px; }
     .person .name-en { font-size: 9px; }
     .person .gen { width: 16px; height: 16px; font-size: 8px; top: -6px; right: -6px; }
-    .branch-section { padding: 10px 4px; }
+    .branch-section { padding: 8px 4px; }
     .branch-title { font-size: 12px; }
     .branch-title .ur { font-size: 15px; }
     header { padding: 10px 6px 16px; margin-bottom: 14px; }
@@ -933,7 +985,7 @@
         <div class="person"><div class="name-ur">یعقوب</div><div class="name-en">Yaqoob</div><div class="gen">4</div></div>
         <ul>
           <li>
-            <div class="person"><div class="name-ur">ماسٹر ماجد</div><div class="name-en">Master Majid</div><div class="gen">5</div></div>
+            <div class="person"><div class="name-ur">ماسٹر مجید</div><div class="name-en">Master Majeed</div><div class="gen">5</div></div>
             <ul>
               <li><div class="person"><div class="name-ur">سعید</div><div class="name-en">Saeed</div><div class="gen">6</div></div>
                 <ul>
@@ -1349,7 +1401,7 @@
     'Kareem': { ur: 'کریم', parent: 'Abdullah', gen: 4, children: ['Abdul Hameed'] },
     'Ilahi Baksh': { ur: 'الہٰی بخش', parent: 'Abdullah', gen: 4, children: ['Younis', 'Afzal', 'Zulfiqar'] },
     // ── Gen 4 — Rehmat Ullah's sons ──
-    'Yaqoob': { ur: 'یعقوب', parent: 'Rehmat Ullah', gen: 4, children: ['Master Majid', 'Abdur Rehman', 'Rafiq'] },
+    'Yaqoob': { ur: 'یعقوب', parent: 'Rehmat Ullah', gen: 4, children: ['Master Majeed', 'Abdur Rehman', 'Rafiq'] },
     'Shera': { ur: 'شیرا', parent: 'Rehmat Ullah', gen: 4, children: ['Ghafoor', 'Qayyoum', 'Abdur Rauf', 'Manzoor', 'Khalid'] },
     // ── Gen 4 — Jamal Din's sons ──
     'Abdul Aziz': { ur: 'عبدالعزیز', parent: 'Jamal Din', gen: 4, children: ['Mr Hasnaah'] },
@@ -1389,7 +1441,7 @@
     'Afzal': { ur: 'افضل', parent: 'Ilahi Baksh', gen: 5, children: ['Mateen'] },
     'Zulfiqar': { ur: 'ذوالفقار', parent: 'Ilahi Baksh', gen: 5, children: ['Usman Z'] },
     // ── Gen 5 — Yaqoob's sons ──
-    'Master Majid': { ur: 'ماسٹر ماجد', parent: 'Yaqoob', gen: 5, children: ['Saeed', 'Aleem', 'Saleem'] },
+    'Master Majeed': { ur: 'ماسٹر مجید', parent: 'Yaqoob', gen: 5, children: ['Saeed', 'Aleem', 'Saleem'] },
     'Abdur Rehman': { ur: 'عبدالرحمٰن', parent: 'Yaqoob', gen: 5, children: ['Saif', 'Imran Y', 'Arfan', 'Asghar'] },
     'Rafiq': { ur: 'رفیق', parent: 'Yaqoob', gen: 5, children: ['Shafiq R', 'Raees'] },
     // ── Gen 5 — Shera's sons ──
@@ -1416,10 +1468,10 @@
     'Shafiq': { ur: 'شفیق', parent: 'Abdul Hameed', gen: 6, children: [] },
     'Tariq': { ur: 'طارق', parent: 'Abdul Hameed', gen: 6, children: [] },
     'Naveed': { ur: 'نوید', parent: 'Abdul Hameed', gen: 6, children: [] },
-    // ── Gen 6 — Master Majid's sons ──
-    'Saeed': { ur: 'سعید', parent: 'Master Majid', gen: 6, children: ['Abdullah S', 'Usman', 'Meer Hamza'] },
-    'Aleem': { ur: 'علیم', parent: 'Master Majid', gen: 6, children: ['Abdul Rafey', 'Abdul Wasay'] },
-    'Saleem': { ur: 'سلیم', parent: 'Master Majid', gen: 6, children: [] },
+    // ── Gen 6 — Master Majeed's sons ──
+    'Saeed': { ur: 'سعید', parent: 'Master Majeed', gen: 6, children: ['Abdullah S', 'Usman', 'Meer Hamza'] },
+    'Aleem': { ur: 'علیم', parent: 'Master Majeed', gen: 6, children: ['Abdul Rafey', 'Abdul Wasay'] },
+    'Saleem': { ur: 'سلیم', parent: 'Master Majeed', gen: 6, children: [] },
     // ── Gen 6 — Abdur Rehman's sons ──
     'Saif': { ur: 'سیف', parent: 'Abdur Rehman', gen: 6, children: ['Abdul Hanan'] },
     'Imran Y': { ur: 'عمران', parent: 'Abdur Rehman', gen: 6, children: ['Zohaan'] },
