@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+<html lang="ur" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>شجرہ نسب — بابا سردار محمد</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Cinzel:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --parchment: #f5ecd9;
+    --parchment-dark: #ead9b6;
+    --ink: #2b1d12;
+    --ink-soft: #5a4632;
+    --burgundy: #6e1f23;
+    --gold: #a07a2e;
+    --gold-light: #c9a35a;
+    --line: #6b4a2b;
+    --highlight: #fff3c8;
+    --main-line: #6e1f23;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background:
+      radial-gradient(1200px 800px at 20% 10%, #fbf2dd 0%, transparent 60%),
+      radial-gradient(900px 600px at 90% 90%, #efdfba 0%, transparent 65%),
+      var(--parchment);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  /* paper grain */
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(rgba(110,80,40,0.10) 1px, transparent 1px),
+      radial-gradient(rgba(60,40,20,0.06) 1px, transparent 1px);
+    background-size: 3px 3px, 7px 7px;
+    background-position: 0 0, 1px 2px;
+    opacity: .55;
+    mix-blend-mode: multiply;
+    z-index: 0;
+  }
+
+  .page {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  header {
+    text-align: center;
+    padding: 30px 20px 50px;
+    border-bottom: 2px double var(--gold);
+    margin-bottom: 50px;
+  }
+
+  .ornament {
+    font-family: 'Cinzel', serif;
+    color: var(--gold);
+    letter-spacing: 0.4em;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    font-size: clamp(28px, 4vw, 44px);
+    color: var(--burgundy);
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+  }
+
+  .urdu-title {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(22px, 3vw, 32px);
+    color: var(--ink);
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+
+  .subtitle {
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-top: 14px;
+    font-size: 17px;
+  }
+
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    flex-wrap: wrap;
+    margin: 25px 0 0;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .legend-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 1px solid var(--ink);
+  }
+  .legend-dot.main { background: var(--burgundy); }
+  .legend-dot.gen { background: transparent; border: 2px solid var(--ink); }
+
+  /* Generation banner */
+  .gen-banner {
+    text-align: center;
+    margin: 40px auto 20px;
+    position: relative;
+  }
+  .gen-banner span {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    background: var(--parchment);
+    color: var(--burgundy);
+    padding: 6px 22px;
+    letter-spacing: 0.3em;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--gold);
+    border-radius: 2px;
+    position: relative;
+    z-index: 2;
+  }
+  .gen-banner::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 5%; right: 5%;
+    height: 1px; background: var(--gold-light);
+    z-index: 1;
+  }
+
+  /* Tree structure */
+  .tree {
+    --hgap: 18px;
+    --vgap: 28px;
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+  }
+
+  .tree ul {
+    position: relative;
+    padding-top: var(--vgap);
+    display: flex;
+    justify-content: center;
+    list-style: none;
+  }
+
+  .tree li {
+    position: relative;
+    padding: var(--vgap) var(--hgap) 0;
+    list-style: none;
+    text-align: center;
+  }
+
+  /* connector lines */
+  .tree li::before, .tree li::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    height: var(--vgap);
+    border-top: 1.5px solid var(--line);
+    width: 50%;
+  }
+  .tree li::before { right: 50%; border-right: 1.5px solid var(--line); }
+  .tree li::after  { left: 50%; }
+
+  .tree li:only-child::before, .tree li:only-child::after { display: none; }
+  .tree li:only-child { padding-top: var(--vgap); }
+  .tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
+  .tree li:last-child::before {
+    border-right: 1.5px solid var(--line);
+    border-radius: 0 6px 0 0;
+  }
+  .tree li:first-child::after {
+    border-radius: 6px 0 0 0;
+  }
+
+  .tree ul ul::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 50%;
+    height: var(--vgap);
+    border-left: 1.5px solid var(--line);
+  }
+
+  /* Person card */
+  .person {
+    display: inline-block;
+    padding: 10px 16px;
+    background: linear-gradient(180deg, #fffaee 0%, #f5ecd9 100%);
+    border: 1.5px solid var(--ink-soft);
+    border-radius: 4px;
+    box-shadow:
+      0 2px 0 rgba(0,0,0,.04),
+      0 6px 14px -8px rgba(80,50,20,.35);
+    min-width: 110px;
+    position: relative;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .person:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 4px 0 rgba(0,0,0,.06),
+      0 10px 24px -8px rgba(80,50,20,.45);
+  }
+
+  .person .name-ur {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 19px;
+    color: var(--ink);
+    line-height: 1.5;
+    direction: rtl;
+  }
+  .person .name-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-top: 2px;
+    letter-spacing: 0.02em;
+  }
+  .person .gen {
+    position: absolute;
+    top: -10px; right: -10px;
+    width: 24px; height: 24px;
+    background: var(--parchment);
+    border: 1.5px solid var(--gold);
+    color: var(--burgundy);
+    border-radius: 50%;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Main lineage emphasis */
+  .person.main {
+    background: linear-gradient(180deg, #fff5d4 0%, #f3dfa6 100%);
+    border-color: var(--burgundy);
+    border-width: 2px;
+    box-shadow:
+      0 2px 0 rgba(110,30,35,.1),
+      0 8px 18px -6px rgba(110,30,35,.35);
+  }
+  .person.main .name-ur { color: var(--burgundy); font-weight: 600; }
+  .person.main .gen {
+    background: var(--burgundy);
+    color: #fff5d4;
+    border-color: var(--burgundy);
+  }
+
+  .person.root {
+    background: linear-gradient(180deg, #f4e3b7 0%, #d9bf81 100%);
+    border-color: var(--burgundy);
+    border-width: 2.5px;
+    padding: 14px 22px;
+  }
+  .person.root .name-ur { font-size: 24px; color: var(--burgundy); font-weight: 700; }
+  .person.root .name-en { font-size: 14px; }
+
+  .person.terminal {
+    background: linear-gradient(180deg, #fff1c2 0%, #ecd07d 100%);
+    border-color: var(--burgundy);
+    border-width: 2.5px;
+    padding: 14px 22px;
+  }
+  .person.terminal .name-ur { font-size: 22px; color: var(--burgundy); font-weight: 700; }
+  .person.terminal::after {
+    content: "★";
+    position: absolute;
+    top: -14px; left: -14px;
+    color: var(--burgundy);
+    font-size: 18px;
+  }
+
+  /* Branch sections — separate trees for each major branch */
+  .branch-section {
+    margin: 60px 0;
+    padding: 30px 20px;
+    background: rgba(255, 248, 224, 0.4);
+    border-radius: 6px;
+    border: 1px solid var(--gold-light);
+    overflow-x: auto;
+  }
+
+  .branch-title {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    color: var(--burgundy);
+    font-size: 18px;
+    letter-spacing: 0.15em;
+    margin-bottom: 25px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--gold);
+  }
+  .branch-title .ur {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    color: var(--ink);
+    font-size: 22px;
+    margin-right: 8px;
+    direction: rtl;
+    display: inline-block;
+  }
+
+  .note {
+    text-align: center;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 20px auto;
+    max-width: 800px;
+    line-height: 1.7;
+    padding: 12px 18px;
+    background: rgba(255,255,255,0.4);
+    border-left: 3px solid var(--gold);
+    border-right: 3px solid var(--gold);
+  }
+
+  footer {
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 2px double var(--gold);
+    text-align: center;
+    color: var(--ink-soft);
+    font-style: italic;
+    font-size: 14px;
+  }
+
+  /* ── Tablet ── */
+  @media (max-width: 900px) {
+    html, body { padding: 20px 10px 60px; }
+    .tree { --hgap: 10px; --vgap: 22px; }
+    .person { min-width: 90px; padding: 8px 10px; }
+    .person .name-ur { font-size: 17px; }
+    .person .name-en { font-size: 12px; }
+    .branch-section { margin: 30px 0; padding: 20px 10px; }
+    header { padding: 20px 10px 30px; margin-bottom: 30px; }
+  }
+
+  /* ── Mobile: vertical stacking ── */
+  @media (max-width: 600px) {
+    html, body { padding: 12px 6px 50px; }
+    header { padding: 16px 8px 24px; margin-bottom: 20px; }
+    h1 { font-size: 26px; }
+    .urdu-title { font-size: 20px; }
+    .subtitle { font-size: 14px; }
+    .legend { gap: 12px; font-size: 12px; }
+    .branch-section { margin: 20px 0; padding: 14px 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .branch-title { font-size: 14px; letter-spacing: 0.08em; margin-bottom: 16px; padding-bottom: 8px; }
+    .branch-title .ur { font-size: 18px; }
+    .note { font-size: 12px; padding: 8px 12px; }
+
+    .tree {
+      --hgap: 4px;
+      --vgap: 18px;
+      justify-content: flex-start;
+      padding-left: 4px;
+    }
+    .tree ul { flex-wrap: wrap; justify-content: center; }
+    .person {
+      min-width: 75px;
+      padding: 6px 8px;
+    }
+    .person .name-ur { font-size: 14px; line-height: 1.4; }
+    .person .name-en { font-size: 10px; }
+    .person .gen {
+      width: 18px; height: 18px;
+      font-size: 9px;
+      top: -7px; right: -7px;
+    }
+    .person.root { padding: 10px 14px; }
+    .person.root .name-ur { font-size: 20px; }
+    .person.root .name-en { font-size: 12px; }
+
+    footer { margin-top: 30px; font-size: 12px; }
+  }
+
+  /* ── Very small phones ── */
+  @media (max-width: 400px) {
+    .tree { --hgap: 2px; --vgap: 14px; }
+    .person { min-width: 60px; padding: 5px 6px; }
+    .person .name-ur { font-size: 12px; }
+    .person .name-en { font-size: 9px; }
+    .person .gen { width: 16px; height: 16px; font-size: 8px; top: -6px; right: -6px; }
+    .branch-section { padding: 10px 4px; }
+    .branch-title { font-size: 12px; }
+    .branch-title .ur { font-size: 15px; }
+    header { padding: 10px 6px 16px; margin-bottom: 14px; }
+    h1 { font-size: 22px; }
+    .urdu-title { font-size: 17px; }
+  }
+
+  /* ── Search Panel ── */
+  .search-panel {
+    position: fixed;
+    top: 20px; right: 20px;
+    z-index: 1000;
+    background: linear-gradient(180deg, #fffaee 0%, #f5ecd9 100%);
+    border: 1.5px solid var(--gold);
+    border-radius: 6px;
+    box-shadow: 0 8px 30px rgba(80,50,20,0.25);
+    padding: 0;
+    width: 320px;
+    transition: all 0.3s ease;
+  }
+  .search-panel.collapsed {
+    width: auto;
+    padding: 0;
+  }
+  .search-panel.collapsed .search-body { display: none; }
+
+  .search-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--gold-light);
+    cursor: pointer;
+    user-select: none;
+  }
+  .search-header h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: var(--burgundy);
+    letter-spacing: 0.15em;
+    margin: 0;
+  }
+  .search-header .ur-label {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 15px;
+    color: var(--ink);
+    margin-left: 8px;
+  }
+  .search-toggle {
+    width: 28px; height: 28px;
+    background: var(--burgundy);
+    color: #fff5d4;
+    border: none; border-radius: 50%;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.3s;
+  }
+  .search-panel.collapsed .search-toggle { transform: rotate(180deg); }
+
+  .search-body { padding: 14px 16px 16px; }
+
+  .search-input-wrap {
+    position: relative;
+    margin-bottom: 12px;
+  }
+  .search-input-wrap input {
+    width: 100%;
+    padding: 10px 14px 10px 36px;
+    border: 1.5px solid var(--ink-soft);
+    border-radius: 4px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: var(--ink);
+    background: #fffdf5;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .search-input-wrap input:focus {
+    border-color: var(--burgundy);
+    box-shadow: 0 0 0 3px rgba(110,31,35,0.12);
+  }
+  .search-input-wrap input::placeholder {
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .search-icon {
+    position: absolute; left: 11px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--gold);
+    font-size: 15px;
+    pointer-events: none;
+  }
+
+  .search-results {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+  }
+  .search-results::-webkit-scrollbar { width: 4px; }
+  .search-results::-webkit-scrollbar-thumb { background: var(--gold-light); border-radius: 2px; }
+
+  .search-result-item {
+    padding: 8px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 10px;
+    transition: background 0.2s;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  .search-result-item:last-child { border-bottom: none; }
+  .search-result-item:hover { background: var(--highlight); }
+  .search-result-item .sr-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .search-result-item .sr-name-ur {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 16px;
+    color: var(--ink-soft);
+    direction: rtl;
+  }
+  .search-result-item .sr-gen {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    color: var(--burgundy);
+    background: rgba(110,31,35,0.08);
+    padding: 2px 6px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+
+  .search-status {
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-style: italic;
+    text-align: center;
+    padding: 6px 0;
+  }
+
+  .search-clear {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--burgundy);
+    border-radius: 3px;
+    background: transparent;
+    color: var(--burgundy);
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .search-clear:hover {
+    background: var(--burgundy);
+    color: #fff5d4;
+  }
+
+  /* ── Highlight Animations ── */
+  .person.highlighted {
+    background: linear-gradient(180deg, #fff3c8 0%, #f5d96a 100%) !important;
+    border-color: var(--burgundy) !important;
+    border-width: 2.5px !important;
+    box-shadow:
+      0 0 0 4px rgba(110,31,35,0.15),
+      0 8px 24px -4px rgba(110,31,35,0.35) !important;
+    transform: scale(1.08);
+    z-index: 5;
+    position: relative;
+  }
+  .person.highlighted .name-ur {
+    color: var(--burgundy) !important;
+    font-weight: 700 !important;
+  }
+
+  .person.ancestor-line {
+    background: linear-gradient(180deg, #fef8e0 0%, #f0dfa0 100%) !important;
+    border-color: var(--main-line) !important;
+    border-width: 2px !important;
+    box-shadow:
+      0 0 0 3px rgba(110,31,35,0.10),
+      0 6px 18px -4px rgba(110,31,35,0.30) !important;
+    position: relative;
+    z-index: 4;
+  }
+  .person.ancestor-line .name-ur { color: var(--burgundy) !important; }
+
+  .person.highlighted,
+  .person.ancestor-line {
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Pulse animation on the found person */
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(110,31,35,0.15), 0 8px 24px -4px rgba(110,31,35,0.35); }
+    50%      { box-shadow: 0 0 0 8px rgba(110,31,35,0.10), 0 12px 30px -4px rgba(110,31,35,0.45); }
+  }
+  .person.highlighted { animation: pulse-glow 2s ease-in-out infinite; }
+
+  /* Connector lines highlight */
+  li.line-highlight::before {
+    border-color: var(--burgundy) !important;
+    border-width: 2.5px !important;
+  }
+  li.line-highlight::after {
+    border-color: var(--burgundy) !important;
+  }
+  ul.line-highlight::before {
+    border-color: var(--burgundy) !important;
+    border-width: 2.5px !important;
+  }
+
+  /* Dim non-highlighted when search is active */
+  .search-active .person:not(.highlighted):not(.ancestor-line) {
+    opacity: 0.35;
+    transition: opacity 0.4s;
+  }
+  .search-active .person.highlighted,
+  .search-active .person.ancestor-line {
+    opacity: 1;
+  }
+
+  /* ── Breadcrumb trail ── */
+  .lineage-trail {
+    display: none;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 0 4px;
+    font-size: 13px;
+  }
+  .lineage-trail.visible { display: flex; }
+  .lineage-trail .trail-item {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    color: var(--burgundy);
+  }
+  .lineage-trail .trail-arrow {
+    color: var(--gold);
+    font-size: 11px;
+  }
+
+  /* ── View Full Lineage Button ── */
+  .search-lineage-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 8px;
+    border: 2px solid var(--burgundy);
+    border-radius: 4px;
+    background: linear-gradient(180deg, #fff5d4 0%, #f3dfa6 100%);
+    color: var(--burgundy);
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    font-weight: 600;
+  }
+  .search-lineage-btn:hover {
+    background: var(--burgundy);
+    color: #fff5d4;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(110,31,35,0.3);
+  }
+
+  /* ── Full Lineage Overlay ── */
+  .lineage-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    z-index: 2000;
+    background: rgba(10,8,4,0.85);
+    backdrop-filter: blur(6px);
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    animation: fadeIn 0.3s ease;
+  }
+  .lineage-overlay.active { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .lineage-modal {
+    position: relative;
+    background:
+      radial-gradient(800px 500px at 30% 20%, #fbf2dd 0%, transparent 60%),
+      radial-gradient(600px 400px at 80% 80%, #efdfba 0%, transparent 65%),
+      var(--parchment);
+    border: 2px solid var(--gold);
+    border-radius: 8px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 40px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    animation: slideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+
+  .lineage-close {
+    position: absolute; top: 14px; right: 14px;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid var(--gold);
+    background: var(--parchment);
+    color: var(--burgundy);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    z-index: 5;
+  }
+  .lineage-close:hover { background: var(--burgundy); color: #fff5d4; }
+
+  .lineage-modal-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px double var(--gold);
+  }
+  .lineage-modal-header h2 {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 28px;
+    color: var(--burgundy);
+    margin: 10px 0;
+    direction: rtl;
+  }
+  .lineage-modal-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 16px;
+  }
+
+  /* Lineage path in modal */
+  .lineage-path {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 20px 0;
+  }
+  .lineage-path-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .lineage-path-connector {
+    width: 2.5px;
+    height: 30px;
+    background: linear-gradient(to bottom, var(--burgundy), var(--gold));
+    position: relative;
+  }
+  .lineage-path-connector::after {
+    content: "▼";
+    position: absolute;
+    bottom: -8px; left: 50%;
+    transform: translateX(-50%);
+    color: var(--gold);
+    font-size: 10px;
+  }
+  .lineage-path .person {
+    min-width: 180px;
+    text-align: center;
+    transform: none;
+    cursor: default;
+  }
+  .lineage-path .person.is-target {
+    background: linear-gradient(180deg, #fff3c8 0%, #f5d96a 100%) !important;
+    border-color: var(--burgundy) !important;
+    border-width: 2.5px !important;
+    box-shadow: 0 0 0 5px rgba(110,31,35,0.15), 0 8px 24px rgba(110,31,35,0.3) !important;
+    animation: pulse-glow 2s ease-in-out infinite;
+    padding: 14px 22px;
+  }
+  .lineage-path .person.is-target .name-ur {
+    font-size: 22px; color: var(--burgundy); font-weight: 700;
+  }
+
+  /* Children section in modal */
+  .lineage-children-section {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(255,248,224,0.5);
+    border: 1px solid var(--gold-light);
+    border-radius: 6px;
+  }
+  .lineage-children-title {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: var(--burgundy);
+    letter-spacing: 0.2em;
+    margin-bottom: 16px;
+  }
+  .lineage-children-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .lineage-children-grid .person {
+    min-width: 120px;
+    cursor: default;
+    transform: none;
+  }
+
+  /* Print */
+  @media print {
+    body { background: white; padding: 0; }
+    .branch-section { page-break-inside: avoid; box-shadow: none; }
+    body::before { display: none; }
+    .search-panel, .lineage-overlay { display: none !important; }
+  }
+
+  @media (max-width: 600px) {
+    .search-panel { width: calc(100vw - 24px); right: 12px; top: 10px; max-width: 320px; }
+    .search-panel.collapsed { width: auto; max-width: none; }
+    .search-header h3 { font-size: 11px; letter-spacing: 0.1em; }
+    .search-header .ur-label { font-size: 13px; }
+    .search-body { padding: 10px 12px 12px; }
+    .search-input-wrap input { font-size: 15px; padding: 9px 12px 9px 32px; }
+    .search-results { max-height: 160px; }
+    .search-result-item .sr-name { font-size: 13px; }
+    .search-result-item .sr-name-ur { font-size: 14px; }
+    .lineage-overlay { padding: 14px; }
+    .lineage-modal { padding: 20px 12px; max-height: 90vh; }
+    .lineage-modal-header h2 { font-size: 22px; }
+    .lineage-modal-subtitle { font-size: 14px; }
+    .lineage-path .person { min-width: 120px; padding: 8px 12px; }
+    .lineage-path .person .name-ur { font-size: 15px; }
+    .lineage-path .person .name-en { font-size: 11px; }
+    .lineage-path .person.is-target .name-ur { font-size: 18px; }
+    .lineage-path-connector { height: 20px; }
+    .lineage-children-section { padding: 14px 10px; }
+    .lineage-children-grid .person { min-width: 90px; }
+    .lineage-close { width: 30px; height: 30px; font-size: 15px; top: 8px; right: 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Navigation -->
+  <nav style="display:flex; justify-content:center; gap:14px; padding:16px 10px; flex-wrap:wrap;">
+    <a href="index.html" style="display:inline-block; padding:10px 28px; background:linear-gradient(180deg,#fff5d4,#f3dfa6); color:var(--burgundy); font-family:'Noto Nastaliq Urdu',serif; font-size:16px; font-weight:600; text-decoration:none; border:2px solid var(--burgundy); border-radius:6px; box-shadow:0 3px 10px rgba(110,31,35,0.2); transition:all 0.3s; direction:rtl;">📜 سلسلہ نسب</a>
+    <a href="tree.html" style="display:inline-block; padding:10px 28px; background:linear-gradient(180deg,#d4eec4,#a8d480); color:#2d5016; font-family:'Noto Nastaliq Urdu',serif; font-size:16px; font-weight:600; text-decoration:none; border:2px solid #2d5016; border-radius:6px; box-shadow:0 3px 10px rgba(45,80,22,0.2); transition:all 0.3s; direction:rtl;">🌳 خاندانی درخت</a>
+  </nav>
+
+  <header>
+    <div class="ornament">✦ ❖ ✦</div>
+    <h1>شجرہ نسب</h1>
+    <div class="urdu-title">خاندانی شجرہ — بابا سردار محمد</div>
+    <div class="subtitle">From the patriarch <strong>Baba Sardar Muhammad</strong> — our family heritage across generations</div>
+    <div class="legend">
+      <div class="legend-item"><span class="legend-dot main"></span> اصل سلسلہ · Main Line</div>
+      <div class="legend-item"><span class="legend-dot"></span> خاندان کے افراد · Members</div>
+      <div class="legend-item"><span class="legend-dot gen"></span> نسل · Generation</div>
+    </div>
+  </header>
+
+  <!-- ═══════════ SECTION 1 — ROOT (Gen 0→2) ═══════════ -->
+  <div class="branch-section">
+    <div class="branch-title"><span class="ur">شجرہ کی بنیاد</span> · The Founding Generations</div>
+    <div class="tree"><ul><li>
+      <div class="person root"><div class="name-ur">بابا سردار محمد</div><div class="name-en">Baba Sardar Muhammad</div><div class="gen">0</div></div>
+      <ul><li>
+        <div class="person main"><div class="name-ur">مسدی</div><div class="name-en">Massaddi</div><div class="gen">1</div></div>
+        <ul>
+          <li><div class="person main"><div class="name-ur">قاسم</div><div class="name-en">Qasim</div><div class="gen">2</div></div></li>
+          <li><div class="person"><div class="name-ur">عمر دین</div><div class="name-en">Umar Din</div><div class="gen">2</div></div></li>
+          <li><div class="person"><div class="name-ur">فتح دین</div><div class="name-en">Fateh Din</div><div class="gen">2</div></div></li>
+        </ul>
+      </li></ul>
+    </li></ul></div>
+    <p class="note">بابا سردار محمد ← مسدی ← تین بیٹے: قاسم، عمر دین، فتح دین<br>Three main branches of the family originate from Massaddi's sons.</p>
+  </div>
+
+  <!-- ═══════════ SECTION 2 — QASIM → ABDULLAH ═══════════ -->
+  <div class="branch-section">
+    <div class="branch-title"><span class="ur">شاخِ قاسم — عبداللہ</span> · Qasim → Abdullah</div>
+    <div class="tree"><ul><li>
+      <div class="person main"><div class="name-ur">قاسم</div><div class="name-en">Qasim</div><div class="gen">2</div></div>
+      <ul><li>
+        <div class="person"><div class="name-ur">عبداللہ</div><div class="name-en">Abdullah</div><div class="gen">3</div></div>
+        <ul>
+          <li>
+            <div class="person"><div class="name-ur">کریم</div><div class="name-en">Kareem</div><div class="gen">4</div></div>
+            <ul><li>
+              <div class="person"><div class="name-ur">عبدالحمید</div><div class="name-en">Abdul Hameed</div><div class="gen">5</div></div>
+              <ul>
+                <li><div class="person"><div class="name-ur">شفیق</div><div class="name-en">Shafiq</div><div class="gen">6</div></div></li>
+                <li><div class="person"><div class="name-ur">طارق</div><div class="name-en">Tariq</div><div class="gen">6</div></div></li>
+                <li><div class="person"><div class="name-ur">نوید</div><div class="name-en">Naveed</div><div class="gen">6</div></div></li>
+              </ul>
+            </li></ul>
+          </li>
+          <li>
+            <div class="person"><div class="name-ur">الہٰی بخش</div><div class="name-en">Ilahi Baksh</div><div class="gen">4</div></div>
+            <ul>
+              <li><div class="person"><div class="name-ur">یونس</div><div class="name-en">Younis</div><div class="gen">5</div></div>
+                <ul><li><div class="person"><div class="name-ur">وقاص</div><div class="name-en">Waqas Y</div><div class="gen">6</div></div></li></ul>
+              </li>
+              <li><div class="person"><div class="name-ur">افضل</div><div class="name-en">Afzal</div><div class="gen">5</div></div>
+                <ul><li><div class="person"><div class="name-ur">متین</div><div class="name-en">Mateen</div><div class="gen">6</div></div></li></ul>
+              </li>
+              <li><div class="person"><div class="name-ur">ذوالفقار</div><div class="name-en">Zulfiqar</div><div class="gen">5</div></div>
+                <ul><li><div class="person"><div class="name-ur">عثمان</div><div class="name-en">Usman Z</div><div class="gen">6</div></div></li></ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li></ul>
+    </li></ul></div>
+  </div>
+
+  <!-- ═══════════ SECTION 3 — QASIM → REHMAT ULLAH → YAQOOB ═══════════ -->
+  <div class="branch-section">
+    <div class="branch-title"><span class="ur">شاخِ قاسم — رحمت اللہ — یعقوب</span> · Qasim → Rehmat Ullah → Yaqoob</div>
+    <div class="tree"><ul><li>
+      <div class="person"><div class="name-ur">رحمت اللہ</div><div class="name-en">Rehmat Ullah</div><div class="gen">3</div></div>
+      <ul><li>
+        <div class="person"><div class="name-ur">یعقوب</div><div class="name-en">Yaqoob</div><div class="gen">4</div></div>
+        <ul>
+          <li>
+            <div class="person"><div class="name-ur">ماسٹر ماجد</div><div class="name-en">Master Majid</div><div class="gen">5</div></div>
+            <ul>
+              <li><div class="person"><div class="name-ur">سعید</div><div class="name-en">Saeed</div><div class="gen">6</div></div>
+                <ul>
+                  <li><div class="person"><div class="name-ur">عبداللہ</div><div class="name-en">Abdullah S</div><div class="gen">7</div></div></li>
+                  <li><div class="person"><div class="name-ur">عثمان</div><div class="name-en">Usman</div><div class="gen">7</div></div></li>
+                  <li><div class="person"><div class="name-ur">میر حمزہ</div><div class="name-en">Meer Hamza</div><div class="gen">7</div></div></li>
+                </ul>
+              </li>
+              <li><div class="person"><div class="name-ur">علیم</div><div class="name-en">Aleem</div><div class="gen">6</div></div>
+                <ul>
+                  <li><div class="person"><div class="name-ur">عبدالرافع</div><div class="name-en">Abdul Rafey</div><div class="gen">7</div></div></li>
+                  <li><div class="person"><div class="name-ur">عبدالوسع</div><div class="name-en">Abdul Wasay</div><div class="gen">7</div></div></li>
+                </ul>
+              </li>
+              <li><div class="person"><div class="name-ur">سلیم</div><div class="name-en">Saleem</div><div class="gen">6</div></div></li>
+            </ul>
+          </li>
+          <li>
+            <div class="person"><div class="name-ur">عبدالرحمٰن</div><div class="name-en">Abdur Rehman</div><div class="gen">5</div></div>
+            <ul>
+              <li><div class="person"><div class="name-ur">سیف</div><div class="name-en">Saif</div><div class="gen">6</div></div>
+                <ul><li><div class="person"><div class="name-ur">عبدالحنان</div><div class="name-en">Abdul Hanan</div><div class="gen">7</div></div></li></ul>
+              </li>
+              <li><div class="person"><div class="name-ur">عمران</div><div class="name-en">Imran Y</div><div class="gen">6</div></div>
+                <ul><li><div class="person"><div class="name-ur">زوہان</div><div class="name-en">Zohaan</div><div class="gen">7</div></div></li></ul>
+              </li>
+              <li><div class="person"><div class="name-ur">عرفان</div><div class="name-en">Arfan</div><div class="gen">6</div></div>
+                <ul><li><div class="person"><div class="name-ur">محمد سالار</div><div class="name-en">Mohammad Sallar</div><div class="gen">7</div></div></li></ul>
+              </li>
+              <li><div class="person"><div class="name-ur">اصغر</div><div class="name-en">Asghar</div><div class="gen">6</div></div></li>
+            </ul>
+          </li>
+          <li>
+            <div class="person"><div class="name-ur">رفیق</div><div class="name-en">Rafiq</div><div class="gen">5</div></div>
+            <ul>
+              <li><div class="person"><div class="name-ur">شفیق</div><div class="name-en">Shafiq R</div><div class="gen">6</div></div>
+                <ul>
+                  <li><div class="person"><div class="name-ur">عبدالسلام</div><div class="name-en">Abdul Salam</div><div class="gen">7</div></div></li>
+                  <li><div class="person"><div class="name-ur">علی رضا</div><div class="name-en">Ali Raza</div><div class="gen">7</div></div></li>
+                  <li><div class="person"><div class="name-ur">عبدالہادی</div><div class="name-en">Abdul Hadi</div><div class="gen">7</div></div></li>
+                </ul>
+              </li>
+              <li><div class="person"><div class="name-ur">رئیس</div><div class="name-en">Raees</div><div class="gen">6</div></div>
+                <ul>
+                  <li><div class="person"><div class="name-ur">ارباب</div><div class="name-en">Arbab</div><div class="gen">7</div></div></li>
+                  <li><div class="person"><div class="name-ur">فرحان</div><div class="name-en">Farhan</div><div class="gen">7</div></div></li>
+                  <li><div class="person"><div class="name-ur">ریحان</div><div class="name-en">Rehan</div><div class="gen">7</div></div></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li></ul>
+    </li></ul></div>
+  </div>
+
+  <!-- ═══════════ SECTION 4 — QASIM → REHMAT ULLAH → SHERA ═══════════ -->
+  <div class="branch-section">
+    <div class="branch-title"><span class="ur">شاخِ قاسم — رحمت اللہ — شیرا</span> · Qasim → Rehmat Ullah → Shera</div>
+    <div class="tree"><ul><li>
+      <div class="person"><div class="name-ur">رحمت اللہ</div><div class="name-en">Rehmat Ullah</div><div class="gen">3</div></div>
+      <ul><li>
+        <div class="person"><div class="name-ur">شیرا</div><div class="name-en">Shera</div><div class="gen">4</div></div>
+        <ul>
+          <li><div class="person"><div class="name-ur">غفور</div><div class="name-en">Ghafoor</div><div class="gen">5</div></div></li>
+          <li>
+            <div class="person"><div class="name-ur">قیوم</div><div class="name-en">Qayyoum</div><div class="gen">5</div></div>
+            <ul>
+              <li><div class="person"><div class="name-ur">طیب</div><div class="name-en">Tayyab</div><div class="gen">6</div></div>
+                <ul><li><div class="person"><div class="name-ur">ابو طلحہ</div><div class="name-en">Abu Talah</div><div class="gen">7</div></div></li></ul>
+              </li>
+              <li><div class="person"><div class="name-ur">مصطفیٰ</div><div class="name-en">Mustafa</div><div class="gen">6</div></div></li>
+              <li><div class="person"><div class="name-ur">مرتضیٰ</div><div class="name-en">Murtaza</div><div class="gen">6</div></div></li>
+            </ul>
+          </li>
+          <li>
+            <div class="person"><div class="name-ur">عبدالرؤف</div><div class="name-en">Abdur Rauf</div><div class="gen">5</div></div>
+            <ul>
+              <li>
+                <div class="person"><div class="name-ur">عبدالخالق</div><div class="name-en">Abdul Khaliq</div><div class="gen">6</div></div>
+                <ul>
+                  <li><div class="person"><div class="name-ur">حبیب</div><div class="name-en">Habib</div><div class="gen">7</div></div></li>
+                  <li><div class="person"><div class="name-ur">عدیل</div><div class="name-en">Adeel</div><div class="gen">7</div></div></li>
+                  <li><div class="person"><div class="name-ur">وقاص</div><div class="name-en">Waqas</div><div class="gen">7</div></div></li>
+                </ul>
+              </li>
+              <li><div class="person"><div class="name-ur">عبدالحق</div><div class="name-en">Abdul Haq</div><div class="gen">6</div></div></li>
+              <li><div class="person"><div class="name-ur">عبدالوحید</div><div class="name-en">Abdul Waheed</div><div class="gen">6</div></div></li>
+            </ul>
+          </li>
+          <li>
+            <div class="person"><div class="name-ur">منظور</div><div class="name-en">Manzoor</div><div class="gen">5</div></div>
+            <ul>
+              <li><div class="person"><div class="name-ur">منیر احمد</div><div class="name-en">Munir Ahmad</div><div class="gen">6</div></div></li>
+              <li><div class="person"><div class="name-ur">رمضان</div><div class="name-en">Ramzan M</div><div class="gen">6</div></div></li>
+              <li><div class="person"><div class="name-ur">عمران</div><div class="name-en">Imran M</div><div class="gen">6</div></div></li>
+              <li><div class="person"><div class="name-ur">سجاد</div><div class="name-en">Sajjad</div><div class="gen">6</div></div>
+                <ul><li><div class="person"><div class="name-ur">ابوبکر</div><div class="name-en">Abubaker</div><div class="gen">7</div></div></li></ul>
+              </li>
+            </ul>
+          </li>
+          <li><div class="person"><div class="name-ur">خالد</div><div class="name-en">Khalid</div><div class="gen">5</div></div></li>
+        </ul>
+      </li></ul>
+    </li></ul></div>
+  </div>
+
+  <!-- ═══════════ SECTION 5 — QASIM → JAMAL DIN ═══════════ -->
+  <div class="branch-section">
+    <div class="branch-title"><span class="ur">شاخِ قاسم — جمال دین</span> · Qasim → Jamal Din</div>
+    <div class="tree"><ul><li>
+      <div class="person main"><div class="name-ur">جمال دین</div><div class="name-en">Jamal Din</div><div class="gen">3</div></div>
+      <ul>
+        <li>
+          <div class="person"><div class="name-ur">عبدالعزیز</div><div class="name-en">Abdul Aziz</div><div class="gen">4</div></div>
+          <ul><li>
+            <div class="person"><div class="name-ur">مسٹر حسنہ</div><div class="name-en">Mr Hasnaah</div><div class="gen">5</div></div>
+            <ul><li>
+              <div class="person"><div class="name-ur">خلیل</div><div class="name-en">Khalil</div><div class="gen">6</div></div>
+              <ul>
+                <li><div class="person"><div class="name-ur">عبدالمالک</div><div class="name-en">Abdul Malik</div><div class="gen">7</div></div></li>
+                <li><div class="person"><div class="name-ur">عبدالخالق</div><div class="name-en">Abdul Khalik</div><div class="gen">7</div></div></li>
+              </ul>
+            </li></ul>
+          </li></ul>
+        </li>
+        <li>
+          <div class="person main"><div class="name-ur">نور احمد</div><div class="name-en">Noor Ahmed</div><div class="gen">4</div></div>
+          <ul>
+            <li>
+              <div class="person"><div class="name-ur">شریف</div><div class="name-en">Shareef N</div><div class="gen">5</div></div>
+              <ul>
+                <li>
+                  <div class="person"><div class="name-ur">اقبال</div><div class="name-en">Iqbal</div><div class="gen">6</div></div>
+                  <ul>
+                    <li><div class="person"><div class="name-ur">کاشف</div><div class="name-en">Kashif</div><div class="gen">7</div></div>
+                      <ul><li><div class="person"><div class="name-ur">عبدالاحد</div><div class="name-en">Abdul Ahad</div><div class="gen">8</div></div></li></ul>
+                    </li>
+                    <li><div class="person"><div class="name-ur">جمشید</div><div class="name-en">Jamshed</div><div class="gen">7</div></div>
+                      <ul><li><div class="person"><div class="name-ur">ارشمان</div><div class="name-en">Arshmaan</div><div class="gen">8</div></div></li></ul>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <div class="person"><div class="name-ur">عبدالستار</div><div class="name-en">Abdul Sattar</div><div class="gen">6</div></div>
+                  <ul>
+                    <li><div class="person"><div class="name-ur">احسان</div><div class="name-en">Ahsan</div><div class="gen">7</div></div></li>
+                    <li><div class="person"><div class="name-ur">صہیب</div><div class="name-en">Sohaib</div><div class="gen">7</div></div></li>
+                  </ul>
+                </li>
+                <li>
+                  <div class="person"><div class="name-ur">ارشد</div><div class="name-en">Arshad</div><div class="gen">6</div></div>
+                  <ul>
+                    <li><div class="person"><div class="name-ur">مدثر</div><div class="name-en">Mudassar</div><div class="gen">7</div></div>
+                      <ul><li><div class="person"><div class="name-ur">روحان</div><div class="name-en">Rohaan</div><div class="gen">8</div></div></li></ul>
+                    </li>
+                    <li><div class="person"><div class="name-ur">حسنین</div><div class="name-en">Husnain</div><div class="gen">7</div></div></li>
+                    <li><div class="person"><div class="name-ur">ہارون</div><div class="name-en">Haroon</div><div class="gen">7</div></div></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <div class="person"><div class="name-ur">صادق</div><div class="name-en">Sadiq</div><div class="gen">5</div></div>
+              <ul><li>
+                <div class="person"><div class="name-ur">شفیق</div><div class="name-en">Shafiq SA</div><div class="gen">6</div></div>
+                <ul>
+                  <li><div class="person"><div class="name-ur">عمر</div><div class="name-en">Umar</div><div class="gen">7</div></div></li>
+                  <li><div class="person"><div class="name-ur">عثمان</div><div class="name-en">Usman SA</div><div class="gen">7</div></div></li>
+                </ul>
+              </li></ul>
+            </li>
+            <li>
+              <div class="person"><div class="name-ur">بشیر</div><div class="name-en">Bashir</div><div class="gen">5</div></div>
+              <ul>
+                <li><div class="person"><div class="name-ur">فاروق</div><div class="name-en">Farooq</div><div class="gen">6</div></div>
+                  <ul><li><div class="person"><div class="name-ur">محسن</div><div class="name-en">Mohsin</div><div class="gen">7</div></div></li></ul>
+                </li>
+                <li><div class="person"><div class="name-ur">یوسف</div><div class="name-en">Yousif</div><div class="gen">6</div></div>
+                  <ul><li><div class="person"><div class="name-ur">ریحان</div><div class="name-en">Rehan Y</div><div class="gen">7</div></div></li></ul>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <div class="person"><div class="name-ur">رمضان</div><div class="name-en">Ramzan N</div><div class="gen">5</div></div>
+              <ul>
+                <li><div class="person"><div class="name-ur">طاہر</div><div class="name-en">Tahir</div><div class="gen">6</div></div>
+                  <ul>
+                    <li><div class="person"><div class="name-ur">بلال</div><div class="name-en">Bilal</div><div class="gen">7</div></div></li>
+                    <li><div class="person"><div class="name-ur">سائم</div><div class="name-en">Saim</div><div class="gen">7</div></div></li>
+                  </ul>
+                </li>
+                <li><div class="person"><div class="name-ur">عمران</div><div class="name-en">Imran R</div><div class="gen">6</div></div>
+                  <ul>
+                    <li><div class="person"><div class="name-ur">عبدالہادی</div><div class="name-en">Abdul Hadi I</div><div class="gen">7</div></div></li>
+                    <li><div class="person"><div class="name-ur">ابوبکر</div><div class="name-en">Abubaker I</div><div class="gen">7</div></div></li>
+                  </ul>
+                </li>
+                <li><div class="person"><div class="name-ur">راشد</div><div class="name-en">Rashid</div><div class="gen">6</div></div>
+                  <ul><li><div class="person"><div class="name-ur">اورحان</div><div class="name-en">Orhaan</div><div class="gen">7</div></div></li></ul>
+                </li>
+                <li><div class="person"><div class="name-ur">نعیم</div><div class="name-en">Naeem</div><div class="gen">6</div></div></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <div class="person"><div class="name-ur">غلام محمد</div><div class="name-en">Ghulam Muhammad</div><div class="gen">4</div></div>
+          <ul>
+            <li>
+              <div class="person"><div class="name-ur">اسلم</div><div class="name-en">Aslam</div><div class="gen">5</div></div>
+              <ul>
+                <li><div class="person"><div class="name-ur">مسعود</div><div class="name-en">Masoud</div><div class="gen">6</div></div>
+                  <ul>
+                    <li><div class="person"><div class="name-ur">شاہزین</div><div class="name-en">Shahzain</div><div class="gen">7</div></div></li>
+                    <li><div class="person"><div class="name-ur">ابراہیم</div><div class="name-en">Ibrahim MA</div><div class="gen">7</div></div></li>
+                  </ul>
+                </li>
+                <li><div class="person"><div class="name-ur">ارسلان</div><div class="name-en">Arslan</div><div class="gen">6</div></div></li>
+                <li><div class="person"><div class="name-ur">سرمد</div><div class="name-en">Sarmad</div><div class="gen">6</div></div></li>
+              </ul>
+            </li>
+            <li><div class="person"><div class="name-ur">افضل</div><div class="name-en">Afzal G</div><div class="gen">5</div></div></li>
+            <li>
+              <div class="person"><div class="name-ur">اشرف</div><div class="name-en">Ashraf</div><div class="gen">5</div></div>
+              <ul>
+                <li><div class="person"><div class="name-ur">فیضان</div><div class="name-en">Faizan</div><div class="gen">6</div></div></li>
+                <li><div class="person"><div class="name-ur">سفیان</div><div class="name-en">Sufian</div><div class="gen">6</div></div></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li></ul></div>
+  </div>
+
+  <!-- ═══════════ SECTION 6 — UMAR DIN ═══════════ -->
+  <div class="branch-section">
+    <div class="branch-title"><span class="ur">شاخِ عمر دین</span> · The Branch of Umar Din</div>
+    <div class="tree"><ul><li>
+      <div class="person"><div class="name-ur">عمر دین</div><div class="name-en">Umar Din</div><div class="gen">2</div></div>
+      <ul>
+        <li>
+          <div class="person"><div class="name-ur">سلیمان</div><div class="name-en">Suleman</div><div class="gen">3</div></div>
+          <ul>
+            <li><div class="person"><div class="name-ur">مستقیم</div><div class="name-en">Mustaqim</div><div class="gen">4</div></div></li>
+            <li><div class="person"><div class="name-ur">ستار دین</div><div class="name-en">Sattar Din S</div><div class="gen">4</div></div></li>
+            <li>
+              <div class="person"><div class="name-ur">نبی بخش</div><div class="name-en">Nabi Baksh</div><div class="gen">4</div></div>
+              <ul>
+                <li><div class="person"><div class="name-ur">تاج</div><div class="name-en">Taj</div><div class="gen">5</div></div></li>
+                <li><div class="person"><div class="name-ur">یونس</div><div class="name-en">Younis N</div><div class="gen">5</div></div></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <div class="person"><div class="name-ur">حاکم</div><div class="name-en">Hakim</div><div class="gen">3</div></div>
+          <ul>
+            <li><div class="person"><div class="name-ur">امام دین</div><div class="name-en">Imam Din</div><div class="gen">4</div></div></li>
+            <li><div class="person"><div class="name-ur">عالیہ</div><div class="name-en">Aliya</div><div class="gen">4</div></div></li>
+            <li><div class="person"><div class="name-ur">بدر دین</div><div class="name-en">Badar Din</div><div class="gen">4</div></div></li>
+            <li><div class="person"><div class="name-ur">نذر دین</div><div class="name-en">Nazar Din H</div><div class="gen">4</div></div></li>
+            <li><div class="person"><div class="name-ur">الیاس</div><div class="name-en">Ilyaas</div><div class="gen">4</div></div></li>
+          </ul>
+        </li>
+      </ul>
+    </li></ul></div>
+  </div>
+
+  <!-- ═══════════ SECTION 7 — FATEH DIN ═══════════ -->
+  <div class="branch-section">
+    <div class="branch-title"><span class="ur">شاخِ فتح دین</span> · The Branch of Fateh Din</div>
+    <div class="tree"><ul><li>
+      <div class="person"><div class="name-ur">فتح دین</div><div class="name-en">Fateh Din</div><div class="gen">2</div></div>
+      <ul>
+        <li><div class="person"><div class="name-ur">قطب دین</div><div class="name-en">Qutab Din</div><div class="gen">3</div></div>
+          <ul>
+            <li><div class="person"><div class="name-ur">ولیاں</div><div class="name-en">Waliyaa</div><div class="gen">4</div></div></li>
+            <li><div class="person"><div class="name-ur">روشن</div><div class="name-en">Roshan</div><div class="gen">4</div></div></li>
+            <li><div class="person"><div class="name-ur">رحیم</div><div class="name-en">Raheem</div><div class="gen">4</div></div></li>
+          </ul>
+        </li>
+        <li><div class="person"><div class="name-ur">یوسف</div><div class="name-en">Yousaf</div><div class="gen">3</div></div>
+          <ul>
+            <li><div class="person"><div class="name-ur">عالیہ</div><div class="name-en">Aliyaah</div><div class="gen">4</div></div></li>
+            <li><div class="person"><div class="name-ur">پیرو</div><div class="name-en">Peeru</div><div class="gen">4</div></div></li>
+            <li><div class="person"><div class="name-ur">نور</div><div class="name-en">Noor F</div><div class="gen">4</div></div></li>
+          </ul>
+        </li>
+        <li><div class="person"><div class="name-ur">اسماعیل</div><div class="name-en">Ismael</div><div class="gen">3</div></div>
+          <ul>
+            <li><div class="person"><div class="name-ur">ستار دین</div><div class="name-en">Sattar Din</div><div class="gen">4</div></div></li>
+            <li><div class="person"><div class="name-ur">نذر دین</div><div class="name-en">Nazar Din</div><div class="gen">4</div></div></li>
+            <li><div class="person"><div class="name-ur">فضل دین</div><div class="name-en">Fazal Din</div><div class="gen">4</div></div></li>
+          </ul>
+        </li>
+        <li><div class="person"><div class="name-ur">موسیٰ</div><div class="name-en">Musaa</div><div class="gen">3</div></div>
+          <ul>
+            <li><div class="person"><div class="name-ur">کریم</div><div class="name-en">Kareem M</div><div class="gen">4</div></div></li>
+            <li><div class="person"><div class="name-ur">ابراہیم</div><div class="name-en">Ibrahim</div><div class="gen">4</div></div></li>
+            <li><div class="person"><div class="name-ur">شریف</div><div class="name-en">Shareef M</div><div class="gen">4</div></div></li>
+            <li><div class="person"><div class="name-ur">رشید</div><div class="name-en">Rasheed</div><div class="gen">4</div></div></li>
+          </ul>
+        </li>
+      </ul>
+    </li></ul></div>
+  </div>
+
+  <!-- ═══════════ OVERVIEW SUMMARY ═══════════ -->
+  <div class="branch-section" style="background:rgba(110,30,35,0.06);border-color:var(--burgundy);">
+    <div class="branch-title" style="color:var(--burgundy);"><span class="ur">خاندانی ڈھانچہ کا خلاصہ</span> · Family Structure Overview</div>
+    <p class="note" style="font-size:15px; max-width:900px;">
+      <strong>بابا سردار محمد</strong> → <strong>مسدی</strong> → تین شاخیں:<br>
+      <strong>قاسم</strong> (عبداللہ، رحمت اللہ، جمال دین) · <strong>عمر دین</strong> (سلیمان، حاکم) · <strong>فتح دین</strong> (قطب دین، یوسف، اسماعیل، موسیٰ)<br><br>
+      9 نسلیں · 137+ افراد درج ہیں · مزید تفصیلات جلد شامل ہوں گی
+    </p>
+  </div>
+
+  <!-- ═══════════ LINK TO VISUAL TREE PAGE ═══════════ -->
+  <div class="branch-section" style="text-align:center; padding: 40px 20px;">
+    <div class="branch-title"><span class="ur">خاندانی درخت</span> · The Family Tree</div>
+    <p style="font-size:16px; color:var(--ink-soft); margin-bottom: 20px; font-style:italic;">خاندانی درخت کی خوبصورت تصویر دیکھیں</p>
+    <a href="tree.html" style="display:inline-block; padding: 14px 40px; background: linear-gradient(180deg, #4a8c2a, #3a7020); color: #fff; font-family: 'Cinzel', serif; font-size: 16px; letter-spacing: 0.15em; text-decoration: none; border-radius: 6px; border: 2px solid #2d5016; box-shadow: 0 4px 16px rgba(45,80,22,0.3); transition: all 0.3s;">🌳 خاندانی درخت دیکھیں · View Family Tree</a>
+  </div>
+
+  <footer>
+    <div class="ornament">✦ ❖ ✦</div>
+    <p>خاندانی ریکارڈ سے مرتب · شجرہ نسب</p>
+    <p style="margin-top:8px; font-size: 12px;">نسل کے نمبر (0–8) بابا سردار محمد سے شمار کیے گئے ہیں · اردو اور انگریزی دونوں میں</p>
+    <p style="margin-top: 30px; font-family: 'Noto Nastaliq Urdu', serif; font-size: clamp(20px, 3.5vw, 32px); color: var(--burgundy); font-weight: 700; direction: rtl; line-height: 1.8;">تحریر کردہ: فیضان اشرف</p>
+    <p style="margin-top: 6px; font-family: 'Cinzel', serif; font-size: clamp(16px, 2.5vw, 24px); color: var(--ink-soft); letter-spacing: 0.08em;">Written by Faizan Ashraf</p>
+  </footer>
+
+</div>
+
+<!-- Search Panel -->
+<div class="search-panel" id="searchPanel">
+  <div class="search-header" id="searchToggle">
+    <h3>FIND YOUR NAME <span class="ur-label">نام تلاش کریں</span></h3>
+    <button class="search-toggle" aria-label="Toggle search">▲</button>
+  </div>
+  <div class="search-body">
+    <div class="search-input-wrap">
+      <span class="search-icon">⌕</span>
+      <input type="text" id="searchInput" placeholder="Enter your name / اپنا نام لکھیں" autocomplete="off" />
+    </div>
+    <div class="search-results" id="searchResults"></div>
+    <div class="lineage-trail" id="lineageTrail"></div>
+    <div class="search-status" id="searchStatus">Type a name to find your lineage</div>
+    <button class="search-lineage-btn" id="searchLineageBtn" style="display:none;">✦ مکمل شجرہ دیکھیں · VIEW FULL LINEAGE ✦</button>
+    <button class="search-clear" id="searchClear" style="display:none;">✕ CLEAR · صاف کریں</button>
+  </div>
+</div>
+
+<!-- Full Lineage Overlay -->
+<div class="lineage-overlay" id="lineageOverlay">
+  <div class="lineage-modal">
+    <button class="lineage-close" id="lineageClose">✕</button>
+    <div class="lineage-modal-header">
+      <div class="ornament">✦ ❖ ✦</div>
+      <h2 id="lineageModalTitle">مکمل شجرہ نسب</h2>
+      <p class="lineage-modal-subtitle" id="lineageModalSubtitle"></p>
+    </div>
+    <div class="lineage-modal-tree" id="lineageModalTree"></div>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  var searchInput = document.getElementById('searchInput');
+  var searchResults = document.getElementById('searchResults');
+  var searchStatus = document.getElementById('searchStatus');
+  var searchClear = document.getElementById('searchClear');
+  var searchLineageBtn = document.getElementById('searchLineageBtn');
+  var searchToggle = document.getElementById('searchToggle');
+  var searchPanel = document.getElementById('searchPanel');
+  var lineageTrail = document.getElementById('lineageTrail');
+  var lineageOverlay = document.getElementById('lineageOverlay');
+  var lineageClose = document.getElementById('lineageClose');
+  var lineageModalTree = document.getElementById('lineageModalTree');
+  var lineageModalTitle = document.getElementById('lineageModalTitle');
+  var lineageModalSubtitle = document.getElementById('lineageModalSubtitle');
+  var page = document.querySelector('.page');
+
+  // ── Complete family tree as a data structure ──
+  // This maps every person to their parent so we can trace
+  // the FULL chain from root, even across HTML sections.
+  var FAMILY = {
+    // ── Gen 0 ──
+    'Baba Sardar Muhammad': { ur: 'بابا سردار محمد', parent: null, gen: 0, children: ['Massaddi'] },
+    // ── Gen 1 ──
+    'Massaddi': { ur: 'مسدی', parent: 'Baba Sardar Muhammad', gen: 1, children: ['Qasim', 'Umar Din', 'Fateh Din'] },
+    // ── Gen 2 ──
+    'Qasim': { ur: 'قاسم', parent: 'Massaddi', gen: 2, children: ['Abdullah', 'Rehmat Ullah', 'Jamal Din'] },
+    'Umar Din': { ur: 'عمر دین', parent: 'Massaddi', gen: 2, children: ['Suleman', 'Hakim'] },
+    'Fateh Din': { ur: 'فتح دین', parent: 'Massaddi', gen: 2, children: ['Qutab Din', 'Yousaf', 'Ismael', 'Musaa'] },
+    // ── Gen 3 — Qasim's sons ──
+    'Abdullah': { ur: 'عبداللہ', parent: 'Qasim', gen: 3, children: ['Kareem', 'Ilahi Baksh'] },
+    'Rehmat Ullah': { ur: 'رحمت اللہ', parent: 'Qasim', gen: 3, children: ['Yaqoob', 'Shera'] },
+    'Jamal Din': { ur: 'جمال دین', parent: 'Qasim', gen: 3, children: ['Abdul Aziz', 'Noor Ahmed', 'Ghulam Muhammad'] },
+    // ── Gen 3 — Umar Din's sons ──
+    'Suleman': { ur: 'سلیمان', parent: 'Umar Din', gen: 3, children: ['Mustaqim', 'Sattar Din S', 'Nabi Baksh'] },
+    'Hakim': { ur: 'حاکم', parent: 'Umar Din', gen: 3, children: ['Imam Din', 'Aliya', 'Badar Din', 'Nazar Din H', 'Ilyaas'] },
+    // ── Gen 3 — Fateh Din's sons ──
+    'Qutab Din': { ur: 'قطب دین', parent: 'Fateh Din', gen: 3, children: ['Waliyaa', 'Roshan', 'Raheem'] },
+    'Yousaf': { ur: 'یوسف', parent: 'Fateh Din', gen: 3, children: ['Aliyaah', 'Peeru', 'Noor F'] },
+    'Ismael': { ur: 'اسماعیل', parent: 'Fateh Din', gen: 3, children: ['Sattar Din', 'Nazar Din', 'Fazal Din'] },
+    'Musaa': { ur: 'موسیٰ', parent: 'Fateh Din', gen: 3, children: ['Kareem M', 'Ibrahim', 'Shareef M', 'Rasheed'] },
+    // ── Gen 4 — Abdullah → Kareem branch ──
+    'Kareem': { ur: 'کریم', parent: 'Abdullah', gen: 4, children: ['Abdul Hameed'] },
+    'Ilahi Baksh': { ur: 'الہٰی بخش', parent: 'Abdullah', gen: 4, children: ['Younis', 'Afzal', 'Zulfiqar'] },
+    // ── Gen 4 — Rehmat Ullah's sons ──
+    'Yaqoob': { ur: 'یعقوب', parent: 'Rehmat Ullah', gen: 4, children: ['Master Majid', 'Abdur Rehman', 'Rafiq'] },
+    'Shera': { ur: 'شیرا', parent: 'Rehmat Ullah', gen: 4, children: ['Ghafoor', 'Qayyoum', 'Abdur Rauf', 'Manzoor', 'Khalid'] },
+    // ── Gen 4 — Jamal Din's sons ──
+    'Abdul Aziz': { ur: 'عبدالعزیز', parent: 'Jamal Din', gen: 4, children: ['Mr Hasnaah'] },
+    'Noor Ahmed': { ur: 'نور احمد', parent: 'Jamal Din', gen: 4, children: ['Shareef N', 'Sadiq', 'Bashir', 'Ramzan N'] },
+    'Ghulam Muhammad': { ur: 'غلام محمد', parent: 'Jamal Din', gen: 4, children: ['Aslam', 'Afzal G', 'Ashraf'] },
+    // ── Gen 4 — Suleman's sons ──
+    'Mustaqim': { ur: 'مستقیم', parent: 'Suleman', gen: 4, children: [] },
+    'Sattar Din S': { ur: 'ستار دین', parent: 'Suleman', gen: 4, children: [] },
+    'Nabi Baksh': { ur: 'نبی بخش', parent: 'Suleman', gen: 4, children: ['Taj', 'Younis N'] },
+    // ── Gen 4 — Hakim's children ──
+    'Imam Din': { ur: 'امام دین', parent: 'Hakim', gen: 4, children: [] },
+    'Aliya': { ur: 'عالیہ', parent: 'Hakim', gen: 4, children: [] },
+    'Badar Din': { ur: 'بدر دین', parent: 'Hakim', gen: 4, children: [] },
+    'Nazar Din H': { ur: 'نذر دین', parent: 'Hakim', gen: 4, children: [] },
+    'Ilyaas': { ur: 'الیاس', parent: 'Hakim', gen: 4, children: [] },
+    // ── Gen 4 — Qutab Din's children ──
+    'Waliyaa': { ur: 'ولیاں', parent: 'Qutab Din', gen: 4, children: [] },
+    'Roshan': { ur: 'روشن', parent: 'Qutab Din', gen: 4, children: [] },
+    'Raheem': { ur: 'رحیم', parent: 'Qutab Din', gen: 4, children: [] },
+    // ── Gen 4 — Yousaf's children ──
+    'Aliyaah': { ur: 'عالیہ', parent: 'Yousaf', gen: 4, children: [] },
+    'Peeru': { ur: 'پیرو', parent: 'Yousaf', gen: 4, children: [] },
+    'Noor F': { ur: 'نور', parent: 'Yousaf', gen: 4, children: [] },
+    // ── Gen 4 — Ismael's children ──
+    'Sattar Din': { ur: 'ستار دین', parent: 'Ismael', gen: 4, children: [] },
+    'Nazar Din': { ur: 'نذر دین', parent: 'Ismael', gen: 4, children: [] },
+    'Fazal Din': { ur: 'فضل دین', parent: 'Ismael', gen: 4, children: [] },
+    // ── Gen 4 — Musaa's children ──
+    'Kareem M': { ur: 'کریم', parent: 'Musaa', gen: 4, children: [] },
+    'Ibrahim': { ur: 'ابراہیم', parent: 'Musaa', gen: 4, children: [] },
+    'Shareef M': { ur: 'شریف', parent: 'Musaa', gen: 4, children: [] },
+    'Rasheed': { ur: 'رشید', parent: 'Musaa', gen: 4, children: [] },
+    // ── Gen 5 — Abdullah → Kareem → Abdul Hameed ──
+    'Abdul Hameed': { ur: 'عبدالحمید', parent: 'Kareem', gen: 5, children: ['Shafiq', 'Tariq', 'Naveed'] },
+    // ── Gen 5 — Abdullah → Ilahi Baksh's sons ──
+    'Younis': { ur: 'یونس', parent: 'Ilahi Baksh', gen: 5, children: ['Waqas Y'] },
+    'Afzal': { ur: 'افضل', parent: 'Ilahi Baksh', gen: 5, children: ['Mateen'] },
+    'Zulfiqar': { ur: 'ذوالفقار', parent: 'Ilahi Baksh', gen: 5, children: ['Usman Z'] },
+    // ── Gen 5 — Yaqoob's sons ──
+    'Master Majid': { ur: 'ماسٹر ماجد', parent: 'Yaqoob', gen: 5, children: ['Saeed', 'Aleem', 'Saleem'] },
+    'Abdur Rehman': { ur: 'عبدالرحمٰن', parent: 'Yaqoob', gen: 5, children: ['Saif', 'Imran Y', 'Arfan', 'Asghar'] },
+    'Rafiq': { ur: 'رفیق', parent: 'Yaqoob', gen: 5, children: ['Shafiq R', 'Raees'] },
+    // ── Gen 5 — Shera's sons ──
+    'Ghafoor': { ur: 'غفور', parent: 'Shera', gen: 5, children: [] },
+    'Qayyoum': { ur: 'قیوم', parent: 'Shera', gen: 5, children: ['Tayyab', 'Mustafa', 'Murtaza'] },
+    'Abdur Rauf': { ur: 'عبدالرؤف', parent: 'Shera', gen: 5, children: ['Abdul Khaliq', 'Abdul Haq', 'Abdul Waheed'] },
+    'Manzoor': { ur: 'منظور', parent: 'Shera', gen: 5, children: ['Munir Ahmad', 'Ramzan M', 'Imran M', 'Sajjad'] },
+    'Khalid': { ur: 'خالد', parent: 'Shera', gen: 5, children: [] },
+    // ── Gen 5 — Abdul Aziz → Mr Hasnaah ──
+    'Mr Hasnaah': { ur: 'مسٹر حسنہ', parent: 'Abdul Aziz', gen: 5, children: ['Khalil'] },
+    // ── Gen 5 — Noor Ahmed's sons ──
+    'Shareef N': { ur: 'شریف', parent: 'Noor Ahmed', gen: 5, children: ['Iqbal', 'Abdul Sattar', 'Arshad'] },
+    'Sadiq': { ur: 'صادق', parent: 'Noor Ahmed', gen: 5, children: ['Shafiq SA'] },
+    'Bashir': { ur: 'بشیر', parent: 'Noor Ahmed', gen: 5, children: ['Farooq', 'Yousif'] },
+    'Ramzan N': { ur: 'رمضان', parent: 'Noor Ahmed', gen: 5, children: ['Tahir', 'Imran R', 'Rashid', 'Naeem'] },
+    // ── Gen 5 — Ghulam Muhammad's sons ──
+    'Aslam': { ur: 'اسلم', parent: 'Ghulam Muhammad', gen: 5, children: ['Masoud', 'Arslan', 'Sarmad'] },
+    'Afzal G': { ur: 'افضل', parent: 'Ghulam Muhammad', gen: 5, children: [] },
+    'Ashraf': { ur: 'اشرف', parent: 'Ghulam Muhammad', gen: 5, children: ['Faizan', 'Sufian'] },
+    // ── Gen 5 — Nabi Baksh's sons ──
+    'Taj': { ur: 'تاج', parent: 'Nabi Baksh', gen: 5, children: [] },
+    'Younis N': { ur: 'یونس', parent: 'Nabi Baksh', gen: 5, children: [] },
+    // ── Gen 6 — Abdul Hameed's sons ──
+    'Shafiq': { ur: 'شفیق', parent: 'Abdul Hameed', gen: 6, children: [] },
+    'Tariq': { ur: 'طارق', parent: 'Abdul Hameed', gen: 6, children: [] },
+    'Naveed': { ur: 'نوید', parent: 'Abdul Hameed', gen: 6, children: [] },
+    // ── Gen 6 — Master Majid's sons ──
+    'Saeed': { ur: 'سعید', parent: 'Master Majid', gen: 6, children: ['Abdullah S', 'Usman', 'Meer Hamza'] },
+    'Aleem': { ur: 'علیم', parent: 'Master Majid', gen: 6, children: ['Abdul Rafey', 'Abdul Wasay'] },
+    'Saleem': { ur: 'سلیم', parent: 'Master Majid', gen: 6, children: [] },
+    // ── Gen 6 — Abdur Rehman's sons ──
+    'Saif': { ur: 'سیف', parent: 'Abdur Rehman', gen: 6, children: ['Abdul Hanan'] },
+    'Imran Y': { ur: 'عمران', parent: 'Abdur Rehman', gen: 6, children: ['Zohaan'] },
+    'Arfan': { ur: 'عرفان', parent: 'Abdur Rehman', gen: 6, children: ['Mohammad Sallar'] },
+    'Asghar': { ur: 'اصغر', parent: 'Abdur Rehman', gen: 6, children: [] },
+    // ── Gen 6 — Rafiq's sons ──
+    'Shafiq R': { ur: 'شفیق', parent: 'Rafiq', gen: 6, children: ['Abdul Salam', 'Ali Raza', 'Abdul Hadi'] },
+    'Raees': { ur: 'رئیس', parent: 'Rafiq', gen: 6, children: ['Arbab', 'Farhan', 'Rehan'] },
+    // ── Gen 6 — Qayyoum's sons ──
+    'Tayyab': { ur: 'طیب', parent: 'Qayyoum', gen: 6, children: ['Abu Talah'] },
+    'Mustafa': { ur: 'مصطفیٰ', parent: 'Qayyoum', gen: 6, children: [] },
+    'Murtaza': { ur: 'مرتضیٰ', parent: 'Qayyoum', gen: 6, children: [] },
+    // ── Gen 6 — Manzoor's sons ──
+    'Munir Ahmad': { ur: 'منیر احمد', parent: 'Manzoor', gen: 6, children: [] },
+    'Ramzan M': { ur: 'رمضان', parent: 'Manzoor', gen: 6, children: [] },
+    'Imran M': { ur: 'عمران', parent: 'Manzoor', gen: 6, children: [] },
+    'Sajjad': { ur: 'سجاد', parent: 'Manzoor', gen: 6, children: ['Abubaker'] },
+    // ── Gen 6 — Mr Hasnaah → Khalil ──
+    'Khalil': { ur: 'خلیل', parent: 'Mr Hasnaah', gen: 6, children: ['Abdul Malik', 'Abdul Khalik'] },
+    // ── Gen 7 — Saeed's sons ──
+    'Abdullah S': { ur: 'عبداللہ', parent: 'Saeed', gen: 7, children: [] },
+    'Usman': { ur: 'عثمان', parent: 'Saeed', gen: 7, children: [] },
+    'Meer Hamza': { ur: 'میر حمزہ', parent: 'Saeed', gen: 7, children: [] },
+    // ── Gen 7 — Aleem's sons ──
+    'Abdul Rafey': { ur: 'عبدالرافع', parent: 'Aleem', gen: 7, children: [] },
+    'Abdul Wasay': { ur: 'عبدالوسع', parent: 'Aleem', gen: 7, children: [] },
+    // ── Gen 7 — Saif's son ──
+    'Abdul Hanan': { ur: 'عبدالحنان', parent: 'Saif', gen: 7, children: [] },
+    // ── Gen 7 — Imran Y's son ──
+    'Zohaan': { ur: 'زوہان', parent: 'Imran Y', gen: 7, children: [] },
+    // ── Gen 7 — Arfan's son ──
+    'Mohammad Sallar': { ur: 'محمد سالار', parent: 'Arfan', gen: 7, children: [] },
+    // ── Gen 7 — Shafiq R's sons ──
+    'Abdul Salam': { ur: 'عبدالسلام', parent: 'Shafiq R', gen: 7, children: [] },
+    'Ali Raza': { ur: 'علی رضا', parent: 'Shafiq R', gen: 7, children: [] },
+    'Abdul Hadi': { ur: 'عبدالہادی', parent: 'Shafiq R', gen: 7, children: [] },
+    // ── Gen 7 — Raees's sons ──
+    'Arbab': { ur: 'ارباب', parent: 'Raees', gen: 7, children: [] },
+    'Farhan': { ur: 'فرحان', parent: 'Raees', gen: 7, children: [] },
+    'Rehan': { ur: 'ریحان', parent: 'Raees', gen: 7, children: [] },
+    // ── Gen 7 — Tayyab's son ──
+    'Abu Talah': { ur: 'ابو طلحہ', parent: 'Tayyab', gen: 7, children: [] },
+    // ── Gen 7 — Sajjad's son ──
+    'Abubaker': { ur: 'ابوبکر', parent: 'Sajjad', gen: 7, children: [] },
+    // ── Gen 7 — Khalil's sons ──
+    'Abdul Malik': { ur: 'عبدالمالک', parent: 'Khalil', gen: 7, children: [] },
+    'Abdul Khalik': { ur: 'عبدالخالق', parent: 'Khalil', gen: 7, children: [] },
+    // ── Gen 6 — Abdur Rauf's sons ──
+    'Abdul Khaliq': { ur: 'عبدالخالق', parent: 'Abdur Rauf', gen: 6, children: ['Habib', 'Adeel', 'Waqas'] },
+    'Abdul Haq': { ur: 'عبدالحق', parent: 'Abdur Rauf', gen: 6, children: [] },
+    'Abdul Waheed': { ur: 'عبدالوحید', parent: 'Abdur Rauf', gen: 6, children: [] },
+    // ── Gen 7 — Abdul Khaliq's sons ──
+    'Habib': { ur: 'حبیب', parent: 'Abdul Khaliq', gen: 7, children: [] },
+    'Adeel': { ur: 'عدیل', parent: 'Abdul Khaliq', gen: 7, children: [] },
+    'Waqas': { ur: 'وقاص', parent: 'Abdul Khaliq', gen: 7, children: [] },
+    // ── Gen 6 — Aslam's sons ──
+    'Masoud': { ur: 'مسعود', parent: 'Aslam', gen: 6, children: ['Shahzain', 'Ibrahim MA'] },
+    'Arslan': { ur: 'ارسلان', parent: 'Aslam', gen: 6, children: [] },
+    'Sarmad': { ur: 'سرمد', parent: 'Aslam', gen: 6, children: [] },
+    // ── Gen 7 — Masoud's sons ──
+    'Shahzain': { ur: 'شاہزین', parent: 'Masoud', gen: 7, children: [] },
+    'Ibrahim MA': { ur: 'ابراہیم', parent: 'Masoud', gen: 7, children: [] },
+    // ── Gen 6 — Ashraf's sons ──
+    'Faizan': { ur: 'فیضان', parent: 'Ashraf', gen: 6, children: [] },
+    'Sufian': { ur: 'سفیان', parent: 'Ashraf', gen: 6, children: [] },
+    // ── Gen 6 — Shareef N's sons ──
+    'Iqbal': { ur: 'اقبال', parent: 'Shareef N', gen: 6, children: ['Kashif', 'Jamshed'] },
+    'Abdul Sattar': { ur: 'عبدالستار', parent: 'Shareef N', gen: 6, children: ['Ahsan', 'Sohaib'] },
+    'Arshad': { ur: 'ارشد', parent: 'Shareef N', gen: 6, children: ['Mudassar', 'Husnain', 'Haroon'] },
+    // ── Gen 7 — Iqbal's sons ──
+    'Kashif': { ur: 'کاشف', parent: 'Iqbal', gen: 7, children: ['Abdul Ahad'] },
+    'Jamshed': { ur: 'جمشید', parent: 'Iqbal', gen: 7, children: ['Arshmaan'] },
+    // ── Gen 8 — Kashif & Jamshed's sons ──
+    'Abdul Ahad': { ur: 'عبدالاحد', parent: 'Kashif', gen: 8, children: [] },
+    'Arshmaan': { ur: 'ارشمان', parent: 'Jamshed', gen: 8, children: [] },
+    // ── Gen 7 — Abdul Sattar's sons ──
+    'Ahsan': { ur: 'احسان', parent: 'Abdul Sattar', gen: 7, children: [] },
+    'Sohaib': { ur: 'صہیب', parent: 'Abdul Sattar', gen: 7, children: [] },
+    // ── Gen 7 — Arshad's sons ──
+    'Mudassar': { ur: 'مدثر', parent: 'Arshad', gen: 7, children: ['Rohaan'] },
+    'Husnain': { ur: 'حسنین', parent: 'Arshad', gen: 7, children: [] },
+    'Haroon': { ur: 'ہارون', parent: 'Arshad', gen: 7, children: [] },
+    // ── Gen 8 — Mudassar's son ──
+    'Rohaan': { ur: 'روحان', parent: 'Mudassar', gen: 8, children: [] },
+    // ── Gen 6 — Sadiq's son ──
+    'Shafiq SA': { ur: 'شفیق', parent: 'Sadiq', gen: 6, children: ['Umar', 'Usman SA'] },
+    // ── Gen 7 — Shafiq SA's sons ──
+    'Umar': { ur: 'عمر', parent: 'Shafiq SA', gen: 7, children: [] },
+    'Usman SA': { ur: 'عثمان', parent: 'Shafiq SA', gen: 7, children: [] },
+    // ── Gen 6 — Bashir's sons ──
+    'Farooq': { ur: 'فاروق', parent: 'Bashir', gen: 6, children: ['Mohsin'] },
+    'Yousif': { ur: 'یوسف', parent: 'Bashir', gen: 6, children: ['Rehan Y'] },
+    // ── Gen 7 — Farooq & Yousif's sons ──
+    'Mohsin': { ur: 'محسن', parent: 'Farooq', gen: 7, children: [] },
+    'Rehan Y': { ur: 'ریحان', parent: 'Yousif', gen: 7, children: [] },
+    // ── Gen 6 — Ramzan N's sons ──
+    'Tahir': { ur: 'طاہر', parent: 'Ramzan N', gen: 6, children: ['Bilal', 'Saim'] },
+    'Imran R': { ur: 'عمران', parent: 'Ramzan N', gen: 6, children: ['Abdul Hadi I', 'Abubaker I'] },
+    'Rashid': { ur: 'راشد', parent: 'Ramzan N', gen: 6, children: ['Orhaan'] },
+    'Naeem': { ur: 'نعیم', parent: 'Ramzan N', gen: 6, children: [] },
+    // ── Gen 7 — Tahir's sons ──
+    'Bilal': { ur: 'بلال', parent: 'Tahir', gen: 7, children: [] },
+    'Saim': { ur: 'سائم', parent: 'Tahir', gen: 7, children: [] },
+    // ── Gen 7 — Imran R's sons ──
+    'Abdul Hadi I': { ur: 'عبدالہادی', parent: 'Imran R', gen: 7, children: [] },
+    'Abubaker I': { ur: 'ابوبکر', parent: 'Imran R', gen: 7, children: [] },
+    // ── Gen 7 — Rashid's son ──
+    'Orhaan': { ur: 'اورحان', parent: 'Rashid', gen: 7, children: [] },
+    // ── Gen 6 — Ilahi Baksh grandchildren ──
+    'Waqas Y': { ur: 'وقاص', parent: 'Younis', gen: 6, children: [] },
+    'Mateen': { ur: 'متین', parent: 'Afzal', gen: 6, children: [] },
+    'Usman Z': { ur: 'عثمان', parent: 'Zulfiqar', gen: 6, children: [] }
+  };
+
+  // Get full ancestor chain from root to person
+  function getFullLineage(nameEn) {
+    var chain = [];
+    var normalized = findFamilyKey(nameEn);
+    if (!normalized) return chain;
+    var current = normalized;
+    while (current) {
+      chain.unshift(current);
+      current = FAMILY[current] ? FAMILY[current].parent : null;
+    }
+    return chain;
+  }
+
+  // Fuzzy match a name to FAMILY keys
+  function findFamilyKey(nameEn) {
+    var clean = nameEn.replace(/[✦★]/g, '').trim();
+    if (FAMILY[clean]) return clean;
+    var lower = clean.toLowerCase();
+    for (var key in FAMILY) {
+      if (key.toLowerCase() === lower) return key;
+    }
+    for (var key2 in FAMILY) {
+      if (key2.toLowerCase().indexOf(lower) !== -1 || lower.indexOf(key2.toLowerCase()) !== -1) return key2;
+    }
+    return null;
+  }
+
+  // Find all DOM .person elements matching a name
+  function findPersonEls(nameEn) {
+    var results = [];
+    document.querySelectorAll('.person').forEach(function(el) {
+      var en = el.querySelector('.name-en');
+      if (en) {
+        var text = en.textContent.replace(/[✦★]/g, '').trim();
+        if (text.toLowerCase() === nameEn.toLowerCase()) results.push(el);
+      }
+    });
+    return results;
+  }
+
+  // Toggle panel
+  searchToggle.addEventListener('click', function() {
+    searchPanel.classList.toggle('collapsed');
+  });
+
+  // Build search index
+  function buildIndex() {
+    var persons = document.querySelectorAll('.tree .person, .branch-section > .tree .person');
+    var index = [];
+    var seen = {};
+    document.querySelectorAll('.person').forEach(function(el) {
+      var nameEn = el.querySelector('.name-en');
+      var nameUr = el.querySelector('.name-ur');
+      var gen = el.querySelector('.gen');
+      if (!nameEn) return;
+      var cleanName = nameEn.textContent.replace(/[✦★]/g, '').trim();
+      var key = cleanName + '-' + (gen ? gen.textContent.trim() : '');
+      if (seen[key]) return;
+      seen[key] = true;
+      index.push({
+        el: el,
+        nameEn: cleanName,
+        nameUr: nameUr ? nameUr.textContent.trim() : '',
+        gen: gen ? gen.textContent.trim() : ''
+      });
+    });
+    return index;
+  }
+
+  var personIndex = buildIndex();
+  var currentTarget = null;
+
+  // Search input
+  searchInput.addEventListener('input', function() {
+    var query = this.value.trim().toLowerCase();
+    searchResults.innerHTML = '';
+    searchStatus.style.display = 'block';
+    searchLineageBtn.style.display = 'none';
+
+    if (query.length < 2) {
+      searchStatus.textContent = 'Type at least 2 characters · کم از کم 2 حروف لکھیں';
+      return;
+    }
+
+    var matches = personIndex.filter(function(p) {
+      return p.nameEn.toLowerCase().indexOf(query) !== -1 ||
+             p.nameUr.indexOf(query) !== -1;
+    });
+
+    if (matches.length === 0) {
+      searchStatus.textContent = 'نام نہیں ملا · No match found';
+      return;
+    }
+
+    searchStatus.style.display = 'none';
+
+    matches.forEach(function(match) {
+      var lineage = getFullLineage(match.nameEn);
+      var lineagePreview = lineage.length > 0 ? lineage.join(' → ') : '';
+
+      var item = document.createElement('div');
+      item.className = 'search-result-item';
+      item.innerHTML =
+        '<div style="flex:1">' +
+          '<div style="display:flex;align-items:center;gap:8px;">' +
+            '<span class="sr-gen">نسل ' + match.gen + '</span>' +
+            '<span class="sr-name">' + match.nameEn + '</span>' +
+            '<span class="sr-name-ur">' + match.nameUr + '</span>' +
+          '</div>' +
+          (lineagePreview ? '<div style="font-size:11px;color:var(--ink-soft);margin-top:4px;font-style:italic;">' + lineagePreview + '</div>' : '') +
+        '</div>';
+      item.addEventListener('click', function() {
+        highlightLineage(match.el, match.nameEn);
+      });
+      searchResults.appendChild(item);
+    });
+  });
+
+  // Highlight the person + FULL ancestor chain across all sections
+  function highlightLineage(personEl, nameEn) {
+    clearHighlights();
+    page.classList.add('search-active');
+    currentTarget = nameEn;
+
+    // Get full lineage from data map
+    var fullChain = getFullLineage(nameEn);
+
+    // Highlight ALL matching person cards across ALL sections
+    fullChain.forEach(function(ancestorName) {
+      var els = findPersonEls(ancestorName);
+      els.forEach(function(el) {
+        if (el.querySelector('.name-en').textContent.replace(/[✦★]/g, '').trim().toLowerCase() === nameEn.toLowerCase()) {
+          el.classList.add('highlighted');
+        } else {
+          el.classList.add('ancestor-line');
+        }
+      });
+    });
+
+    // Also highlight connector lines within each tree section
+    document.querySelectorAll('.highlighted, .ancestor-line').forEach(function(el) {
+      var current = el.parentElement;
+      while (current && !current.classList.contains('branch-section') && !current.classList.contains('page')) {
+        if (current.tagName === 'LI') current.classList.add('line-highlight');
+        if (current.tagName === 'UL') current.classList.add('line-highlight');
+        current = current.parentElement;
+      }
+    });
+
+    // Build breadcrumb trail
+    lineageTrail.innerHTML = '';
+    fullChain.forEach(function(name, i) {
+      if (i > 0) {
+        var arrow = document.createElement('span');
+        arrow.className = 'trail-arrow';
+        arrow.textContent = '→';
+        lineageTrail.appendChild(arrow);
+      }
+      var span = document.createElement('span');
+      span.className = 'trail-item';
+      span.textContent = name;
+      if (name.toLowerCase() === nameEn.toLowerCase()) span.style.fontWeight = '800';
+      lineageTrail.appendChild(span);
+    });
+    lineageTrail.classList.add('visible');
+
+    // Scroll to the highlighted person
+    personEl.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+
+    searchClear.style.display = 'block';
+    searchLineageBtn.style.display = 'block';
+    searchStatus.textContent = fullChain.length + ' نسلیں · ' + fullChain.length + ' generations from Baba Sardar Muhammad';
+    searchStatus.style.display = 'block';
+    searchResults.innerHTML = '';
+  }
+
+  // ── VIEW FULL LINEAGE MODAL ──
+  searchLineageBtn.addEventListener('click', function() {
+    if (!currentTarget) return;
+    showLineageModal(currentTarget);
+  });
+
+  function showLineageModal(nameEn) {
+    var fullChain = getFullLineage(nameEn);
+    if (fullChain.length === 0) return;
+
+    var person = FAMILY[findFamilyKey(nameEn)];
+    lineageModalTitle.textContent = 'مکمل شجرہ نسب — ' + (person ? person.ur : nameEn);
+    lineageModalSubtitle.textContent = 'Complete lineage of ' + nameEn + ' — ' + fullChain.length + ' generations from Baba Sardar Muhammad';
+
+    lineageModalTree.innerHTML = '';
+
+    // Build the vertical path
+    var pathDiv = document.createElement('div');
+    pathDiv.className = 'lineage-path';
+
+    fullChain.forEach(function(name, i) {
+      var data = FAMILY[name];
+      if (!data) return;
+
+      var isTarget = (name.toLowerCase() === nameEn.toLowerCase());
+
+      // Connector line (not before first)
+      if (i > 0) {
+        var connector = document.createElement('div');
+        connector.className = 'lineage-path-connector';
+        var nodeWrap = document.createElement('div');
+        nodeWrap.className = 'lineage-path-node';
+        nodeWrap.appendChild(connector);
+        pathDiv.appendChild(nodeWrap);
+      }
+
+      // Person card
+      var card = document.createElement('div');
+      card.className = 'person' + (isTarget ? ' is-target' : (i === 0 ? ' root' : ' main'));
+      card.innerHTML =
+        '<div class="name-ur">' + data.ur + '</div>' +
+        '<div class="name-en">' + name + '</div>' +
+        '<div class="gen">' + data.gen + '</div>';
+      pathDiv.appendChild(card);
+    });
+
+    lineageModalTree.appendChild(pathDiv);
+
+    // Show siblings + children of the target
+    var targetData = FAMILY[findFamilyKey(nameEn)];
+    if (targetData && targetData.children && targetData.children.length > 0) {
+      var childSection = document.createElement('div');
+      childSection.className = 'lineage-children-section';
+      childSection.innerHTML = '<div class="lineage-children-title">اولاد · CHILDREN OF ' + nameEn.toUpperCase() + '</div>';
+      var grid = document.createElement('div');
+      grid.className = 'lineage-children-grid';
+      targetData.children.forEach(function(childName) {
+        var childData = FAMILY[childName];
+        if (!childData) return;
+        var childCard = document.createElement('div');
+        childCard.className = 'person';
+        childCard.innerHTML =
+          '<div class="name-ur">' + childData.ur + '</div>' +
+          '<div class="name-en">' + childName + '</div>' +
+          '<div class="gen">' + childData.gen + '</div>';
+        grid.appendChild(childCard);
+      });
+      childSection.appendChild(grid);
+      lineageModalTree.appendChild(childSection);
+    }
+
+    // Show siblings (parent's other children)
+    if (targetData && targetData.parent) {
+      var parentData = FAMILY[targetData.parent];
+      if (parentData && parentData.children && parentData.children.length > 1) {
+        var sibSection = document.createElement('div');
+        sibSection.className = 'lineage-children-section';
+        sibSection.innerHTML = '<div class="lineage-children-title">بھائی · SIBLINGS (SONS OF ' + targetData.parent.toUpperCase() + ')</div>';
+        var sibGrid = document.createElement('div');
+        sibGrid.className = 'lineage-children-grid';
+        parentData.children.forEach(function(sibName) {
+          var sibData = FAMILY[sibName];
+          if (!sibData) return;
+          var sibCard = document.createElement('div');
+          var isSelf = (sibName.toLowerCase() === nameEn.toLowerCase());
+          sibCard.className = 'person' + (isSelf ? ' main' : '');
+          sibCard.innerHTML =
+            '<div class="name-ur">' + sibData.ur + '</div>' +
+            '<div class="name-en">' + sibName + (isSelf ? ' ★' : '') + '</div>' +
+            '<div class="gen">' + sibData.gen + '</div>';
+          sibGrid.appendChild(sibCard);
+        });
+        sibSection.appendChild(sibGrid);
+        lineageModalTree.appendChild(sibSection);
+      }
+    }
+
+    lineageOverlay.classList.add('active');
+  }
+
+  // Close modal
+  lineageClose.addEventListener('click', function() {
+    lineageOverlay.classList.remove('active');
+  });
+  lineageOverlay.addEventListener('click', function(e) {
+    if (e.target === lineageOverlay) lineageOverlay.classList.remove('active');
+  });
+
+  // Clear all highlights
+  function clearHighlights() {
+    page.classList.remove('search-active');
+    currentTarget = null;
+    document.querySelectorAll('.highlighted').forEach(function(el) { el.classList.remove('highlighted'); });
+    document.querySelectorAll('.ancestor-line').forEach(function(el) { el.classList.remove('ancestor-line'); });
+    document.querySelectorAll('.line-highlight').forEach(function(el) { el.classList.remove('line-highlight'); });
+    lineageTrail.classList.remove('visible');
+    lineageTrail.innerHTML = '';
+    searchClear.style.display = 'none';
+    searchLineageBtn.style.display = 'none';
+    searchStatus.textContent = 'نام تلاش کریں · Type a name to find your lineage';
+    searchStatus.style.display = 'block';
+  }
+
+  searchClear.addEventListener('click', function() {
+    clearHighlights();
+    searchInput.value = '';
+    searchInput.focus();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      if (lineageOverlay.classList.contains('active')) {
+        lineageOverlay.classList.remove('active');
+      } else {
+        clearHighlights();
+      }
+    }
+  });
+
+  // Click any person card to highlight
+  document.querySelectorAll('.person').forEach(function(el) {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', function() {
+      var en = el.querySelector('.name-en');
+      if (en) highlightLineage(el, en.textContent.replace(/[✦★]/g, '').trim());
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
