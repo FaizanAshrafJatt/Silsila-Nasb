@@ -2,517 +2,459 @@
 <html lang="ur" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 <title>خاندانی درخت — بابا سردار محمد</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        parchment: '#f5ecd9',
+        'parchment-dark': '#ead9b6',
+        ink: '#2b1d12',
+        'ink-soft': '#5a4632',
+        burgundy: '#6e1f23',
+        gold: '#a07a2e',
+        'gold-light': '#c9a35a',
+      },
+      fontFamily: {
+        urdu: ['"Noto Nastaliq Urdu"', 'serif'],
+        heading: ['"Cinzel"', 'serif'],
+        body: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+      }
+    }
+  }
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Cinzel:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Cinzel:wght@500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --parchment: #f5ecd9;
-    --ink: #2b1d12;
-    --ink-soft: #5a4632;
-    --burgundy: #6e1f23;
-    --gold: #a07a2e;
-    --gold-light: #c9a35a;
-    --green-dark: #2d5016;
-    --green-main: #4a8c2a;
-    --green-light: #6aad3d;
-    --green-pale: #c8e6a8;
-    --bark: #5a3a1a;
-    --bark-light: #8b6914;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body {
-    background: linear-gradient(180deg, #dcefd0 0%, #c5e0af 30%, #e8f0d8 60%, var(--parchment) 100%);
-    color: var(--ink);
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    min-height: 100vh;
-    padding: 0;
-  }
   body::before {
     content: "";
     position: fixed; inset: 0;
     pointer-events: none;
     background-image:
-      radial-gradient(rgba(60,80,30,0.06) 1px, transparent 1px),
-      radial-gradient(rgba(40,60,20,0.04) 1px, transparent 1px);
+      radial-gradient(rgba(110,80,40,0.07) 1px, transparent 1px),
+      radial-gradient(rgba(60,40,20,0.04) 1px, transparent 1px);
     background-size: 3px 3px, 7px 7px;
-    background-position: 0 0, 1px 2px;
     opacity: .4;
     z-index: 0;
   }
-
-  .page {
-    max-width: 1200px;
-    margin: 0 auto;
+  .ftree ul {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 24px;
+  }
+  .ftree li {
     position: relative;
-    z-index: 1;
-    padding: 30px 20px 60px;
+    padding: 3px 0 3px 22px;
+    border-left: 1.5px solid rgba(201,169,90,0.5);
   }
-
-  /* Header */
-  .tree-header {
-    text-align: center;
-    padding: 30px 20px 40px;
-    border-bottom: 2px double var(--gold);
-    margin-bottom: 40px;
-  }
-  .tree-header .ornament {
-    font-family: 'Cinzel', serif;
-    color: var(--gold);
-    letter-spacing: 0.4em;
-    font-size: 14px;
-    margin-bottom: 12px;
-  }
-  .tree-header h1 {
-    font-family: 'Noto Nastaliq Urdu', serif;
-    font-size: clamp(28px, 5vw, 48px);
-    color: var(--green-dark);
-    font-weight: 700;
-    direction: rtl;
-    margin-bottom: 8px;
-  }
-  .tree-header .subtitle {
-    font-family: 'Cinzel', serif;
-    font-size: clamp(14px, 2vw, 20px);
-    color: var(--bark);
-    letter-spacing: 0.12em;
-  }
-  .back-link {
-    display: inline-block;
-    margin-top: 16px;
-    padding: 8px 24px;
-    font-family: 'Cinzel', serif;
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    color: var(--burgundy);
-    border: 1.5px solid var(--burgundy);
-    border-radius: 4px;
-    text-decoration: none;
-    transition: all 0.3s;
-  }
-  .back-link:hover { background: var(--burgundy); color: #fff5d4; }
-
-  /* ── The Visual Tree ── */
-  .real-tree {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    padding: 20px 0 0;
-  }
-
-  /* Roots */
-  .rt-roots {
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-    margin-bottom: -10px;
-    position: relative;
-    z-index: 2;
-  }
-  .rt-root-line {
-    width: 5px;
-    height: 50px;
-    background: linear-gradient(to top, var(--bark), var(--bark-light));
-    border-radius: 0 0 5px 5px;
-    transform-origin: top center;
-  }
-  .rt-root-line:nth-child(1) { transform: rotate(-30deg); height: 60px; }
-  .rt-root-line:nth-child(2) { transform: rotate(-12deg); height: 42px; }
-  .rt-root-line:nth-child(3) { height: 35px; }
-  .rt-root-line:nth-child(4) { transform: rotate(12deg); height: 42px; }
-  .rt-root-line:nth-child(5) { transform: rotate(30deg); height: 60px; }
-
-  /* Trunk */
-  .rt-trunk {
-    width: 70px;
-    min-height: 140px;
-    background: linear-gradient(90deg, var(--bark) 0%, var(--bark-light) 25%, #7a5a2e 60%, var(--bark) 100%);
-    border-radius: 10px 10px 18px 18px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 3;
-    box-shadow: inset -5px 0 10px rgba(0,0,0,0.2), inset 5px 0 10px rgba(0,0,0,0.1), 4px 0 20px rgba(90,58,26,0.2);
-  }
-  .rt-trunk::before, .rt-trunk::after {
+  .ftree li::before {
     content: '';
     position: absolute;
-    background: rgba(0,0,0,0.12);
-    border-radius: 2px;
+    left: 0;
+    top: 15px;
+    width: 18px;
+    border-top: 1.5px solid rgba(201,169,90,0.5);
   }
-  .rt-trunk::before { top: 18px; left: 10px; width: 3px; height: 35px; transform: rotate(-3deg); }
-  .rt-trunk::after { top: 50px; right: 12px; width: 2px; height: 25px; transform: rotate(5deg); }
-
-  .rt-trunk-label {
-    position: absolute;
-    left: calc(100% + 20px);
-    text-align: left;
-    white-space: nowrap;
-    background: rgba(245,236,217,0.9);
-    padding: 8px 16px;
-    border-radius: 6px;
-    border: 1.5px solid var(--gold);
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  .ftree li:last-child {
+    border-left-color: transparent;
   }
-  .rt-name-ur, .rt-leaf-ur {
-    display: block;
-    font-family: 'Noto Nastaliq Urdu', serif;
-    color: var(--burgundy);
-    font-size: 20px;
-    font-weight: 700;
-    direction: rtl;
-    line-height: 1.5;
-  }
-  .rt-name-en, .rt-leaf-en {
-    display: block;
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    color: var(--ink-soft);
-    font-size: 13px;
-  }
-
-  /* Fork label (Massaddi) */
-  .rt-fork-label {
-    background: linear-gradient(90deg, var(--bark) 0%, #7a5a2e 50%, var(--bark) 100%);
-    padding: 10px 30px;
-    border-radius: 24px;
-    text-align: center;
-    z-index: 4;
-    box-shadow: 0 4px 16px rgba(90,58,26,0.35);
-    margin: 4px 0;
-  }
-  .rt-fork-label .rt-name-ur { color: #f5ecd9; font-size: 18px; }
-  .rt-fork-label .rt-name-en { color: #d4c4a0; }
-
-  /* Three main branches container */
-  .rt-branches {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    width: 100%;
-    margin-top: 14px;
-    flex-wrap: wrap;
-  }
-
-  .rt-branch {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-    min-width: 240px;
-    max-width: 380px;
-  }
-
-  .rt-branch-stem {
-    width: 7px;
-    height: 60px;
-    background: linear-gradient(to bottom, #7a5a2e, var(--green-main));
-    border-radius: 4px;
-    box-shadow: 2px 0 6px rgba(0,0,0,0.1);
-  }
-
-  /* Leaf shapes */
-  .rt-leaf {
-    padding: 10px 18px;
-    border-radius: 50% / 40%;
-    text-align: center;
-    position: relative;
-  }
-  .rt-leaf-main {
-    background: linear-gradient(135deg, var(--green-main) 0%, var(--green-light) 50%, var(--green-main) 100%);
-    box-shadow: 0 6px 20px rgba(74,140,42,0.4), inset 0 2px 4px rgba(255,255,255,0.2);
-    padding: 16px 28px;
-    min-width: 140px;
-  }
-  .rt-leaf-main .rt-leaf-ur { color: #fff; font-size: 22px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-  .rt-leaf-main .rt-leaf-en { color: #d4eec4; font-size: 12px; }
-
-  /* Sub-branches within each main branch */
-  .rt-sub-branches {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 8px;
-    width: 100%;
-  }
-  .rt-twig {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 8px 0;
-    border-left: 3px solid #8aaa5a;
-    margin-left: 35px;
-    padding-left: 16px;
-    position: relative;
-  }
-  .rt-twig::before {
+  .ftree li:last-child::after {
     content: '';
     position: absolute;
-    left: -3px; top: 14px;
-    width: 16px; height: 3px;
-    background: #8aaa5a;
+    left: -0.75px;
+    top: 0;
+    height: 15px;
+    border-left: 1.5px solid rgba(201,169,90,0.5);
   }
+  .ftree > ul { padding-left: 0; }
+  .ftree > ul > li { border-left: none; padding-left: 0; }
+  .ftree > ul > li::before,
+  .ftree > ul > li::after { display: none; }
 
-  .rt-leaf-sm {
-    background: linear-gradient(135deg, var(--green-light) 0%, #8bc560 100%);
-    box-shadow: 0 3px 10px rgba(74,140,42,0.3);
-    padding: 8px 16px;
-    min-width: 90px;
-    flex-shrink: 0;
-  }
-  .rt-leaf-sm .rt-leaf-ur { color: #fff; font-size: 15px; text-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-  .rt-leaf-sm .rt-leaf-en { color: #d4eec4; font-size: 10px; }
+  .tree-node { transition: all 0.15s ease; }
+  .tree-node:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(160,122,46,0.2); }
+  .tree-node.search-hit { background: #fef3c7 !important; box-shadow: 0 0 0 2px #6e1f23, 0 4px 12px rgba(110,31,35,0.2) !important; }
 
-  /* Fruit labels (grandchildren) */
-  .rt-fruits {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    align-items: center;
-    padding-top: 4px;
-  }
-  .rt-fruit {
-    display: inline-block;
-    font-family: 'Noto Nastaliq Urdu', serif;
-    font-size: 13px;
-    color: var(--green-dark);
-    background: linear-gradient(180deg, var(--green-pale) 0%, #a8d480 100%);
-    padding: 4px 12px;
-    border-radius: 14px;
-    border: 1px solid #8aaa5a;
-    direction: rtl;
-    line-height: 1.6;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-  }
+  .toggle-icon { transition: transform 0.2s ease; display: inline-block; font-size: 8px; opacity: 0.4; margin-left: 4px; vertical-align: middle; }
+  .collapsed > .toggle-icon { transform: rotate(-90deg); }
 
-  /* Ground */
-  .rt-ground {
-    width: 140%;
-    height: 50px;
-    background: linear-gradient(180deg, var(--bark-light) 0%, var(--bark) 40%, var(--bark) 100%);
-    border-radius: 50% 50% 0 0;
-    margin-top: 30px;
-    position: relative;
-  }
-  .rt-ground::before {
-    content: '';
-    position: absolute;
-    top: -8px; left: 8%; right: 8%;
-    height: 16px;
-    background: linear-gradient(180deg, #7a9a42, transparent);
-    border-radius: 50%;
-    opacity: 0.5;
-  }
-
-  /* Footer */
-  .tree-footer {
-    text-align: center;
-    margin-top: 50px;
-    padding-top: 30px;
-    border-top: 2px double var(--gold);
-    color: var(--ink-soft);
-    font-style: italic;
-    font-size: 14px;
-  }
-  .tree-footer .author {
-    margin-top: 24px;
-    font-family: 'Cinzel', serif;
-    font-size: clamp(22px, 4vw, 36px);
-    color: var(--burgundy);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    font-style: normal;
-  }
-
-  /* ── Mobile ── */
-  @media (max-width: 600px) {
-    .page { padding: 16px 10px 40px; }
-    .tree-header { padding: 16px 10px 24px; margin-bottom: 24px; }
-    .rt-trunk { width: 45px; min-height: 90px; }
-    .rt-trunk-label { left: calc(100% + 12px); padding: 6px 10px; }
-    .rt-name-ur { font-size: 16px; }
-    .rt-name-en { font-size: 11px; }
-    .rt-fork-label { padding: 7px 18px; }
-    .rt-fork-label .rt-name-ur { font-size: 15px; }
-    .rt-branches { flex-direction: column; align-items: center; gap: 16px; }
-    .rt-branch { min-width: 0; max-width: 100%; width: 100%; }
-    .rt-branch-stem { height: 35px; }
-    .rt-leaf-main { padding: 12px 18px; min-width: 110px; }
-    .rt-leaf-main .rt-leaf-ur { font-size: 17px; }
-    .rt-twig { margin-left: 18px; padding-left: 12px; }
-    .rt-leaf-sm { padding: 6px 12px; min-width: 70px; }
-    .rt-leaf-sm .rt-leaf-ur { font-size: 13px; }
-    .rt-fruit { font-size: 11px; padding: 3px 9px; }
-    .rt-root-line { height: 30px !important; }
-    .rt-root-line:nth-child(1), .rt-root-line:nth-child(5) { height: 40px !important; }
-    .rt-ground { height: 35px; margin-top: 20px; }
-    .back-link { font-size: 11px; padding: 7px 18px; }
-  }
-
-  @media print {
-    body { background: white; }
-    body::before { display: none; }
+  @media (max-width: 640px) {
+    .ftree ul { padding-left: 16px; }
+    .ftree li { padding-left: 14px; }
+    .ftree li::before { width: 12px; }
   }
 </style>
 </head>
-<body>
-<div class="page">
+<body class="min-h-screen font-body text-ink" style="background: radial-gradient(1200px 800px at 20% 10%, #fbf2dd 0%, transparent 60%), radial-gradient(900px 600px at 90% 90%, #efdfba 0%, transparent 65%), #f5ecd9;">
 
-  <!-- Navigation -->
-  <nav style="display:flex; justify-content:center; gap:14px; padding:0 10px 20px; flex-wrap:wrap;">
-    <a href="index.html" style="display:inline-block; padding:10px 28px; background:linear-gradient(180deg,#fff5d4,#f3dfa6); color:#6e1f23; font-family:'Noto Nastaliq Urdu',serif; font-size:16px; font-weight:600; text-decoration:none; border:2px solid #6e1f23; border-radius:6px; box-shadow:0 3px 10px rgba(110,31,35,0.2); transition:all 0.3s; direction:rtl;">📜 سلسلہ نسب</a>
-    <a href="tree.html" style="display:inline-block; padding:10px 28px; background:linear-gradient(180deg,#d4eec4,#a8d480); color:#2d5016; font-family:'Noto Nastaliq Urdu',serif; font-size:16px; font-weight:600; text-decoration:none; border:2px solid #2d5016; border-radius:6px; box-shadow:0 3px 10px rgba(45,80,22,0.2); transition:all 0.3s; direction:rtl;">🌳 خاندانی درخت</a>
-  </nav>
+<!-- Nav -->
+<nav class="fixed top-0 inset-x-0 z-50 flex justify-center gap-3 px-4 py-3 border-b-2 border-gold-light/60" style="background: rgba(245,236,217,0.92); backdrop-filter: blur(8px);">
+  <a href="index.html" class="px-5 py-2 font-urdu text-sm font-semibold rounded-lg border-2 border-burgundy text-burgundy hover:bg-burgundy hover:text-white transition-colors" dir="rtl" style="background: linear-gradient(180deg,#fff5d4,#f3dfa6);">سلسلہ نسب</a>
+  <a href="tree.html" class="px-5 py-2 font-urdu text-sm font-semibold rounded-lg border-2 border-emerald-800 text-emerald-800 hover:bg-emerald-800 hover:text-white transition-colors" dir="rtl" style="background: linear-gradient(180deg,#d4eec4,#a8d480);">خاندانی درخت</a>
+</nav>
 
-  <div class="tree-header">
-    <div class="ornament">✦ ❖ ✦</div>
-    <h1>خاندانی درخت</h1>
-    <div class="subtitle">The Family Tree of Baba Sardar Muhammad</div>
+<!-- Header -->
+<header class="pt-24 pb-6 text-center px-4 relative z-10">
+  <h1 class="font-urdu text-3xl sm:text-4xl md:text-5xl font-bold text-ink leading-relaxed" dir="rtl">خاندانی درخت</h1>
+  <p class="font-heading text-xs sm:text-sm text-ink-soft tracking-[0.2em] mt-2 uppercase">The Family Tree of Baba Sardar Muhammad</p>
+  <p class="text-xs text-ink-soft/50 mt-1 font-heading tracking-wider">9 Generations &middot; 147 Members</p>
+</header>
+
+<!-- Controls -->
+<div class="flex justify-center items-center gap-2 sm:gap-3 mb-6 px-4 flex-wrap relative z-10">
+  <button id="expandAll" class="px-3 py-1.5 text-xs font-heading tracking-wider border border-gold/50 rounded-full text-gold hover:bg-gold hover:text-white transition-colors">Expand All</button>
+  <button id="collapseAll" class="px-3 py-1.5 text-xs font-heading tracking-wider border border-gold/50 rounded-full text-gold hover:bg-gold hover:text-white transition-colors">Collapse All</button>
+  <div class="relative">
+    <input id="search" type="text" placeholder="Search name..." class="pl-8 pr-3 py-1.5 text-sm font-body rounded-full border border-gold/40 bg-white/60 w-36 sm:w-44 focus:w-52 sm:focus:w-60 transition-all focus:outline-none focus:border-burgundy focus:ring-1 focus:ring-burgundy/20" dir="ltr">
+    <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gold/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3" stroke-width="2" stroke-linecap="round"/></svg>
   </div>
-
-  <div class="real-tree">
-    <!-- Roots -->
-    <div class="rt-roots">
-      <div class="rt-root-line"></div>
-      <div class="rt-root-line"></div>
-      <div class="rt-root-line"></div>
-      <div class="rt-root-line"></div>
-      <div class="rt-root-line"></div>
-    </div>
-    <!-- Trunk -->
-    <div class="rt-trunk">
-      <div class="rt-trunk-label">
-        <span class="rt-name-ur">بابا سردار محمد</span>
-        <span class="rt-name-en">Baba Sardar Muhammad</span>
-      </div>
-    </div>
-    <!-- First fork: Massaddi -->
-    <div class="rt-fork-label">
-      <span class="rt-name-ur">مسدی</span>
-      <span class="rt-name-en">Massaddi</span>
-    </div>
-    <!-- Three main branches -->
-    <div class="rt-branches">
-      <!-- Branch 1: Qasim -->
-      <div class="rt-branch rt-branch-left">
-        <div class="rt-branch-stem"></div>
-        <div class="rt-leaf rt-leaf-main">
-          <span class="rt-leaf-ur">قاسم</span>
-          <span class="rt-leaf-en">Qasim</span>
-        </div>
-        <div class="rt-sub-branches">
-          <div class="rt-twig">
-            <div class="rt-leaf rt-leaf-sm"><span class="rt-leaf-ur">عبداللہ</span><span class="rt-leaf-en">Abdullah</span></div>
-            <div class="rt-fruits">
-              <span class="rt-fruit">کریم</span>
-              <span class="rt-fruit">الہٰی بخش</span>
-            </div>
-          </div>
-          <div class="rt-twig">
-            <div class="rt-leaf rt-leaf-sm"><span class="rt-leaf-ur">رحمت اللہ</span><span class="rt-leaf-en">Rehmat Ullah</span></div>
-            <div class="rt-fruits">
-              <span class="rt-fruit">یعقوب</span>
-              <span class="rt-fruit">شیرا</span>
-            </div>
-          </div>
-          <div class="rt-twig">
-            <div class="rt-leaf rt-leaf-sm"><span class="rt-leaf-ur">جمال دین</span><span class="rt-leaf-en">Jamal Din</span></div>
-            <div class="rt-fruits">
-              <span class="rt-fruit">عبدالعزیز</span>
-              <span class="rt-fruit">نور احمد</span>
-              <span class="rt-fruit">غلام محمد</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Branch 2: Umar Din -->
-      <div class="rt-branch rt-branch-center">
-        <div class="rt-branch-stem"></div>
-        <div class="rt-leaf rt-leaf-main">
-          <span class="rt-leaf-ur">عمر دین</span>
-          <span class="rt-leaf-en">Umar Din</span>
-        </div>
-        <div class="rt-sub-branches">
-          <div class="rt-twig">
-            <div class="rt-leaf rt-leaf-sm"><span class="rt-leaf-ur">سلیمان</span><span class="rt-leaf-en">Suleman</span></div>
-            <div class="rt-fruits">
-              <span class="rt-fruit">مستقیم</span>
-              <span class="rt-fruit">ستار دین</span>
-              <span class="rt-fruit">نبی بخش</span>
-            </div>
-          </div>
-          <div class="rt-twig">
-            <div class="rt-leaf rt-leaf-sm"><span class="rt-leaf-ur">حاکم</span><span class="rt-leaf-en">Hakim</span></div>
-            <div class="rt-fruits">
-              <span class="rt-fruit">امام دین</span>
-              <span class="rt-fruit">عالیہ</span>
-              <span class="rt-fruit">بدر دین</span>
-              <span class="rt-fruit">نذر دین</span>
-              <span class="rt-fruit">الیاس</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Branch 3: Fateh Din -->
-      <div class="rt-branch rt-branch-right">
-        <div class="rt-branch-stem"></div>
-        <div class="rt-leaf rt-leaf-main">
-          <span class="rt-leaf-ur">فتح دین</span>
-          <span class="rt-leaf-en">Fateh Din</span>
-        </div>
-        <div class="rt-sub-branches">
-          <div class="rt-twig">
-            <div class="rt-leaf rt-leaf-sm"><span class="rt-leaf-ur">قطب دین</span><span class="rt-leaf-en">Qutab Din</span></div>
-            <div class="rt-fruits">
-              <span class="rt-fruit">ولیاں</span>
-              <span class="rt-fruit">روشن</span>
-              <span class="rt-fruit">رحیم</span>
-            </div>
-          </div>
-          <div class="rt-twig">
-            <div class="rt-leaf rt-leaf-sm"><span class="rt-leaf-ur">یوسف</span><span class="rt-leaf-en">Yousaf</span></div>
-            <div class="rt-fruits">
-              <span class="rt-fruit">عالیہ</span>
-              <span class="rt-fruit">پیرو</span>
-              <span class="rt-fruit">نور</span>
-            </div>
-          </div>
-          <div class="rt-twig">
-            <div class="rt-leaf rt-leaf-sm"><span class="rt-leaf-ur">اسماعیل</span><span class="rt-leaf-en">Ismael</span></div>
-            <div class="rt-fruits">
-              <span class="rt-fruit">ستار دین</span>
-              <span class="rt-fruit">نذر دین</span>
-              <span class="rt-fruit">فضل دین</span>
-            </div>
-          </div>
-          <div class="rt-twig">
-            <div class="rt-leaf rt-leaf-sm"><span class="rt-leaf-ur">موسیٰ</span><span class="rt-leaf-en">Musaa</span></div>
-            <div class="rt-fruits">
-              <span class="rt-fruit">کریم</span>
-              <span class="rt-fruit">ابراہیم</span>
-              <span class="rt-fruit">شریف</span>
-              <span class="rt-fruit">رشید</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Ground -->
-    <div class="rt-ground"></div>
-  </div>
-
-  <div class="tree-footer">
-    <div class="ornament" style="font-family:'Cinzel',serif; color:#a07a2e; letter-spacing:0.4em; font-size:14px; margin-bottom:10px;">✦ ❖ ✦</div>
-    <p>خاندانی درخت — بابا سردار محمد سے تین شاخیں: قاسم، عمر دین، فتح دین</p>
-    <p style="margin-top:6px; font-size:12px;">137+ افراد · 9 نسلیں · مکمل تفصیلات کے لیے <a href="index.html" style="color:var(--burgundy);">شجرہ نسب</a> دیکھیں</p>
-    <p class="author" style="font-family:'Noto Nastaliq Urdu',serif; direction:rtl; line-height:1.8;">تحریر کردہ: فیضان اشرف</p>
-    <p style="margin-top:6px; font-family:'Cinzel',serif; font-size:clamp(16px,2.5vw,24px); color:#5a4632; letter-spacing:0.08em;">Written by Faizan Ashraf</p>
-  </div>
-
+  <span id="searchCount" class="text-xs text-burgundy font-heading hidden"></span>
 </div>
+
+<!-- Branch Legend -->
+<div class="flex justify-center gap-3 sm:gap-4 mb-6 px-4 flex-wrap relative z-10">
+  <span class="flex items-center gap-1.5 text-xs font-heading tracking-wider text-ink-soft/60">
+    <span class="w-3 h-3 rounded-full bg-amber-700 border border-amber-900"></span> Root
+  </span>
+  <span class="flex items-center gap-1.5 text-xs font-heading tracking-wider text-ink-soft/60">
+    <span class="w-3 h-3 rounded-full bg-burgundy border border-burgundy"></span> Main Branches
+  </span>
+  <span class="flex items-center gap-1.5 text-xs font-heading tracking-wider text-ink-soft/60">
+    <span class="w-3 h-3 rounded-full bg-emerald-700 border border-emerald-800"></span> Sub-branches
+  </span>
+  <span class="flex items-center gap-1.5 text-xs font-heading tracking-wider text-ink-soft/60">
+    <span class="w-3 h-3 rounded-full bg-white border border-gold-light/50"></span> Members
+  </span>
+</div>
+
+<!-- Tree -->
+<main class="max-w-5xl mx-auto px-3 sm:px-6 pb-16 relative z-10">
+  <div id="treeRoot" class="ftree"></div>
+</main>
+
+<!-- Footer -->
+<footer class="text-center py-10 px-4 border-t-2 border-gold-light/30" style="background: linear-gradient(180deg, #3a2510, #2b1d12);">
+  <p class="text-parchment-dark/50 text-sm mb-4 font-body">خاندانی درخت — بابا سردار محمد سے تین شاخیں: قاسم، عمر دین، فتح دین</p>
+  <p class="text-parchment-dark/40 text-xs mb-6 font-body">147 افراد &middot; 9 نسلیں &middot; مکمل تفصیلات کے لیے <a href="index.html" class="text-gold-light underline underline-offset-2">سلسلہ نسب</a> دیکھیں</p>
+  <p class="font-urdu text-2xl sm:text-3xl font-bold text-gold-light leading-relaxed" dir="rtl">تحریر کردہ: فیضان اشرف</p>
+  <p class="font-heading text-base sm:text-lg text-gold tracking-wider mt-2">Written by Faizan Ashraf</p>
+</footer>
+
+<script>
+var FAMILY = {
+  'Baba Sardar Muhammad': { ur: 'بابا سردار محمد', parent: null, gen: 0, children: ['Massaddi'] },
+  'Massaddi': { ur: 'مسدی', parent: 'Baba Sardar Muhammad', gen: 1, children: ['Qasim', 'Umar Din', 'Fateh Din'] },
+  'Qasim': { ur: 'قاسم', parent: 'Massaddi', gen: 2, children: ['Abdullah', 'Rehmat Ullah', 'Jamal Din'] },
+  'Umar Din': { ur: 'عمر دین', parent: 'Massaddi', gen: 2, children: ['Suleman', 'Hakim'] },
+  'Fateh Din': { ur: 'فتح دین', parent: 'Massaddi', gen: 2, children: ['Qutab Din', 'Yousaf', 'Ismael', 'Musaa'] },
+  'Abdullah': { ur: 'عبداللہ', parent: 'Qasim', gen: 3, children: ['Kareem', 'Ilahi Baksh'] },
+  'Rehmat Ullah': { ur: 'رحمت اللہ', parent: 'Qasim', gen: 3, children: ['Yaqoob', 'Shera'] },
+  'Jamal Din': { ur: 'جمال دین', parent: 'Qasim', gen: 3, children: ['Abdul Aziz', 'Noor Ahmed', 'Ghulam Muhammad'] },
+  'Suleman': { ur: 'سلیمان', parent: 'Umar Din', gen: 3, children: ['Mustaqim', 'Sattar Din S', 'Nabi Baksh'] },
+  'Hakim': { ur: 'حاکم', parent: 'Umar Din', gen: 3, children: ['Imam Din', 'Aliya', 'Badar Din', 'Nazar Din H', 'Ilyaas'] },
+  'Qutab Din': { ur: 'قطب دین', parent: 'Fateh Din', gen: 3, children: ['Waliyaa', 'Roshan', 'Raheem'] },
+  'Yousaf': { ur: 'یوسف', parent: 'Fateh Din', gen: 3, children: ['Aliyaah', 'Peeru', 'Noor F'] },
+  'Ismael': { ur: 'اسماعیل', parent: 'Fateh Din', gen: 3, children: ['Sattar Din', 'Nazar Din', 'Fazal Din'] },
+  'Musaa': { ur: 'موسیٰ', parent: 'Fateh Din', gen: 3, children: ['Kareem M', 'Ibrahim', 'Shareef M', 'Rasheed'] },
+  'Kareem': { ur: 'کریم', parent: 'Abdullah', gen: 4, children: ['Abdul Hameed'] },
+  'Ilahi Baksh': { ur: 'الہٰی بخش', parent: 'Abdullah', gen: 4, children: ['Younis', 'Afzal', 'Zulfiqar'] },
+  'Yaqoob': { ur: 'یعقوب', parent: 'Rehmat Ullah', gen: 4, children: ['Master Majid', 'Abdur Rehman', 'Rafiq'] },
+  'Shera': { ur: 'شیرا', parent: 'Rehmat Ullah', gen: 4, children: ['Ghafoor', 'Qayyoum', 'Abdur Rauf', 'Manzoor', 'Khalid'] },
+  'Abdul Aziz': { ur: 'عبدالعزیز', parent: 'Jamal Din', gen: 4, children: ['Mr Hasnaah'] },
+  'Noor Ahmed': { ur: 'نور احمد', parent: 'Jamal Din', gen: 4, children: ['Shareef N', 'Sadiq', 'Bashir', 'Ramzan N'] },
+  'Ghulam Muhammad': { ur: 'غلام محمد', parent: 'Jamal Din', gen: 4, children: ['Aslam', 'Afzal G', 'Ashraf'] },
+  'Mustaqim': { ur: 'مستقیم', parent: 'Suleman', gen: 4, children: [] },
+  'Sattar Din S': { ur: 'ستار دین', parent: 'Suleman', gen: 4, children: [] },
+  'Nabi Baksh': { ur: 'نبی بخش', parent: 'Suleman', gen: 4, children: ['Taj', 'Younis N'] },
+  'Imam Din': { ur: 'امام دین', parent: 'Hakim', gen: 4, children: [] },
+  'Aliya': { ur: 'عالیہ', parent: 'Hakim', gen: 4, children: [] },
+  'Badar Din': { ur: 'بدر دین', parent: 'Hakim', gen: 4, children: [] },
+  'Nazar Din H': { ur: 'نذر دین', parent: 'Hakim', gen: 4, children: [] },
+  'Ilyaas': { ur: 'الیاس', parent: 'Hakim', gen: 4, children: [] },
+  'Waliyaa': { ur: 'ولیاں', parent: 'Qutab Din', gen: 4, children: [] },
+  'Roshan': { ur: 'روشن', parent: 'Qutab Din', gen: 4, children: [] },
+  'Raheem': { ur: 'رحیم', parent: 'Qutab Din', gen: 4, children: [] },
+  'Aliyaah': { ur: 'عالیہ', parent: 'Yousaf', gen: 4, children: [] },
+  'Peeru': { ur: 'پیرو', parent: 'Yousaf', gen: 4, children: [] },
+  'Noor F': { ur: 'نور', parent: 'Yousaf', gen: 4, children: [] },
+  'Sattar Din': { ur: 'ستار دین', parent: 'Ismael', gen: 4, children: [] },
+  'Nazar Din': { ur: 'نذر دین', parent: 'Ismael', gen: 4, children: [] },
+  'Fazal Din': { ur: 'فضل دین', parent: 'Ismael', gen: 4, children: [] },
+  'Kareem M': { ur: 'کریم', parent: 'Musaa', gen: 4, children: [] },
+  'Ibrahim': { ur: 'ابراہیم', parent: 'Musaa', gen: 4, children: [] },
+  'Shareef M': { ur: 'شریف', parent: 'Musaa', gen: 4, children: [] },
+  'Rasheed': { ur: 'رشید', parent: 'Musaa', gen: 4, children: [] },
+  'Abdul Hameed': { ur: 'عبدالحمید', parent: 'Kareem', gen: 5, children: ['Shafiq', 'Tariq', 'Naveed'] },
+  'Younis': { ur: 'یونس', parent: 'Ilahi Baksh', gen: 5, children: ['Waqas Y'] },
+  'Afzal': { ur: 'افضل', parent: 'Ilahi Baksh', gen: 5, children: ['Mateen'] },
+  'Zulfiqar': { ur: 'ذوالفقار', parent: 'Ilahi Baksh', gen: 5, children: ['Usman Z'] },
+  'Master Majid': { ur: 'ماسٹر ماجد', parent: 'Yaqoob', gen: 5, children: ['Saeed', 'Aleem', 'Saleem'] },
+  'Abdur Rehman': { ur: 'عبدالرحمٰن', parent: 'Yaqoob', gen: 5, children: ['Saif', 'Imran Y', 'Arfan', 'Asghar'] },
+  'Rafiq': { ur: 'رفیق', parent: 'Yaqoob', gen: 5, children: ['Shafiq R', 'Raees'] },
+  'Ghafoor': { ur: 'غفور', parent: 'Shera', gen: 5, children: [] },
+  'Qayyoum': { ur: 'قیوم', parent: 'Shera', gen: 5, children: ['Tayyab', 'Mustafa', 'Murtaza'] },
+  'Abdur Rauf': { ur: 'عبدالرؤف', parent: 'Shera', gen: 5, children: ['Abdul Khaliq', 'Abdul Haq', 'Abdul Waheed'] },
+  'Manzoor': { ur: 'منظور', parent: 'Shera', gen: 5, children: ['Munir Ahmad', 'Ramzan M', 'Imran M', 'Sajjad'] },
+  'Khalid': { ur: 'خالد', parent: 'Shera', gen: 5, children: [] },
+  'Mr Hasnaah': { ur: 'مسٹر حسنہ', parent: 'Abdul Aziz', gen: 5, children: ['Khalil'] },
+  'Shareef N': { ur: 'شریف', parent: 'Noor Ahmed', gen: 5, children: ['Iqbal', 'Abdul Sattar', 'Arshad'] },
+  'Sadiq': { ur: 'صادق', parent: 'Noor Ahmed', gen: 5, children: ['Shafiq SA'] },
+  'Bashir': { ur: 'بشیر', parent: 'Noor Ahmed', gen: 5, children: ['Farooq', 'Yousif'] },
+  'Ramzan N': { ur: 'رمضان', parent: 'Noor Ahmed', gen: 5, children: ['Tahir', 'Imran R', 'Rashid', 'Naeem'] },
+  'Aslam': { ur: 'اسلم', parent: 'Ghulam Muhammad', gen: 5, children: ['Masoud', 'Arslan', 'Sarmad'] },
+  'Afzal G': { ur: 'افضل', parent: 'Ghulam Muhammad', gen: 5, children: [] },
+  'Ashraf': { ur: 'اشرف', parent: 'Ghulam Muhammad', gen: 5, children: ['Faizan', 'Sufian'] },
+  'Taj': { ur: 'تاج', parent: 'Nabi Baksh', gen: 5, children: [] },
+  'Younis N': { ur: 'یونس', parent: 'Nabi Baksh', gen: 5, children: [] },
+  'Shafiq': { ur: 'شفیق', parent: 'Abdul Hameed', gen: 6, children: [] },
+  'Tariq': { ur: 'طارق', parent: 'Abdul Hameed', gen: 6, children: [] },
+  'Naveed': { ur: 'نوید', parent: 'Abdul Hameed', gen: 6, children: [] },
+  'Saeed': { ur: 'سعید', parent: 'Master Majid', gen: 6, children: ['Abdullah S', 'Usman', 'Meer Hamza'] },
+  'Aleem': { ur: 'علیم', parent: 'Master Majid', gen: 6, children: ['Abdul Rafey', 'Abdul Wasay'] },
+  'Saleem': { ur: 'سلیم', parent: 'Master Majid', gen: 6, children: [] },
+  'Saif': { ur: 'سیف', parent: 'Abdur Rehman', gen: 6, children: ['Abdul Hanan'] },
+  'Imran Y': { ur: 'عمران', parent: 'Abdur Rehman', gen: 6, children: ['Zohaan'] },
+  'Arfan': { ur: 'عرفان', parent: 'Abdur Rehman', gen: 6, children: ['Mohammad Sallar'] },
+  'Asghar': { ur: 'اصغر', parent: 'Abdur Rehman', gen: 6, children: [] },
+  'Shafiq R': { ur: 'شفیق', parent: 'Rafiq', gen: 6, children: ['Abdul Salam', 'Ali Raza', 'Abdul Hadi'] },
+  'Raees': { ur: 'رئیس', parent: 'Rafiq', gen: 6, children: ['Arbab', 'Farhan', 'Rehan'] },
+  'Tayyab': { ur: 'طیب', parent: 'Qayyoum', gen: 6, children: ['Abu Talah'] },
+  'Mustafa': { ur: 'مصطفیٰ', parent: 'Qayyoum', gen: 6, children: [] },
+  'Murtaza': { ur: 'مرتضیٰ', parent: 'Qayyoum', gen: 6, children: [] },
+  'Munir Ahmad': { ur: 'منیر احمد', parent: 'Manzoor', gen: 6, children: [] },
+  'Ramzan M': { ur: 'رمضان', parent: 'Manzoor', gen: 6, children: [] },
+  'Imran M': { ur: 'عمران', parent: 'Manzoor', gen: 6, children: [] },
+  'Sajjad': { ur: 'سجاد', parent: 'Manzoor', gen: 6, children: ['Abubaker'] },
+  'Khalil': { ur: 'خلیل', parent: 'Mr Hasnaah', gen: 6, children: ['Abdul Malik', 'Abdul Khalik'] },
+  'Abdullah S': { ur: 'عبداللہ', parent: 'Saeed', gen: 7, children: [] },
+  'Usman': { ur: 'عثمان', parent: 'Saeed', gen: 7, children: [] },
+  'Meer Hamza': { ur: 'میر حمزہ', parent: 'Saeed', gen: 7, children: [] },
+  'Abdul Rafey': { ur: 'عبدالرافع', parent: 'Aleem', gen: 7, children: [] },
+  'Abdul Wasay': { ur: 'عبدالوسع', parent: 'Aleem', gen: 7, children: [] },
+  'Abdul Hanan': { ur: 'عبدالحنان', parent: 'Saif', gen: 7, children: [] },
+  'Zohaan': { ur: 'زوہان', parent: 'Imran Y', gen: 7, children: [] },
+  'Mohammad Sallar': { ur: 'محمد سالار', parent: 'Arfan', gen: 7, children: [] },
+  'Abdul Salam': { ur: 'عبدالسلام', parent: 'Shafiq R', gen: 7, children: [] },
+  'Ali Raza': { ur: 'علی رضا', parent: 'Shafiq R', gen: 7, children: [] },
+  'Abdul Hadi': { ur: 'عبدالہادی', parent: 'Shafiq R', gen: 7, children: [] },
+  'Arbab': { ur: 'ارباب', parent: 'Raees', gen: 7, children: [] },
+  'Farhan': { ur: 'فرحان', parent: 'Raees', gen: 7, children: [] },
+  'Rehan': { ur: 'ریحان', parent: 'Raees', gen: 7, children: [] },
+  'Abu Talah': { ur: 'ابو طلحہ', parent: 'Tayyab', gen: 7, children: [] },
+  'Abubaker': { ur: 'ابوبکر', parent: 'Sajjad', gen: 7, children: [] },
+  'Abdul Malik': { ur: 'عبدالمالک', parent: 'Khalil', gen: 7, children: [] },
+  'Abdul Khalik': { ur: 'عبدالخالق', parent: 'Khalil', gen: 7, children: [] },
+  'Abdul Khaliq': { ur: 'عبدالخالق', parent: 'Abdur Rauf', gen: 6, children: ['Habib', 'Adeel', 'Waqas'] },
+  'Abdul Haq': { ur: 'عبدالحق', parent: 'Abdur Rauf', gen: 6, children: [] },
+  'Abdul Waheed': { ur: 'عبدالوحید', parent: 'Abdur Rauf', gen: 6, children: [] },
+  'Habib': { ur: 'حبیب', parent: 'Abdul Khaliq', gen: 7, children: [] },
+  'Adeel': { ur: 'عدیل', parent: 'Abdul Khaliq', gen: 7, children: [] },
+  'Waqas': { ur: 'وقاص', parent: 'Abdul Khaliq', gen: 7, children: [] },
+  'Masoud': { ur: 'مسعود', parent: 'Aslam', gen: 6, children: ['Shahzain', 'Ibrahim MA'] },
+  'Arslan': { ur: 'ارسلان', parent: 'Aslam', gen: 6, children: [] },
+  'Sarmad': { ur: 'سرمد', parent: 'Aslam', gen: 6, children: [] },
+  'Shahzain': { ur: 'شاہزین', parent: 'Masoud', gen: 7, children: [] },
+  'Ibrahim MA': { ur: 'ابراہیم', parent: 'Masoud', gen: 7, children: [] },
+  'Faizan': { ur: 'فیضان', parent: 'Ashraf', gen: 6, children: [] },
+  'Sufian': { ur: 'سفیان', parent: 'Ashraf', gen: 6, children: [] },
+  'Iqbal': { ur: 'اقبال', parent: 'Shareef N', gen: 6, children: ['Kashif', 'Jamshed'] },
+  'Abdul Sattar': { ur: 'عبدالستار', parent: 'Shareef N', gen: 6, children: ['Ahsan', 'Sohaib'] },
+  'Arshad': { ur: 'ارشد', parent: 'Shareef N', gen: 6, children: ['Mudassar', 'Husnain', 'Haroon'] },
+  'Kashif': { ur: 'کاشف', parent: 'Iqbal', gen: 7, children: ['Abdul Ahad'] },
+  'Jamshed': { ur: 'جمشید', parent: 'Iqbal', gen: 7, children: ['Arshmaan'] },
+  'Abdul Ahad': { ur: 'عبدالاحد', parent: 'Kashif', gen: 8, children: [] },
+  'Arshmaan': { ur: 'ارشمان', parent: 'Jamshed', gen: 8, children: [] },
+  'Ahsan': { ur: 'احسان', parent: 'Abdul Sattar', gen: 7, children: [] },
+  'Sohaib': { ur: 'صہیب', parent: 'Abdul Sattar', gen: 7, children: [] },
+  'Mudassar': { ur: 'مدثر', parent: 'Arshad', gen: 7, children: ['Rohaan'] },
+  'Husnain': { ur: 'حسنین', parent: 'Arshad', gen: 7, children: [] },
+  'Haroon': { ur: 'ہارون', parent: 'Arshad', gen: 7, children: [] },
+  'Rohaan': { ur: 'روحان', parent: 'Mudassar', gen: 8, children: [] },
+  'Shafiq SA': { ur: 'شفیق', parent: 'Sadiq', gen: 6, children: ['Umar', 'Usman SA'] },
+  'Umar': { ur: 'عمر', parent: 'Shafiq SA', gen: 7, children: [] },
+  'Usman SA': { ur: 'عثمان', parent: 'Shafiq SA', gen: 7, children: [] },
+  'Farooq': { ur: 'فاروق', parent: 'Bashir', gen: 6, children: ['Mohsin'] },
+  'Yousif': { ur: 'یوسف', parent: 'Bashir', gen: 6, children: ['Rehan Y'] },
+  'Mohsin': { ur: 'محسن', parent: 'Farooq', gen: 7, children: [] },
+  'Rehan Y': { ur: 'ریحان', parent: 'Yousif', gen: 7, children: [] },
+  'Tahir': { ur: 'طاہر', parent: 'Ramzan N', gen: 6, children: ['Bilal', 'Saim'] },
+  'Imran R': { ur: 'عمران', parent: 'Ramzan N', gen: 6, children: ['Abdul Hadi I', 'Abubaker I'] },
+  'Rashid': { ur: 'راشد', parent: 'Ramzan N', gen: 6, children: ['Orhaan'] },
+  'Naeem': { ur: 'نعیم', parent: 'Ramzan N', gen: 6, children: [] },
+  'Bilal': { ur: 'بلال', parent: 'Tahir', gen: 7, children: [] },
+  'Saim': { ur: 'سائم', parent: 'Tahir', gen: 7, children: [] },
+  'Abdul Hadi I': { ur: 'عبدالہادی', parent: 'Imran R', gen: 7, children: [] },
+  'Abubaker I': { ur: 'ابوبکر', parent: 'Imran R', gen: 7, children: [] },
+  'Orhaan': { ur: 'اورحان', parent: 'Rashid', gen: 7, children: [] },
+  'Waqas Y': { ur: 'وقاص', parent: 'Younis', gen: 6, children: [] },
+  'Mateen': { ur: 'متین', parent: 'Afzal', gen: 6, children: [] },
+  'Usman Z': { ur: 'عثمان', parent: 'Zulfiqar', gen: 6, children: [] }
+};
+
+function nodeClasses(gen, hasChildren) {
+  var base = 'tree-node inline-flex items-center gap-1.5 sm:gap-2 rounded-lg font-body';
+  if (hasChildren) base += ' cursor-pointer select-none';
+  switch (gen) {
+    case 0: return base + ' px-4 sm:px-6 py-2 sm:py-3 shadow-lg border-2 border-amber-900 text-white' +
+      ' bg-gradient-to-r from-amber-800 via-amber-700 to-amber-600';
+    case 1: return base + ' px-4 sm:px-5 py-2 shadow-md border-2 border-amber-900/60 text-amber-50' +
+      ' bg-gradient-to-r from-amber-900 to-amber-800';
+    case 2: return base + ' px-3 sm:px-4 py-1.5 sm:py-2 shadow border-2 border-burgundy/80 text-white' +
+      ' bg-gradient-to-r from-burgundy to-red-900';
+    case 3: return base + ' px-3 py-1.5 shadow-sm border border-emerald-700/60 text-white' +
+      ' bg-gradient-to-r from-emerald-800 to-emerald-700';
+    case 4: return base + ' px-2.5 sm:px-3 py-1 shadow-sm border border-gold-light/40 text-ink' +
+      ' bg-white/80';
+    case 5: return base + ' px-2 sm:px-2.5 py-0.5 sm:py-1 shadow-sm border border-gold-light/30 text-ink' +
+      ' bg-white/70';
+    default: return base + ' px-2 py-0.5 border border-gold-light/20 text-ink-soft' +
+      ' bg-white/60 text-sm';
+  }
+}
+
+function urClasses(gen) {
+  switch (gen) {
+    case 0: return 'font-urdu font-bold text-xl sm:text-2xl';
+    case 1: return 'font-urdu font-bold text-lg sm:text-xl';
+    case 2: return 'font-urdu font-semibold text-base sm:text-lg';
+    case 3: return 'font-urdu font-semibold text-sm sm:text-base';
+    case 4: return 'font-urdu font-semibold text-sm';
+    case 5: return 'font-urdu font-semibold text-xs sm:text-sm';
+    default: return 'font-urdu font-semibold text-xs';
+  }
+}
+
+function enClasses(gen) {
+  switch (gen) {
+    case 0: return 'italic text-sm sm:text-base opacity-80';
+    case 1: return 'italic text-sm opacity-70';
+    case 2: return 'italic text-xs sm:text-sm opacity-70';
+    case 3: return 'italic text-xs opacity-70';
+    case 4: return 'italic text-xs opacity-60';
+    case 5: return 'italic text-[11px] opacity-50';
+    default: return 'italic text-[10px] opacity-50 hidden sm:inline';
+  }
+}
+
+function buildTree(name) {
+  var person = FAMILY[name];
+  if (!person) return null;
+  var hasKids = person.children && person.children.length > 0;
+
+  var li = document.createElement('li');
+
+  var node = document.createElement('span');
+  node.className = nodeClasses(person.gen, hasKids);
+  node.setAttribute('data-name', name);
+  node.setAttribute('data-ur', person.ur);
+
+  var ur = document.createElement('span');
+  ur.className = urClasses(person.gen);
+  ur.setAttribute('dir', 'rtl');
+  ur.textContent = person.ur;
+
+  var en = document.createElement('span');
+  en.className = enClasses(person.gen);
+  en.textContent = name;
+
+  node.appendChild(ur);
+  node.appendChild(en);
+
+  if (hasKids) {
+    var arrow = document.createElement('span');
+    arrow.className = 'toggle-icon';
+    arrow.textContent = '\u25BE';
+    node.appendChild(arrow);
+  }
+
+  li.appendChild(node);
+
+  if (hasKids) {
+    var ul = document.createElement('ul');
+    for (var i = 0; i < person.children.length; i++) {
+      var childLi = buildTree(person.children[i]);
+      if (childLi) ul.appendChild(childLi);
+    }
+    li.appendChild(ul);
+
+    node.addEventListener('click', (function(targetLi) {
+      return function() {
+        var childUl = targetLi.querySelector(':scope > ul');
+        if (childUl) {
+          childUl.classList.toggle('hidden');
+          targetLi.classList.toggle('collapsed');
+        }
+      };
+    })(li));
+  }
+
+  return li;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var root = document.getElementById('treeRoot');
+  var ul = document.createElement('ul');
+  var rootLi = buildTree('Baba Sardar Muhammad');
+  if (rootLi) ul.appendChild(rootLi);
+  root.appendChild(ul);
+
+  document.getElementById('expandAll').addEventListener('click', function() {
+    root.querySelectorAll('ul.hidden').forEach(function(u) { u.classList.remove('hidden'); });
+    root.querySelectorAll('li.collapsed').forEach(function(l) { l.classList.remove('collapsed'); });
+  });
+
+  document.getElementById('collapseAll').addEventListener('click', function() {
+    root.querySelectorAll('.ftree > ul > li > ul ul').forEach(function(u) { u.classList.add('hidden'); });
+    root.querySelectorAll('.ftree > ul > li > ul li').forEach(function(l) {
+      if (l.querySelector(':scope > ul')) l.classList.add('collapsed');
+    });
+  });
+
+  var searchBox = document.getElementById('search');
+  var searchCount = document.getElementById('searchCount');
+
+  searchBox.addEventListener('input', function() {
+    var q = searchBox.value.trim().toLowerCase();
+    root.querySelectorAll('.tree-node.search-hit').forEach(function(n) {
+      n.classList.remove('search-hit');
+    });
+    searchCount.classList.add('hidden');
+
+    if (q.length < 2) return;
+
+    var hits = 0;
+    var firstHit = null;
+    root.querySelectorAll('.tree-node').forEach(function(node) {
+      var nameEn = (node.getAttribute('data-name') || '').toLowerCase();
+      var nameUr = node.getAttribute('data-ur') || '';
+      if (nameEn.indexOf(q) !== -1 || nameUr.indexOf(q) !== -1) {
+        node.classList.add('search-hit');
+        hits++;
+        var parent = node.closest('li');
+        if (parent) parent = parent.parentElement ? parent.parentElement.closest('li') : null;
+        while (parent) {
+          var childUl = parent.querySelector(':scope > ul');
+          if (childUl) { childUl.classList.remove('hidden'); parent.classList.remove('collapsed'); }
+          parent = parent.parentElement ? parent.parentElement.closest('li') : null;
+        }
+        if (!firstHit) {
+          firstHit = node;
+          setTimeout(function() { node.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
+        }
+      }
+    });
+
+    if (hits > 0) {
+      searchCount.textContent = hits + ' found';
+      searchCount.classList.remove('hidden');
+    }
+  });
+});
+</script>
 </body>
 </html>
