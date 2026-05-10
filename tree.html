@@ -11,7 +11,6 @@ tailwind.config = {
     extend: {
       colors: {
         parchment: '#f5ecd9',
-        'parchment-dark': '#ead9b6',
         ink: '#2b1d12',
         'ink-soft': '#5a4632',
         burgundy: '#6e1f23',
@@ -32,426 +31,424 @@ tailwind.config = {
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Cinzel:wght@500;600&display=swap" rel="stylesheet">
 <style>
   body::before {
-    content: "";
-    position: fixed; inset: 0;
-    pointer-events: none;
-    background-image:
-      radial-gradient(rgba(110,80,40,0.07) 1px, transparent 1px),
-      radial-gradient(rgba(60,40,20,0.04) 1px, transparent 1px);
-    background-size: 3px 3px, 7px 7px;
-    opacity: .4;
-    z-index: 0;
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image: radial-gradient(rgba(110,80,40,.06) 1px,transparent 1px);
+    background-size:4px 4px; opacity:.5; mix-blend-mode:multiply;
   }
-  .ftree ul {
-    list-style: none;
-    margin: 0;
-    padding: 0 0 0 24px;
-  }
+
+  /* Indented tree connectors */
+  .ftree ul { list-style:none; padding:0 0 0 18px; margin:0; }
   .ftree li {
-    position: relative;
-    padding: 3px 0 3px 22px;
-    border-left: 1.5px solid rgba(201,169,90,0.5);
+    position:relative;
+    padding:3px 0 3px 16px;
+    border-left:1.5px solid rgba(201,169,90,.45);
   }
   .ftree li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 15px;
-    width: 18px;
-    border-top: 1.5px solid rgba(201,169,90,0.5);
+    content:'';
+    position:absolute;
+    left:0; top:13px;
+    width:13px;
+    border-top:1.5px solid rgba(201,169,90,.45);
   }
-  .ftree li:last-child {
-    border-left-color: transparent;
-  }
+  .ftree li:last-child { border-left-color:transparent; }
   .ftree li:last-child::after {
-    content: '';
-    position: absolute;
-    left: -0.75px;
-    top: 0;
-    height: 15px;
-    border-left: 1.5px solid rgba(201,169,90,0.5);
+    content:'';
+    position:absolute;
+    left:-0.75px; top:0; height:13px;
+    border-left:1.5px solid rgba(201,169,90,.45);
   }
-  .ftree > ul { padding-left: 0; }
-  .ftree > ul > li { border-left: none; padding-left: 0; }
-  .ftree > ul > li::before,
-  .ftree > ul > li::after { display: none; }
+  .ftree > li { border-left:none; padding-left:0; }
+  .ftree > li::before, .ftree > li::after { display:none; }
 
-  .tree-node { transition: all 0.15s ease; }
-  .tree-node:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(160,122,46,0.2); }
-  .tree-node.search-hit { background: #fef3c7 !important; box-shadow: 0 0 0 2px #6e1f23, 0 4px 12px rgba(110,31,35,0.2) !important; }
+  /* Node card */
+  .nd {
+    display:inline-flex; align-items:center; gap:5px;
+    padding:2px 8px; border-radius:6px;
+    background:rgba(255,255,255,.7);
+    border:1px solid rgba(201,169,90,.3);
+    transition:all .15s; cursor:pointer;
+    line-height:1.5;
+  }
+  .nd:hover { background:rgba(255,255,255,.9); box-shadow:0 2px 8px rgba(160,122,46,.15); }
+  .nd .ur { font-family:'Noto Nastaliq Urdu',serif; font-weight:600; direction:rtl; font-size:13px; }
+  .nd .en { font-style:italic; opacity:.45; font-size:10px; font-family:'Cormorant Garamond',serif; }
 
-  .toggle-icon { transition: transform 0.2s ease; display: inline-block; font-size: 8px; opacity: 0.4; margin-left: 4px; vertical-align: middle; }
-  .collapsed > .toggle-icon { transform: rotate(-90deg); }
+  .nd.hl { background:#fef3c7 !important; box-shadow:0 0 0 2.5px #6e1f23 !important; }
+  .nd.anc { box-shadow:0 0 0 2px #a07a2e !important; background:rgba(255,248,220,.8) !important; }
 
-  @media (max-width: 640px) {
-    .ftree ul { padding-left: 16px; }
-    .ftree li { padding-left: 14px; }
-    .ftree li::before { width: 12px; }
+  /* Branch section header styling */
+  .branch-toggle { cursor:pointer; user-select:none; }
+  .branch-toggle .arrow { transition:transform .2s; display:inline-block; }
+  .branch-toggle.closed .arrow { transform:rotate(-90deg); }
+
+  @media (max-width:400px) {
+    .nd .en { display:none; }
+    .nd .ur { font-size:12px; }
+    .ftree ul { padding-left:14px; }
+    .ftree li { padding-left:12px; }
+    .ftree li::before { width:10px; }
   }
 </style>
 </head>
-<body class="min-h-screen font-body text-ink" style="background: radial-gradient(1200px 800px at 20% 10%, #fbf2dd 0%, transparent 60%), radial-gradient(900px 600px at 90% 90%, #efdfba 0%, transparent 65%), #f5ecd9;">
+<body class="min-h-screen font-body text-ink" style="background:radial-gradient(ellipse at 30% 10%,#fbf2dd,transparent 60%),radial-gradient(ellipse at 80% 90%,#efdfba,transparent 65%),#f5ecd9;">
 
 <!-- Nav -->
-<nav class="fixed top-0 inset-x-0 z-50 flex justify-center gap-3 px-4 py-3 border-b-2 border-gold-light/60" style="background: rgba(245,236,217,0.92); backdrop-filter: blur(8px);">
-  <a href="index.html" class="px-5 py-2 font-urdu text-sm font-semibold rounded-lg border-2 border-burgundy text-burgundy hover:bg-burgundy hover:text-white transition-colors" dir="rtl" style="background: linear-gradient(180deg,#fff5d4,#f3dfa6);">سلسلہ نسب</a>
-  <a href="tree.html" class="px-5 py-2 font-urdu text-sm font-semibold rounded-lg border-2 border-emerald-800 text-emerald-800 hover:bg-emerald-800 hover:text-white transition-colors" dir="rtl" style="background: linear-gradient(180deg,#d4eec4,#a8d480);">خاندانی درخت</a>
+<nav class="fixed top-0 inset-x-0 z-50 flex justify-center gap-3 px-4 py-2.5 border-b-2 border-gold-light/50" style="background:rgba(245,236,217,.93);backdrop-filter:blur(8px);">
+  <a href="index.html" class="px-4 py-1.5 font-urdu text-sm font-semibold rounded-lg border-2 border-burgundy text-burgundy hover:bg-burgundy hover:text-white transition-colors" dir="rtl" style="background:linear-gradient(180deg,#fff5d4,#f3dfa6);">سلسلہ نسب</a>
+  <a href="tree.html" class="px-4 py-1.5 font-urdu text-sm font-semibold rounded-lg border-2 border-emerald-800 text-emerald-800 hover:bg-emerald-800 hover:text-white transition-colors" dir="rtl" style="background:linear-gradient(180deg,#d4eec4,#a8d480);">خاندانی درخت</a>
 </nav>
 
 <!-- Header -->
-<header class="pt-24 pb-6 text-center px-4 relative z-10">
-  <h1 class="font-urdu text-3xl sm:text-4xl md:text-5xl font-bold text-ink leading-relaxed" dir="rtl">خاندانی درخت</h1>
-  <p class="font-heading text-xs sm:text-sm text-ink-soft tracking-[0.2em] mt-2 uppercase">The Family Tree of Baba Sardar Muhammad</p>
-  <p class="text-xs text-ink-soft/50 mt-1 font-heading tracking-wider">9 Generations &middot; 147 Members</p>
+<header class="pt-16 pb-4 text-center px-4 relative z-10">
+  <h1 class="font-urdu text-2xl sm:text-3xl font-bold text-ink leading-relaxed" dir="rtl">خاندانی درخت</h1>
+  <p class="font-heading text-[10px] text-ink-soft/50 tracking-[.18em] mt-1">FAMILY TREE &middot; 9 GENERATIONS &middot; 147 MEMBERS</p>
 </header>
 
-<!-- Controls -->
-<div class="flex justify-center items-center gap-2 sm:gap-3 mb-6 px-4 flex-wrap relative z-10">
-  <button id="expandAll" class="px-3 py-1.5 text-xs font-heading tracking-wider border border-gold/50 rounded-full text-gold hover:bg-gold hover:text-white transition-colors">Expand All</button>
-  <button id="collapseAll" class="px-3 py-1.5 text-xs font-heading tracking-wider border border-gold/50 rounded-full text-gold hover:bg-gold hover:text-white transition-colors">Collapse All</button>
-  <div class="relative">
-    <input id="search" type="text" placeholder="Search name..." class="pl-8 pr-3 py-1.5 text-sm font-body rounded-full border border-gold/40 bg-white/60 w-36 sm:w-44 focus:w-52 sm:focus:w-60 transition-all focus:outline-none focus:border-burgundy focus:ring-1 focus:ring-burgundy/20" dir="ltr">
-    <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gold/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3" stroke-width="2" stroke-linecap="round"/></svg>
+<!-- Search -->
+<div class="sticky top-[48px] z-40 flex items-center justify-center gap-2 px-4 py-2" style="background:rgba(245,236,217,.88);backdrop-filter:blur(6px);">
+  <input id="search" type="text" placeholder="Search name..." class="px-3 py-1 text-sm font-body rounded-full border border-gold/40 bg-white/60 w-40 sm:w-48 focus:outline-none focus:border-burgundy" dir="ltr">
+  <span id="searchInfo" class="text-[10px] text-burgundy font-heading hidden"></span>
+</div>
+
+<!-- ═══════ TRUNK SECTION ═══════ -->
+<section class="flex flex-col items-center px-4 pt-4 pb-2 relative z-10">
+  <!-- Baba Sardar Muhammad -->
+  <div class="px-5 py-2.5 rounded-xl border-2 border-amber-800 text-center shadow-lg" style="background:linear-gradient(180deg,#b8942e,#8a6a1a);">
+    <div class="font-urdu text-lg sm:text-xl font-bold text-white leading-relaxed" dir="rtl">بابا سردار محمد</div>
+    <div class="text-xs italic text-amber-100/80">Baba Sardar Muhammad</div>
   </div>
-  <span id="searchCount" class="text-xs text-burgundy font-heading hidden"></span>
-</div>
+  <div class="w-0.5 h-5 bg-gold-light/60"></div>
 
-<!-- Branch Legend -->
-<div class="flex justify-center gap-3 sm:gap-4 mb-6 px-4 flex-wrap relative z-10">
-  <span class="flex items-center gap-1.5 text-xs font-heading tracking-wider text-ink-soft/60">
-    <span class="w-3 h-3 rounded-full bg-amber-700 border border-amber-900"></span> Root
-  </span>
-  <span class="flex items-center gap-1.5 text-xs font-heading tracking-wider text-ink-soft/60">
-    <span class="w-3 h-3 rounded-full bg-burgundy border border-burgundy"></span> Main Branches
-  </span>
-  <span class="flex items-center gap-1.5 text-xs font-heading tracking-wider text-ink-soft/60">
-    <span class="w-3 h-3 rounded-full bg-emerald-700 border border-emerald-800"></span> Sub-branches
-  </span>
-  <span class="flex items-center gap-1.5 text-xs font-heading tracking-wider text-ink-soft/60">
-    <span class="w-3 h-3 rounded-full bg-white border border-gold-light/50"></span> Members
-  </span>
-</div>
+  <!-- Massaddi -->
+  <div class="px-4 py-2 rounded-xl border-2 border-amber-900/50 text-center shadow-md" style="background:linear-gradient(180deg,#5a3a1a,#3a2510);">
+    <div class="font-urdu text-base sm:text-lg font-bold text-amber-100 leading-relaxed" dir="rtl">مسدی</div>
+    <div class="text-[11px] italic text-amber-200/60">Massaddi</div>
+  </div>
+  <div class="w-0.5 h-5 bg-gold-light/60"></div>
 
-<!-- Tree -->
-<main class="max-w-5xl mx-auto px-3 sm:px-6 pb-16 relative z-10">
-  <div id="treeRoot" class="ftree"></div>
+  <!-- 3 sons -->
+  <div class="relative flex justify-center items-start w-full max-w-sm">
+    <div class="absolute top-0 h-[1.5px] bg-gold-light/50" style="left:16.67%;right:16.67%;"></div>
+    <div class="flex-1 flex flex-col items-center px-1">
+      <div class="w-[1.5px] h-4 bg-gold-light/50"></div>
+      <div class="px-3 py-1.5 rounded-lg border-2 border-emerald-700 text-center shadow" style="background:linear-gradient(180deg,#15803d,#166534);">
+        <div class="font-urdu text-sm font-semibold text-white" dir="rtl">قاسم</div>
+        <div class="text-[9px] italic text-emerald-200/70">Qasim</div>
+      </div>
+    </div>
+    <div class="flex-1 flex flex-col items-center px-1">
+      <div class="w-[1.5px] h-4 bg-gold-light/50"></div>
+      <div class="px-3 py-1.5 rounded-lg border-2 border-amber-700 text-center shadow" style="background:linear-gradient(180deg,#b45309,#92400e);">
+        <div class="font-urdu text-sm font-semibold text-white" dir="rtl">عمر دین</div>
+        <div class="text-[9px] italic text-amber-200/70">Umar Din</div>
+      </div>
+    </div>
+    <div class="flex-1 flex flex-col items-center px-1">
+      <div class="w-[1.5px] h-4 bg-gold-light/50"></div>
+      <div class="px-3 py-1.5 rounded-lg border-2 border-rose-800 text-center shadow" style="background:linear-gradient(180deg,#9f1239,#881337);">
+        <div class="font-urdu text-sm font-semibold text-white" dir="rtl">فتح دین</div>
+        <div class="text-[9px] italic text-rose-200/70">Fateh Din</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ BRANCH SECTIONS ═══════ -->
+<main class="max-w-2xl mx-auto px-3 sm:px-5 pb-8 relative z-10 space-y-4 mt-4">
+
+  <!-- Branch: Qasim -->
+  <section class="rounded-xl border-l-4 border-emerald-600 bg-white/30 p-3 sm:p-4">
+    <div class="branch-toggle flex items-center gap-2 mb-3" data-branch="qasim">
+      <span class="arrow text-emerald-700 text-sm">&#9660;</span>
+      <h2 class="font-urdu text-base sm:text-lg font-bold text-emerald-800" dir="rtl">شاخ قاسم</h2>
+      <span class="text-xs text-emerald-700/50 font-heading tracking-wider">QASIM'S BRANCH</span>
+    </div>
+    <div class="branch-content" id="branch-qasim">
+      <ul class="ftree" id="ftree-qasim"></ul>
+    </div>
+  </section>
+
+  <!-- Branch: Umar Din -->
+  <section class="rounded-xl border-l-4 border-amber-600 bg-white/30 p-3 sm:p-4">
+    <div class="branch-toggle flex items-center gap-2 mb-3" data-branch="umardin">
+      <span class="arrow text-amber-700 text-sm">&#9660;</span>
+      <h2 class="font-urdu text-base sm:text-lg font-bold text-amber-800" dir="rtl">شاخ عمر دین</h2>
+      <span class="text-xs text-amber-700/50 font-heading tracking-wider">UMAR DIN'S BRANCH</span>
+    </div>
+    <div class="branch-content" id="branch-umardin">
+      <ul class="ftree" id="ftree-umardin"></ul>
+    </div>
+  </section>
+
+  <!-- Branch: Fateh Din -->
+  <section class="rounded-xl border-l-4 border-rose-700 bg-white/30 p-3 sm:p-4">
+    <div class="branch-toggle flex items-center gap-2 mb-3" data-branch="fatehdin">
+      <span class="arrow text-rose-700 text-sm">&#9660;</span>
+      <h2 class="font-urdu text-base sm:text-lg font-bold text-rose-800" dir="rtl">شاخ فتح دین</h2>
+      <span class="text-xs text-rose-700/50 font-heading tracking-wider">FATEH DIN'S BRANCH</span>
+    </div>
+    <div class="branch-content" id="branch-fatehdin">
+      <ul class="ftree" id="ftree-fatehdin"></ul>
+    </div>
+  </section>
+
 </main>
 
 <!-- Footer -->
-<footer class="text-center py-10 px-4 border-t-2 border-gold-light/30" style="background: linear-gradient(180deg, #3a2510, #2b1d12);">
-  <p class="text-parchment-dark/50 text-sm mb-4 font-body">خاندانی درخت — بابا سردار محمد سے تین شاخیں: قاسم، عمر دین، فتح دین</p>
-  <p class="text-parchment-dark/40 text-xs mb-6 font-body">147 افراد &middot; 9 نسلیں &middot; مکمل تفصیلات کے لیے <a href="index.html" class="text-gold-light underline underline-offset-2">سلسلہ نسب</a> دیکھیں</p>
-  <p class="font-urdu text-2xl sm:text-3xl font-bold text-gold-light leading-relaxed" dir="rtl">تحریر کردہ: فیضان اشرف</p>
-  <p class="font-heading text-base sm:text-lg text-gold tracking-wider mt-2">Written by Faizan Ashraf</p>
+<footer class="text-center py-8 px-4 border-t-2 border-gold-light/20" style="background:linear-gradient(180deg,#3a2510,#2b1d12);">
+  <p class="text-amber-100/30 text-xs mb-4 font-body">بابا سردار محمد — تین شاخیں: قاسم، عمر دین، فتح دین — 147 افراد — 9 نسلیں</p>
+  <p class="font-urdu text-xl sm:text-2xl font-bold text-gold-light leading-relaxed" dir="rtl">تحریر کردہ: فیضان اشرف</p>
+  <p class="font-heading text-sm text-gold tracking-wider mt-2">Written by Faizan Ashraf</p>
 </footer>
 
 <script>
-var FAMILY = {
-  'Baba Sardar Muhammad': { ur: 'بابا سردار محمد', parent: null, gen: 0, children: ['Massaddi'] },
-  'Massaddi': { ur: 'مسدی', parent: 'Baba Sardar Muhammad', gen: 1, children: ['Qasim', 'Umar Din', 'Fateh Din'] },
-  'Qasim': { ur: 'قاسم', parent: 'Massaddi', gen: 2, children: ['Abdullah', 'Rehmat Ullah', 'Jamal Din'] },
-  'Umar Din': { ur: 'عمر دین', parent: 'Massaddi', gen: 2, children: ['Suleman', 'Hakim'] },
-  'Fateh Din': { ur: 'فتح دین', parent: 'Massaddi', gen: 2, children: ['Qutab Din', 'Yousaf', 'Ismael', 'Musaa'] },
-  'Abdullah': { ur: 'عبداللہ', parent: 'Qasim', gen: 3, children: ['Kareem', 'Ilahi Baksh'] },
-  'Rehmat Ullah': { ur: 'رحمت اللہ', parent: 'Qasim', gen: 3, children: ['Yaqoob', 'Shera'] },
-  'Jamal Din': { ur: 'جمال دین', parent: 'Qasim', gen: 3, children: ['Abdul Aziz', 'Noor Ahmed', 'Ghulam Muhammad'] },
-  'Suleman': { ur: 'سلیمان', parent: 'Umar Din', gen: 3, children: ['Mustaqim', 'Sattar Din S', 'Nabi Baksh'] },
-  'Hakim': { ur: 'حاکم', parent: 'Umar Din', gen: 3, children: ['Imam Din', 'Aliya', 'Badar Din', 'Nazar Din H', 'Ilyaas'] },
-  'Qutab Din': { ur: 'قطب دین', parent: 'Fateh Din', gen: 3, children: ['Waliyaa', 'Roshan', 'Raheem'] },
-  'Yousaf': { ur: 'یوسف', parent: 'Fateh Din', gen: 3, children: ['Aliyaah', 'Peeru', 'Noor F'] },
-  'Ismael': { ur: 'اسماعیل', parent: 'Fateh Din', gen: 3, children: ['Sattar Din', 'Nazar Din', 'Fazal Din'] },
-  'Musaa': { ur: 'موسیٰ', parent: 'Fateh Din', gen: 3, children: ['Kareem M', 'Ibrahim', 'Shareef M', 'Rasheed'] },
-  'Kareem': { ur: 'کریم', parent: 'Abdullah', gen: 4, children: ['Abdul Hameed'] },
-  'Ilahi Baksh': { ur: 'الہٰی بخش', parent: 'Abdullah', gen: 4, children: ['Younis', 'Afzal', 'Zulfiqar'] },
-  'Yaqoob': { ur: 'یعقوب', parent: 'Rehmat Ullah', gen: 4, children: ['Master Majid', 'Abdur Rehman', 'Rafiq'] },
-  'Shera': { ur: 'شیرا', parent: 'Rehmat Ullah', gen: 4, children: ['Ghafoor', 'Qayyoum', 'Abdur Rauf', 'Manzoor', 'Khalid'] },
-  'Abdul Aziz': { ur: 'عبدالعزیز', parent: 'Jamal Din', gen: 4, children: ['Mr Hasnaah'] },
-  'Noor Ahmed': { ur: 'نور احمد', parent: 'Jamal Din', gen: 4, children: ['Shareef N', 'Sadiq', 'Bashir', 'Ramzan N'] },
-  'Ghulam Muhammad': { ur: 'غلام محمد', parent: 'Jamal Din', gen: 4, children: ['Aslam', 'Afzal G', 'Ashraf'] },
-  'Mustaqim': { ur: 'مستقیم', parent: 'Suleman', gen: 4, children: [] },
-  'Sattar Din S': { ur: 'ستار دین', parent: 'Suleman', gen: 4, children: [] },
-  'Nabi Baksh': { ur: 'نبی بخش', parent: 'Suleman', gen: 4, children: ['Taj', 'Younis N'] },
-  'Imam Din': { ur: 'امام دین', parent: 'Hakim', gen: 4, children: [] },
-  'Aliya': { ur: 'عالیہ', parent: 'Hakim', gen: 4, children: [] },
-  'Badar Din': { ur: 'بدر دین', parent: 'Hakim', gen: 4, children: [] },
-  'Nazar Din H': { ur: 'نذر دین', parent: 'Hakim', gen: 4, children: [] },
-  'Ilyaas': { ur: 'الیاس', parent: 'Hakim', gen: 4, children: [] },
-  'Waliyaa': { ur: 'ولیاں', parent: 'Qutab Din', gen: 4, children: [] },
-  'Roshan': { ur: 'روشن', parent: 'Qutab Din', gen: 4, children: [] },
-  'Raheem': { ur: 'رحیم', parent: 'Qutab Din', gen: 4, children: [] },
-  'Aliyaah': { ur: 'عالیہ', parent: 'Yousaf', gen: 4, children: [] },
-  'Peeru': { ur: 'پیرو', parent: 'Yousaf', gen: 4, children: [] },
-  'Noor F': { ur: 'نور', parent: 'Yousaf', gen: 4, children: [] },
-  'Sattar Din': { ur: 'ستار دین', parent: 'Ismael', gen: 4, children: [] },
-  'Nazar Din': { ur: 'نذر دین', parent: 'Ismael', gen: 4, children: [] },
-  'Fazal Din': { ur: 'فضل دین', parent: 'Ismael', gen: 4, children: [] },
-  'Kareem M': { ur: 'کریم', parent: 'Musaa', gen: 4, children: [] },
-  'Ibrahim': { ur: 'ابراہیم', parent: 'Musaa', gen: 4, children: [] },
-  'Shareef M': { ur: 'شریف', parent: 'Musaa', gen: 4, children: [] },
-  'Rasheed': { ur: 'رشید', parent: 'Musaa', gen: 4, children: [] },
-  'Abdul Hameed': { ur: 'عبدالحمید', parent: 'Kareem', gen: 5, children: ['Shafiq', 'Tariq', 'Naveed'] },
-  'Younis': { ur: 'یونس', parent: 'Ilahi Baksh', gen: 5, children: ['Waqas Y'] },
-  'Afzal': { ur: 'افضل', parent: 'Ilahi Baksh', gen: 5, children: ['Mateen'] },
-  'Zulfiqar': { ur: 'ذوالفقار', parent: 'Ilahi Baksh', gen: 5, children: ['Usman Z'] },
-  'Master Majid': { ur: 'ماسٹر ماجد', parent: 'Yaqoob', gen: 5, children: ['Saeed', 'Aleem', 'Saleem'] },
-  'Abdur Rehman': { ur: 'عبدالرحمٰن', parent: 'Yaqoob', gen: 5, children: ['Saif', 'Imran Y', 'Arfan', 'Asghar'] },
-  'Rafiq': { ur: 'رفیق', parent: 'Yaqoob', gen: 5, children: ['Shafiq R', 'Raees'] },
-  'Ghafoor': { ur: 'غفور', parent: 'Shera', gen: 5, children: [] },
-  'Qayyoum': { ur: 'قیوم', parent: 'Shera', gen: 5, children: ['Tayyab', 'Mustafa', 'Murtaza'] },
-  'Abdur Rauf': { ur: 'عبدالرؤف', parent: 'Shera', gen: 5, children: ['Abdul Khaliq', 'Abdul Haq', 'Abdul Waheed'] },
-  'Manzoor': { ur: 'منظور', parent: 'Shera', gen: 5, children: ['Munir Ahmad', 'Ramzan M', 'Imran M', 'Sajjad'] },
-  'Khalid': { ur: 'خالد', parent: 'Shera', gen: 5, children: [] },
-  'Mr Hasnaah': { ur: 'مسٹر حسنہ', parent: 'Abdul Aziz', gen: 5, children: ['Khalil'] },
-  'Shareef N': { ur: 'شریف', parent: 'Noor Ahmed', gen: 5, children: ['Iqbal', 'Abdul Sattar', 'Arshad'] },
-  'Sadiq': { ur: 'صادق', parent: 'Noor Ahmed', gen: 5, children: ['Shafiq SA'] },
-  'Bashir': { ur: 'بشیر', parent: 'Noor Ahmed', gen: 5, children: ['Farooq', 'Yousif'] },
-  'Ramzan N': { ur: 'رمضان', parent: 'Noor Ahmed', gen: 5, children: ['Tahir', 'Imran R', 'Rashid', 'Naeem'] },
-  'Aslam': { ur: 'اسلم', parent: 'Ghulam Muhammad', gen: 5, children: ['Masoud', 'Arslan', 'Sarmad'] },
-  'Afzal G': { ur: 'افضل', parent: 'Ghulam Muhammad', gen: 5, children: [] },
-  'Ashraf': { ur: 'اشرف', parent: 'Ghulam Muhammad', gen: 5, children: ['Faizan', 'Sufian'] },
-  'Taj': { ur: 'تاج', parent: 'Nabi Baksh', gen: 5, children: [] },
-  'Younis N': { ur: 'یونس', parent: 'Nabi Baksh', gen: 5, children: [] },
-  'Shafiq': { ur: 'شفیق', parent: 'Abdul Hameed', gen: 6, children: [] },
-  'Tariq': { ur: 'طارق', parent: 'Abdul Hameed', gen: 6, children: [] },
-  'Naveed': { ur: 'نوید', parent: 'Abdul Hameed', gen: 6, children: [] },
-  'Saeed': { ur: 'سعید', parent: 'Master Majid', gen: 6, children: ['Abdullah S', 'Usman', 'Meer Hamza'] },
-  'Aleem': { ur: 'علیم', parent: 'Master Majid', gen: 6, children: ['Abdul Rafey', 'Abdul Wasay'] },
-  'Saleem': { ur: 'سلیم', parent: 'Master Majid', gen: 6, children: [] },
-  'Saif': { ur: 'سیف', parent: 'Abdur Rehman', gen: 6, children: ['Abdul Hanan'] },
-  'Imran Y': { ur: 'عمران', parent: 'Abdur Rehman', gen: 6, children: ['Zohaan'] },
-  'Arfan': { ur: 'عرفان', parent: 'Abdur Rehman', gen: 6, children: ['Mohammad Sallar'] },
-  'Asghar': { ur: 'اصغر', parent: 'Abdur Rehman', gen: 6, children: [] },
-  'Shafiq R': { ur: 'شفیق', parent: 'Rafiq', gen: 6, children: ['Abdul Salam', 'Ali Raza', 'Abdul Hadi'] },
-  'Raees': { ur: 'رئیس', parent: 'Rafiq', gen: 6, children: ['Arbab', 'Farhan', 'Rehan'] },
-  'Tayyab': { ur: 'طیب', parent: 'Qayyoum', gen: 6, children: ['Abu Talah'] },
-  'Mustafa': { ur: 'مصطفیٰ', parent: 'Qayyoum', gen: 6, children: [] },
-  'Murtaza': { ur: 'مرتضیٰ', parent: 'Qayyoum', gen: 6, children: [] },
-  'Munir Ahmad': { ur: 'منیر احمد', parent: 'Manzoor', gen: 6, children: [] },
-  'Ramzan M': { ur: 'رمضان', parent: 'Manzoor', gen: 6, children: [] },
-  'Imran M': { ur: 'عمران', parent: 'Manzoor', gen: 6, children: [] },
-  'Sajjad': { ur: 'سجاد', parent: 'Manzoor', gen: 6, children: ['Abubaker'] },
-  'Khalil': { ur: 'خلیل', parent: 'Mr Hasnaah', gen: 6, children: ['Abdul Malik', 'Abdul Khalik'] },
-  'Abdullah S': { ur: 'عبداللہ', parent: 'Saeed', gen: 7, children: [] },
-  'Usman': { ur: 'عثمان', parent: 'Saeed', gen: 7, children: [] },
-  'Meer Hamza': { ur: 'میر حمزہ', parent: 'Saeed', gen: 7, children: [] },
-  'Abdul Rafey': { ur: 'عبدالرافع', parent: 'Aleem', gen: 7, children: [] },
-  'Abdul Wasay': { ur: 'عبدالوسع', parent: 'Aleem', gen: 7, children: [] },
-  'Abdul Hanan': { ur: 'عبدالحنان', parent: 'Saif', gen: 7, children: [] },
-  'Zohaan': { ur: 'زوہان', parent: 'Imran Y', gen: 7, children: [] },
-  'Mohammad Sallar': { ur: 'محمد سالار', parent: 'Arfan', gen: 7, children: [] },
-  'Abdul Salam': { ur: 'عبدالسلام', parent: 'Shafiq R', gen: 7, children: [] },
-  'Ali Raza': { ur: 'علی رضا', parent: 'Shafiq R', gen: 7, children: [] },
-  'Abdul Hadi': { ur: 'عبدالہادی', parent: 'Shafiq R', gen: 7, children: [] },
-  'Arbab': { ur: 'ارباب', parent: 'Raees', gen: 7, children: [] },
-  'Farhan': { ur: 'فرحان', parent: 'Raees', gen: 7, children: [] },
-  'Rehan': { ur: 'ریحان', parent: 'Raees', gen: 7, children: [] },
-  'Abu Talah': { ur: 'ابو طلحہ', parent: 'Tayyab', gen: 7, children: [] },
-  'Abubaker': { ur: 'ابوبکر', parent: 'Sajjad', gen: 7, children: [] },
-  'Abdul Malik': { ur: 'عبدالمالک', parent: 'Khalil', gen: 7, children: [] },
-  'Abdul Khalik': { ur: 'عبدالخالق', parent: 'Khalil', gen: 7, children: [] },
-  'Abdul Khaliq': { ur: 'عبدالخالق', parent: 'Abdur Rauf', gen: 6, children: ['Habib', 'Adeel', 'Waqas'] },
-  'Abdul Haq': { ur: 'عبدالحق', parent: 'Abdur Rauf', gen: 6, children: [] },
-  'Abdul Waheed': { ur: 'عبدالوحید', parent: 'Abdur Rauf', gen: 6, children: [] },
-  'Habib': { ur: 'حبیب', parent: 'Abdul Khaliq', gen: 7, children: [] },
-  'Adeel': { ur: 'عدیل', parent: 'Abdul Khaliq', gen: 7, children: [] },
-  'Waqas': { ur: 'وقاص', parent: 'Abdul Khaliq', gen: 7, children: [] },
-  'Masoud': { ur: 'مسعود', parent: 'Aslam', gen: 6, children: ['Shahzain', 'Ibrahim MA'] },
-  'Arslan': { ur: 'ارسلان', parent: 'Aslam', gen: 6, children: [] },
-  'Sarmad': { ur: 'سرمد', parent: 'Aslam', gen: 6, children: [] },
-  'Shahzain': { ur: 'شاہزین', parent: 'Masoud', gen: 7, children: [] },
-  'Ibrahim MA': { ur: 'ابراہیم', parent: 'Masoud', gen: 7, children: [] },
-  'Faizan': { ur: 'فیضان', parent: 'Ashraf', gen: 6, children: [] },
-  'Sufian': { ur: 'سفیان', parent: 'Ashraf', gen: 6, children: [] },
-  'Iqbal': { ur: 'اقبال', parent: 'Shareef N', gen: 6, children: ['Kashif', 'Jamshed'] },
-  'Abdul Sattar': { ur: 'عبدالستار', parent: 'Shareef N', gen: 6, children: ['Ahsan', 'Sohaib'] },
-  'Arshad': { ur: 'ارشد', parent: 'Shareef N', gen: 6, children: ['Mudassar', 'Husnain', 'Haroon'] },
-  'Kashif': { ur: 'کاشف', parent: 'Iqbal', gen: 7, children: ['Abdul Ahad'] },
-  'Jamshed': { ur: 'جمشید', parent: 'Iqbal', gen: 7, children: ['Arshmaan'] },
-  'Abdul Ahad': { ur: 'عبدالاحد', parent: 'Kashif', gen: 8, children: [] },
-  'Arshmaan': { ur: 'ارشمان', parent: 'Jamshed', gen: 8, children: [] },
-  'Ahsan': { ur: 'احسان', parent: 'Abdul Sattar', gen: 7, children: [] },
-  'Sohaib': { ur: 'صہیب', parent: 'Abdul Sattar', gen: 7, children: [] },
-  'Mudassar': { ur: 'مدثر', parent: 'Arshad', gen: 7, children: ['Rohaan'] },
-  'Husnain': { ur: 'حسنین', parent: 'Arshad', gen: 7, children: [] },
-  'Haroon': { ur: 'ہارون', parent: 'Arshad', gen: 7, children: [] },
-  'Rohaan': { ur: 'روحان', parent: 'Mudassar', gen: 8, children: [] },
-  'Shafiq SA': { ur: 'شفیق', parent: 'Sadiq', gen: 6, children: ['Umar', 'Usman SA'] },
-  'Umar': { ur: 'عمر', parent: 'Shafiq SA', gen: 7, children: [] },
-  'Usman SA': { ur: 'عثمان', parent: 'Shafiq SA', gen: 7, children: [] },
-  'Farooq': { ur: 'فاروق', parent: 'Bashir', gen: 6, children: ['Mohsin'] },
-  'Yousif': { ur: 'یوسف', parent: 'Bashir', gen: 6, children: ['Rehan Y'] },
-  'Mohsin': { ur: 'محسن', parent: 'Farooq', gen: 7, children: [] },
-  'Rehan Y': { ur: 'ریحان', parent: 'Yousif', gen: 7, children: [] },
-  'Tahir': { ur: 'طاہر', parent: 'Ramzan N', gen: 6, children: ['Bilal', 'Saim'] },
-  'Imran R': { ur: 'عمران', parent: 'Ramzan N', gen: 6, children: ['Abdul Hadi I', 'Abubaker I'] },
-  'Rashid': { ur: 'راشد', parent: 'Ramzan N', gen: 6, children: ['Orhaan'] },
-  'Naeem': { ur: 'نعیم', parent: 'Ramzan N', gen: 6, children: [] },
-  'Bilal': { ur: 'بلال', parent: 'Tahir', gen: 7, children: [] },
-  'Saim': { ur: 'سائم', parent: 'Tahir', gen: 7, children: [] },
-  'Abdul Hadi I': { ur: 'عبدالہادی', parent: 'Imran R', gen: 7, children: [] },
-  'Abubaker I': { ur: 'ابوبکر', parent: 'Imran R', gen: 7, children: [] },
-  'Orhaan': { ur: 'اورحان', parent: 'Rashid', gen: 7, children: [] },
-  'Waqas Y': { ur: 'وقاص', parent: 'Younis', gen: 6, children: [] },
-  'Mateen': { ur: 'متین', parent: 'Afzal', gen: 6, children: [] },
-  'Usman Z': { ur: 'عثمان', parent: 'Zulfiqar', gen: 6, children: [] }
+var F={
+'Baba Sardar Muhammad':{u:'بابا سردار محمد',p:null,g:0,c:['Massaddi']},
+'Massaddi':{u:'مسدی',p:'Baba Sardar Muhammad',g:1,c:['Qasim','Umar Din','Fateh Din']},
+'Qasim':{u:'قاسم',p:'Massaddi',g:2,c:['Abdullah','Rehmat Ullah','Jamal Din']},
+'Umar Din':{u:'عمر دین',p:'Massaddi',g:2,c:['Suleman','Hakim']},
+'Fateh Din':{u:'فتح دین',p:'Massaddi',g:2,c:['Qutab Din','Yousaf','Ismael','Musaa']},
+'Abdullah':{u:'عبداللہ',p:'Qasim',g:3,c:['Kareem','Ilahi Baksh']},
+'Rehmat Ullah':{u:'رحمت اللہ',p:'Qasim',g:3,c:['Yaqoob','Shera']},
+'Jamal Din':{u:'جمال دین',p:'Qasim',g:3,c:['Abdul Aziz','Noor Ahmed','Ghulam Muhammad']},
+'Suleman':{u:'سلیمان',p:'Umar Din',g:3,c:['Mustaqim','Sattar Din S','Nabi Baksh']},
+'Hakim':{u:'حاکم',p:'Umar Din',g:3,c:['Imam Din','Aliya','Badar Din','Nazar Din H','Ilyaas']},
+'Qutab Din':{u:'قطب دین',p:'Fateh Din',g:3,c:['Waliyaa','Roshan','Raheem']},
+'Yousaf':{u:'یوسف',p:'Fateh Din',g:3,c:['Aliyaah','Peeru','Noor F']},
+'Ismael':{u:'اسماعیل',p:'Fateh Din',g:3,c:['Sattar Din','Nazar Din','Fazal Din']},
+'Musaa':{u:'موسیٰ',p:'Fateh Din',g:3,c:['Kareem M','Ibrahim','Shareef M','Rasheed']},
+'Kareem':{u:'کریم',p:'Abdullah',g:4,c:['Abdul Hameed']},
+'Ilahi Baksh':{u:'الہٰی بخش',p:'Abdullah',g:4,c:['Younis','Afzal','Zulfiqar']},
+'Yaqoob':{u:'یعقوب',p:'Rehmat Ullah',g:4,c:['Master Majid','Abdur Rehman','Rafiq']},
+'Shera':{u:'شیرا',p:'Rehmat Ullah',g:4,c:['Ghafoor','Qayyoum','Abdur Rauf','Manzoor','Khalid']},
+'Abdul Aziz':{u:'عبدالعزیز',p:'Jamal Din',g:4,c:['Mr Hasnaah']},
+'Noor Ahmed':{u:'نور احمد',p:'Jamal Din',g:4,c:['Shareef N','Sadiq','Bashir','Ramzan N']},
+'Ghulam Muhammad':{u:'غلام محمد',p:'Jamal Din',g:4,c:['Aslam','Afzal G','Ashraf']},
+'Mustaqim':{u:'مستقیم',p:'Suleman',g:4,c:[]},
+'Sattar Din S':{u:'ستار دین',p:'Suleman',g:4,c:[]},
+'Nabi Baksh':{u:'نبی بخش',p:'Suleman',g:4,c:['Taj','Younis N']},
+'Imam Din':{u:'امام دین',p:'Hakim',g:4,c:[]},
+'Aliya':{u:'عالیہ',p:'Hakim',g:4,c:[]},
+'Badar Din':{u:'بدر دین',p:'Hakim',g:4,c:[]},
+'Nazar Din H':{u:'نذر دین',p:'Hakim',g:4,c:[]},
+'Ilyaas':{u:'الیاس',p:'Hakim',g:4,c:[]},
+'Waliyaa':{u:'ولیاں',p:'Qutab Din',g:4,c:[]},
+'Roshan':{u:'روشن',p:'Qutab Din',g:4,c:[]},
+'Raheem':{u:'رحیم',p:'Qutab Din',g:4,c:[]},
+'Aliyaah':{u:'عالیہ',p:'Yousaf',g:4,c:[]},
+'Peeru':{u:'پیرو',p:'Yousaf',g:4,c:[]},
+'Noor F':{u:'نور',p:'Yousaf',g:4,c:[]},
+'Sattar Din':{u:'ستار دین',p:'Ismael',g:4,c:[]},
+'Nazar Din':{u:'نذر دین',p:'Ismael',g:4,c:[]},
+'Fazal Din':{u:'فضل دین',p:'Ismael',g:4,c:[]},
+'Kareem M':{u:'کریم',p:'Musaa',g:4,c:[]},
+'Ibrahim':{u:'ابراہیم',p:'Musaa',g:4,c:[]},
+'Shareef M':{u:'شریف',p:'Musaa',g:4,c:[]},
+'Rasheed':{u:'رشید',p:'Musaa',g:4,c:[]},
+'Abdul Hameed':{u:'عبدالحمید',p:'Kareem',g:5,c:['Shafiq','Tariq','Naveed']},
+'Younis':{u:'یونس',p:'Ilahi Baksh',g:5,c:['Waqas Y']},
+'Afzal':{u:'افضل',p:'Ilahi Baksh',g:5,c:['Mateen']},
+'Zulfiqar':{u:'ذوالفقار',p:'Ilahi Baksh',g:5,c:['Usman Z']},
+'Master Majid':{u:'ماسٹر ماجد',p:'Yaqoob',g:5,c:['Saeed','Aleem','Saleem']},
+'Abdur Rehman':{u:'عبدالرحمٰن',p:'Yaqoob',g:5,c:['Saif','Imran Y','Arfan','Asghar']},
+'Rafiq':{u:'رفیق',p:'Yaqoob',g:5,c:['Shafiq R','Raees']},
+'Ghafoor':{u:'غفور',p:'Shera',g:5,c:[]},
+'Qayyoum':{u:'قیوم',p:'Shera',g:5,c:['Tayyab','Mustafa','Murtaza']},
+'Abdur Rauf':{u:'عبدالرؤف',p:'Shera',g:5,c:['Abdul Khaliq','Abdul Haq','Abdul Waheed']},
+'Manzoor':{u:'منظور',p:'Shera',g:5,c:['Munir Ahmad','Ramzan M','Imran M','Sajjad']},
+'Khalid':{u:'خالد',p:'Shera',g:5,c:[]},
+'Mr Hasnaah':{u:'مسٹر حسنہ',p:'Abdul Aziz',g:5,c:['Khalil']},
+'Shareef N':{u:'شریف',p:'Noor Ahmed',g:5,c:['Iqbal','Abdul Sattar','Arshad']},
+'Sadiq':{u:'صادق',p:'Noor Ahmed',g:5,c:['Shafiq SA']},
+'Bashir':{u:'بشیر',p:'Noor Ahmed',g:5,c:['Farooq','Yousif']},
+'Ramzan N':{u:'رمضان',p:'Noor Ahmed',g:5,c:['Tahir','Imran R','Rashid','Naeem']},
+'Aslam':{u:'اسلم',p:'Ghulam Muhammad',g:5,c:['Masoud','Arslan','Sarmad']},
+'Afzal G':{u:'افضل',p:'Ghulam Muhammad',g:5,c:[]},
+'Ashraf':{u:'اشرف',p:'Ghulam Muhammad',g:5,c:['Faizan','Sufian']},
+'Taj':{u:'تاج',p:'Nabi Baksh',g:5,c:[]},
+'Younis N':{u:'یونس',p:'Nabi Baksh',g:5,c:[]},
+'Shafiq':{u:'شفیق',p:'Abdul Hameed',g:6,c:[]},
+'Tariq':{u:'طارق',p:'Abdul Hameed',g:6,c:[]},
+'Naveed':{u:'نوید',p:'Abdul Hameed',g:6,c:[]},
+'Waqas Y':{u:'وقاص',p:'Younis',g:6,c:[]},
+'Mateen':{u:'متین',p:'Afzal',g:6,c:[]},
+'Usman Z':{u:'عثمان',p:'Zulfiqar',g:6,c:[]},
+'Saeed':{u:'سعید',p:'Master Majid',g:6,c:['Abdullah S','Usman','Meer Hamza']},
+'Aleem':{u:'علیم',p:'Master Majid',g:6,c:['Abdul Rafey','Abdul Wasay']},
+'Saleem':{u:'سلیم',p:'Master Majid',g:6,c:[]},
+'Saif':{u:'سیف',p:'Abdur Rehman',g:6,c:['Abdul Hanan']},
+'Imran Y':{u:'عمران',p:'Abdur Rehman',g:6,c:['Zohaan']},
+'Arfan':{u:'عرفان',p:'Abdur Rehman',g:6,c:['Mohammad Sallar']},
+'Asghar':{u:'اصغر',p:'Abdur Rehman',g:6,c:[]},
+'Shafiq R':{u:'شفیق',p:'Rafiq',g:6,c:['Abdul Salam','Ali Raza','Abdul Hadi']},
+'Raees':{u:'رئیس',p:'Rafiq',g:6,c:['Arbab','Farhan','Rehan']},
+'Tayyab':{u:'طیب',p:'Qayyoum',g:6,c:['Abu Talah']},
+'Mustafa':{u:'مصطفیٰ',p:'Qayyoum',g:6,c:[]},
+'Murtaza':{u:'مرتضیٰ',p:'Qayyoum',g:6,c:[]},
+'Abdul Khaliq':{u:'عبدالخالق',p:'Abdur Rauf',g:6,c:['Habib','Adeel','Waqas']},
+'Abdul Haq':{u:'عبدالحق',p:'Abdur Rauf',g:6,c:[]},
+'Abdul Waheed':{u:'عبدالوحید',p:'Abdur Rauf',g:6,c:[]},
+'Munir Ahmad':{u:'منیر احمد',p:'Manzoor',g:6,c:[]},
+'Ramzan M':{u:'رمضان',p:'Manzoor',g:6,c:[]},
+'Imran M':{u:'عمران',p:'Manzoor',g:6,c:[]},
+'Sajjad':{u:'سجاد',p:'Manzoor',g:6,c:['Abubaker']},
+'Khalil':{u:'خلیل',p:'Mr Hasnaah',g:6,c:['Abdul Malik','Abdul Khalik']},
+'Iqbal':{u:'اقبال',p:'Shareef N',g:6,c:['Kashif','Jamshed']},
+'Abdul Sattar':{u:'عبدالستار',p:'Shareef N',g:6,c:['Ahsan','Sohaib']},
+'Arshad':{u:'ارشد',p:'Shareef N',g:6,c:['Mudassar','Husnain','Haroon']},
+'Shafiq SA':{u:'شفیق',p:'Sadiq',g:6,c:['Umar','Usman SA']},
+'Farooq':{u:'فاروق',p:'Bashir',g:6,c:['Mohsin']},
+'Yousif':{u:'یوسف',p:'Bashir',g:6,c:['Rehan Y']},
+'Tahir':{u:'طاہر',p:'Ramzan N',g:6,c:['Bilal','Saim']},
+'Imran R':{u:'عمران',p:'Ramzan N',g:6,c:['Abdul Hadi I','Abubaker I']},
+'Rashid':{u:'راشد',p:'Ramzan N',g:6,c:['Orhaan']},
+'Naeem':{u:'نعیم',p:'Ramzan N',g:6,c:[]},
+'Masoud':{u:'مسعود',p:'Aslam',g:6,c:['Shahzain','Ibrahim MA']},
+'Arslan':{u:'ارسلان',p:'Aslam',g:6,c:[]},
+'Sarmad':{u:'سرمد',p:'Aslam',g:6,c:[]},
+'Faizan':{u:'فیضان',p:'Ashraf',g:6,c:[]},
+'Sufian':{u:'سفیان',p:'Ashraf',g:6,c:[]},
+'Abdullah S':{u:'عبداللہ',p:'Saeed',g:7,c:[]},
+'Usman':{u:'عثمان',p:'Saeed',g:7,c:[]},
+'Meer Hamza':{u:'میر حمزہ',p:'Saeed',g:7,c:[]},
+'Abdul Rafey':{u:'عبدالرافع',p:'Aleem',g:7,c:[]},
+'Abdul Wasay':{u:'عبدالوسع',p:'Aleem',g:7,c:[]},
+'Abdul Hanan':{u:'عبدالحنان',p:'Saif',g:7,c:[]},
+'Zohaan':{u:'زوہان',p:'Imran Y',g:7,c:[]},
+'Mohammad Sallar':{u:'محمد سالار',p:'Arfan',g:7,c:[]},
+'Abdul Salam':{u:'عبدالسلام',p:'Shafiq R',g:7,c:[]},
+'Ali Raza':{u:'علی رضا',p:'Shafiq R',g:7,c:[]},
+'Abdul Hadi':{u:'عبدالہادی',p:'Shafiq R',g:7,c:[]},
+'Arbab':{u:'ارباب',p:'Raees',g:7,c:[]},
+'Farhan':{u:'فرحان',p:'Raees',g:7,c:[]},
+'Rehan':{u:'ریحان',p:'Raees',g:7,c:[]},
+'Abu Talah':{u:'ابو طلحہ',p:'Tayyab',g:7,c:[]},
+'Habib':{u:'حبیب',p:'Abdul Khaliq',g:7,c:[]},
+'Adeel':{u:'عدیل',p:'Abdul Khaliq',g:7,c:[]},
+'Waqas':{u:'وقاص',p:'Abdul Khaliq',g:7,c:[]},
+'Abubaker':{u:'ابوبکر',p:'Sajjad',g:7,c:[]},
+'Abdul Malik':{u:'عبدالمالک',p:'Khalil',g:7,c:[]},
+'Abdul Khalik':{u:'عبدالخالق',p:'Khalil',g:7,c:[]},
+'Kashif':{u:'کاشف',p:'Iqbal',g:7,c:['Abdul Ahad']},
+'Jamshed':{u:'جمشید',p:'Iqbal',g:7,c:['Arshmaan']},
+'Ahsan':{u:'احسان',p:'Abdul Sattar',g:7,c:[]},
+'Sohaib':{u:'صہیب',p:'Abdul Sattar',g:7,c:[]},
+'Mudassar':{u:'مدثر',p:'Arshad',g:7,c:['Rohaan']},
+'Husnain':{u:'حسنین',p:'Arshad',g:7,c:[]},
+'Haroon':{u:'ہارون',p:'Arshad',g:7,c:[]},
+'Umar':{u:'عمر',p:'Shafiq SA',g:7,c:[]},
+'Usman SA':{u:'عثمان',p:'Shafiq SA',g:7,c:[]},
+'Mohsin':{u:'محسن',p:'Farooq',g:7,c:[]},
+'Rehan Y':{u:'ریحان',p:'Yousif',g:7,c:[]},
+'Bilal':{u:'بلال',p:'Tahir',g:7,c:[]},
+'Saim':{u:'سائم',p:'Tahir',g:7,c:[]},
+'Abdul Hadi I':{u:'عبدالہادی',p:'Imran R',g:7,c:[]},
+'Abubaker I':{u:'ابوبکر',p:'Imran R',g:7,c:[]},
+'Orhaan':{u:'اورحان',p:'Rashid',g:7,c:[]},
+'Shahzain':{u:'شاہزین',p:'Masoud',g:7,c:[]},
+'Ibrahim MA':{u:'ابراہیم',p:'Masoud',g:7,c:[]},
+'Abdul Ahad':{u:'عبدالاحد',p:'Kashif',g:8,c:[]},
+'Arshmaan':{u:'ارشمان',p:'Jamshed',g:8,c:[]},
+'Rohaan':{u:'روحان',p:'Mudassar',g:8,c:[]}
 };
 
-function nodeClasses(gen, hasChildren) {
-  var base = 'tree-node inline-flex items-center gap-1.5 sm:gap-2 rounded-lg font-body';
-  if (hasChildren) base += ' cursor-pointer select-none';
-  switch (gen) {
-    case 0: return base + ' px-4 sm:px-6 py-2 sm:py-3 shadow-lg border-2 border-amber-900 text-white' +
-      ' bg-gradient-to-r from-amber-800 via-amber-700 to-amber-600';
-    case 1: return base + ' px-4 sm:px-5 py-2 shadow-md border-2 border-amber-900/60 text-amber-50' +
-      ' bg-gradient-to-r from-amber-900 to-amber-800';
-    case 2: return base + ' px-3 sm:px-4 py-1.5 sm:py-2 shadow border-2 border-burgundy/80 text-white' +
-      ' bg-gradient-to-r from-burgundy to-red-900';
-    case 3: return base + ' px-3 py-1.5 shadow-sm border border-emerald-700/60 text-white' +
-      ' bg-gradient-to-r from-emerald-800 to-emerald-700';
-    case 4: return base + ' px-2.5 sm:px-3 py-1 shadow-sm border border-gold-light/40 text-ink' +
-      ' bg-white/80';
-    case 5: return base + ' px-2 sm:px-2.5 py-0.5 sm:py-1 shadow-sm border border-gold-light/30 text-ink' +
-      ' bg-white/70';
-    default: return base + ' px-2 py-0.5 border border-gold-light/20 text-ink-soft' +
-      ' bg-white/60 text-sm';
+function buildSubTree(name) {
+  var p = F[name]; if(!p) return '';
+  var kids = p.c && p.c.length > 0;
+  var h = '<li>';
+  h += '<span class="nd" data-n="'+name+'" data-u="'+p.u+'">';
+  h += '<span class="ur" dir="rtl">'+p.u+'</span>';
+  h += '<span class="en">'+name+'</span>';
+  h += '</span>';
+  if(kids) {
+    h += '<ul>';
+    for(var i=0;i<p.c.length;i++) h += buildSubTree(p.c[i]);
+    h += '</ul>';
   }
+  h += '</li>';
+  return h;
 }
 
-function urClasses(gen) {
-  switch (gen) {
-    case 0: return 'font-urdu font-bold text-xl sm:text-2xl';
-    case 1: return 'font-urdu font-bold text-lg sm:text-xl';
-    case 2: return 'font-urdu font-semibold text-base sm:text-lg';
-    case 3: return 'font-urdu font-semibold text-sm sm:text-base';
-    case 4: return 'font-urdu font-semibold text-sm';
-    case 5: return 'font-urdu font-semibold text-xs sm:text-sm';
-    default: return 'font-urdu font-semibold text-xs';
-  }
-}
-
-function enClasses(gen) {
-  switch (gen) {
-    case 0: return 'italic text-sm sm:text-base opacity-80';
-    case 1: return 'italic text-sm opacity-70';
-    case 2: return 'italic text-xs sm:text-sm opacity-70';
-    case 3: return 'italic text-xs opacity-70';
-    case 4: return 'italic text-xs opacity-60';
-    case 5: return 'italic text-[11px] opacity-50';
-    default: return 'italic text-[10px] opacity-50 hidden sm:inline';
-  }
-}
-
-function buildTree(name) {
-  var person = FAMILY[name];
-  if (!person) return null;
-  var hasKids = person.children && person.children.length > 0;
-
-  var li = document.createElement('li');
-
-  var node = document.createElement('span');
-  node.className = nodeClasses(person.gen, hasKids);
-  node.setAttribute('data-name', name);
-  node.setAttribute('data-ur', person.ur);
-
-  var ur = document.createElement('span');
-  ur.className = urClasses(person.gen);
-  ur.setAttribute('dir', 'rtl');
-  ur.textContent = person.ur;
-
-  var en = document.createElement('span');
-  en.className = enClasses(person.gen);
-  en.textContent = name;
-
-  node.appendChild(ur);
-  node.appendChild(en);
-
-  if (hasKids) {
-    var arrow = document.createElement('span');
-    arrow.className = 'toggle-icon';
-    arrow.textContent = '\u25BE';
-    node.appendChild(arrow);
-  }
-
-  li.appendChild(node);
-
-  if (hasKids) {
-    var ul = document.createElement('ul');
-    for (var i = 0; i < person.children.length; i++) {
-      var childLi = buildTree(person.children[i]);
-      if (childLi) ul.appendChild(childLi);
-    }
-    li.appendChild(ul);
-
-    node.addEventListener('click', (function(targetLi) {
-      return function() {
-        var childUl = targetLi.querySelector(':scope > ul');
-        if (childUl) {
-          childUl.classList.toggle('hidden');
-          targetLi.classList.toggle('collapsed');
-        }
-      };
-    })(li));
-  }
-
-  return li;
+function buildBranch(branchHead, targetId) {
+  var p = F[branchHead]; if(!p) return;
+  var h = '';
+  for(var i=0;i<p.c.length;i++) h += buildSubTree(p.c[i]);
+  document.getElementById(targetId).innerHTML = h;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  var root = document.getElementById('treeRoot');
-  var ul = document.createElement('ul');
-  var rootLi = buildTree('Baba Sardar Muhammad');
-  if (rootLi) ul.appendChild(rootLi);
-  root.appendChild(ul);
+  buildBranch('Qasim', 'ftree-qasim');
+  buildBranch('Umar Din', 'ftree-umardin');
+  buildBranch('Fateh Din', 'ftree-fatehdin');
 
-  document.getElementById('expandAll').addEventListener('click', function() {
-    root.querySelectorAll('ul.hidden').forEach(function(u) { u.classList.remove('hidden'); });
-    root.querySelectorAll('li.collapsed').forEach(function(l) { l.classList.remove('collapsed'); });
-  });
-
-  document.getElementById('collapseAll').addEventListener('click', function() {
-    root.querySelectorAll('.ftree > ul > li > ul ul').forEach(function(u) { u.classList.add('hidden'); });
-    root.querySelectorAll('.ftree > ul > li > ul li').forEach(function(l) {
-      if (l.querySelector(':scope > ul')) l.classList.add('collapsed');
+  /* Branch collapse/expand */
+  document.querySelectorAll('.branch-toggle').forEach(function(tog) {
+    tog.addEventListener('click', function() {
+      var content = tog.nextElementSibling;
+      content.classList.toggle('hidden');
+      tog.classList.toggle('closed');
     });
   });
 
+  /* Search */
   var searchBox = document.getElementById('search');
-  var searchCount = document.getElementById('searchCount');
+  var searchInfo = document.getElementById('searchInfo');
 
   searchBox.addEventListener('input', function() {
     var q = searchBox.value.trim().toLowerCase();
-    root.querySelectorAll('.tree-node.search-hit').forEach(function(n) {
-      n.classList.remove('search-hit');
-    });
-    searchCount.classList.add('hidden');
+    document.querySelectorAll('.nd.hl,.nd.anc').forEach(function(n) { n.classList.remove('hl','anc'); });
+    searchInfo.classList.add('hidden');
+    if(q.length < 2) return;
 
-    if (q.length < 2) return;
-
-    var hits = 0;
-    var firstHit = null;
-    root.querySelectorAll('.tree-node').forEach(function(node) {
-      var nameEn = (node.getAttribute('data-name') || '').toLowerCase();
-      var nameUr = node.getAttribute('data-ur') || '';
-      if (nameEn.indexOf(q) !== -1 || nameUr.indexOf(q) !== -1) {
-        node.classList.add('search-hit');
-        hits++;
-        var parent = node.closest('li');
-        if (parent) parent = parent.parentElement ? parent.parentElement.closest('li') : null;
-        while (parent) {
-          var childUl = parent.querySelector(':scope > ul');
-          if (childUl) { childUl.classList.remove('hidden'); parent.classList.remove('collapsed'); }
-          parent = parent.parentElement ? parent.parentElement.closest('li') : null;
+    var hits = 0, first = null;
+    document.querySelectorAll('.nd').forEach(function(nd) {
+      var en = (nd.getAttribute('data-n')||'').toLowerCase();
+      var ur = nd.getAttribute('data-u')||'';
+      if(en.indexOf(q) !== -1 || ur.indexOf(q) !== -1) {
+        nd.classList.add('hl'); hits++;
+        /* expand parent branches if collapsed */
+        var sec = nd.closest('.branch-content');
+        if(sec && sec.classList.contains('hidden')) {
+          sec.classList.remove('hidden');
+          sec.previousElementSibling.classList.remove('closed');
         }
-        if (!firstHit) {
-          firstHit = node;
-          setTimeout(function() { node.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
+        /* highlight ancestors */
+        var curr = en;
+        while(curr) {
+          var key = findKey(curr);
+          if(!key) break;
+          curr = F[key] ? F[key].p : null;
+          if(curr) {
+            var ancNd = document.querySelector('.nd[data-n="'+curr+'"]');
+            if(ancNd) ancNd.classList.add('anc');
+          }
         }
+        if(!first) { first = nd; setTimeout(function(){ nd.scrollIntoView({behavior:'smooth',block:'center'}); },100); }
       }
     });
+    if(hits > 0) { searchInfo.textContent = hits+' found'; searchInfo.classList.remove('hidden'); }
+  });
 
-    if (hits > 0) {
-      searchCount.textContent = hits + ' found';
-      searchCount.classList.remove('hidden');
+  function findKey(q) {
+    q = q.toLowerCase().trim();
+    for(var k in F) if(k.toLowerCase() === q) return k;
+    return null;
+  }
+
+  /* Click to highlight lineage */
+  document.addEventListener('click', function(e) {
+    var nd = e.target.closest('.nd');
+    if(!nd) return;
+    document.querySelectorAll('.nd.hl,.nd.anc').forEach(function(n){ n.classList.remove('hl','anc'); });
+    nd.classList.add('hl');
+    var name = nd.getAttribute('data-n');
+    var curr = name;
+    while(curr && F[curr]) {
+      curr = F[curr].p;
+      if(curr) {
+        var ancNd = document.querySelector('.nd[data-n="'+curr+'"]');
+        if(ancNd) ancNd.classList.add('anc');
+      }
     }
   });
 });
